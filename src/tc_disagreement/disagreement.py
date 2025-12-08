@@ -11,7 +11,7 @@ class Derived(Base):
 if __name__ == "__main__":
     print(Derived().x)
 
-
+# EXPECTED means that the Agent (gemini-2.0-flash) expects the following outcomes of the type checkers
 """
 # EXPECTED:
    mypy: Error - "Derived.x" overrides final attribute from base

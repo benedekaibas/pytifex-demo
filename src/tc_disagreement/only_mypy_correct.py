@@ -18,7 +18,7 @@ if __name__ == "__main__":
     result3 = parse("auto")
     print(result1, result2, result3)
 
-# EXPECTED means that the Agent (gemini-2.5-flash) expects the following outcomes of the type checkers
+# EXPECTED means that the Agent (gemini-2.0-flash) expects the following outcomes of the type checkers
 """
 # EXPECTED:
    mypy: result1 type is bool, result2 is bool, result3 is str
