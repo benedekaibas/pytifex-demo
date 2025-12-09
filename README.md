@@ -27,4 +27,10 @@ teams of these type checkers would be a significant contribution to make them sa
 
 These are the two examples that I have included in this demo.
 
+## Example of a realistic (enough) Python function that flags type checker errors in at least one type checker but not in all
+
+`src/tc_disagreement/eval.py`
+
+This file contains the evaluation process of the type checkers using `pydantic-ai`.
+
 ## Setup
