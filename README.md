@@ -7,6 +7,13 @@ This repository includes the Pytifex source code, generated outputs, and the ful
 
 I conducted all experiments on a workstation running Ubuntu 24.04.3 LTS, equipped with a 13th Gen Intel® Core™ i7-1355U (12 cores) and 16 GB RAM. Our implementation uses Python 3.12.9. The code examples were evaluated using the following versions: `mypy 1.19.0 (compiled: yes)`, `pyrefly 0.44.2`, `zuban 0.3.0`, and `ty 0.0.1-alpha.32`.
 
+After setting all the type checkers to the versions listed above, I used the following commands:
+
+- `mypy example.py`
+- `pyrefly check example.py`
+- `zuban check example.py`
+- `ty check example.py`
+
 ## Where to Find What
 
 I provide where are all the files that were asked to produce.
@@ -33,4 +40,9 @@ These are the two examples that I have included in this demo.
 
 This file contains the evaluation process of the type checkers using `pydantic-ai`.
 
-## Setup
+## How To Replicate The Results
+
+Here are the commands in the right order to run:
+
+- 1: `python generate_json.py`
+- 2: `python eval.py`
