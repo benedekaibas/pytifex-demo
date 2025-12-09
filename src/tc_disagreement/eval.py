@@ -1,3 +1,14 @@
+# /// script
+# requires-python = ">=3.12"
+# dependencies = [
+#     "mypy==1.19.0",
+#     "pyrefly==0.44.2",
+#     "zuban==0.3.0",
+#     "ty==0.0.1-alpha.32",
+#     "pydantic-ai", 
+# ]
+# ///
+
 import json
 import os
 import asyncio
