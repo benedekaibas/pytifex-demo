@@ -38,11 +38,11 @@ These are the two examples that I have included in this demo.
 
 `src/tc_disagreement/eval.py`
 
-This file contains the evaluation process of the type checkers using `pydantic-ai`.
+This file contains the simplified evaluation process of the type checkers using `pydantic-ai`.
 
-## How To Replicate The Results
+## Replicate The Results
 
-Here are the commands in the right order to run:
+To ensure strict reproducibility, the scripts have been configured with **`uv` to mirror the experimental environment exactly**. Executing the following commands will **automatically provision the dependencies and replicate the results**:
 
-- 1: `python generate_json.py`
-- 2: `python eval.py`
+- 1: `uv run generate_json.py`
+- 2: `uv run eval.py`
