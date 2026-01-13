@@ -1,142 +1,184 @@
-# /// script
-# requires-python = ">=3.12"
-# dependencies = [
-#     "mypy==1.19.0",
-#     "pyrefly==0.44.2",
-#     "zuban==0.3.0",
-#     "ty==0.0.1-alpha.32",
-#     "pydantic-ai", 
-# ]
-# ///
-
-import json
 import os
-import asyncio
-from typing import Any
+import json
+import glob
+import sys
+from typing import List, Dict
+from pydantic import HttpUrl
 
-from pydantic_ai import Agent
-from pydantic_ai.models.google import GoogleModel
-from pydantic_ai.providers.google import GoogleProvider
+import time
+import random
 
+# Import your existing Gemini Agent class
+# Assuming your main pydantic file is named 'agent.py'
+try:
+    from agent import GetAccessToGemini 
+except ImportError:
+    # If the import fails, we define a dummy or ask user to fix filename
+    print("[ERROR] Could not import GetAccessToGemini. Make sure 'agent.py' exists.")
+    sys.exit(1)
 
-JSON_INPUT_FILE = "type_checkers_output.json"
-API_KEY = os.getenv("GEMINI_API_KEY")
+BASE_GEN_DIR = "generated_examples"
 
-if not API_KEY:
-    raise ValueError("Please set the GEMINI_API_KEY environment variable.")
+# We construct the prompt string carefully to avoid breaking the python file formatting
+# when displayed in markdown viewers.
+TICK = "`" * 3  # Represents the triple backtick
 
-provider = GoogleProvider(api_key=API_KEY)
-judge_model = GoogleModel('gemini-2.5-pro', provider=provider)
+JUDGE_PROMPT_TEMPLATE = f"""
+You are an expert Python Static Analysis Judge (PEP 484).
+Your goal is to determine if a Type Checker's output is CORRECT or INCORRECT.
 
-judge_agent = Agent(
-    judge_model,
-    system_prompt=(
-        "You are an expert Python Type System Judge (PEP 484). "
-        "Your goal is to determine if a specific Type Checker behaved correctly given a piece of source code.\n\n"
+### 1. The Source Code
+(Pay attention to the logic and any obvious type safety violations)
+{TICK}python
+{{source_code}}
+{TICK}
+
+### 2. The Type Checker Output
+Tool Name: {{tool_name}}
+Output:
+{TICK}text
+{{tool_output}}
+{TICK}
+
+### 3. Your Task
+Determine if the tool's output is **CORRECT** based on strict Python typing rules.
+- If the code has a bug/overlap and the tool reports an error -> CORRECT.
+- If the code has a bug and the tool says "Success" -> INCORRECT (False Negative).
+- If the code is safe and the tool reports an error -> INCORRECT (False Positive).
+
+Reply in this strict format:
+VERDICT: [CORRECT/INCORRECT]
+REASON: [One sentence explanation]
+"""
+
+def get_latest_results_file() -> str:
+    """Finds the results.json in the most recent generated folder."""
+    if not os.path.exists(BASE_GEN_DIR):
+        return None
         
-        "PROTOCOL:\n"
-        "1. ANALYZE THE CODE: Look for 'Overload Overlap'. If `Literal['x']` and `str` are both defined as inputs "
-        "   in `@overload` signatures, they overlap because 'x' is also a str. If they return different types, "
-        "   this is UNSAFE and AMBIGUOUS.\n"
-        "2. JUDGE THE TOOL:\n"
-        "   - If the code has this Unsafe Overlap, the tool MUST report an ERROR to be 'CORRECT'.\n"
-        "   - If the code has Unsafe Overlap and the tool says 'Success' (or 0 errors), it is 'INCORRECT'.\n"
-        "   - If the code is perfectly safe, then 'Success' is 'CORRECT'.\n\n"
+    subdirs = [os.path.join(BASE_GEN_DIR, d) for d in os.listdir(BASE_GEN_DIR) 
+               if os.path.isdir(os.path.join(BASE_GEN_DIR, d))]
+    
+    if not subdirs:
+        return None
         
-        "OUTPUT FORMAT:\n"
-        "Start your response with exactly 'CORRECT' or 'INCORRECT', followed by a vertical bar '|', "
-        "and then a short explanation."
-        "Example: CORRECT | Mypy correctly flagged the unsafe overload overlap."
+    latest_dir = max(subdirs, key=os.path.basename)
+    results_path = os.path.join(latest_dir, "results.json")
+    return results_path if os.path.exists(results_path) else None
+
+def evaluate_tool(agent, source_code: str, tool_name: str, output: str) -> Dict:
+    """Sends a prompt to Gemini to judge the tool output with Retry Logic."""
+    prompt = JUDGE_PROMPT_TEMPLATE.format(
+        source_code=source_code,
+        tool_name=tool_name,
+        tool_output=output
     )
-)
+    
+    max_retries = 5
+    base_delay = 2
 
-def remove_comments(source_code: str) -> str:
-    """Removes comments to force the agent to analyze the code logic, not the 'EXPECTED' comments."""
-    lines = [line for line in source_code.splitlines() if not line.strip().startswith("#")]
-    return "\n".join(lines)
-
-async def evaluate_single_tool(tool_name: str, output: str, clean_code: str) -> dict:
-    """Evaluates a single tool and returns the structured result."""
-    prompt = (
-        f"### Source Code (No Comments):\n```python\n{clean_code}\n```\n\n"
-        f"### Tool Name: {tool_name}\n"
-        f"### Tool Output:\n{output}\n\n"
-        f"### Task:\n"
-        f"Does the tool output correctly reflect the safety of the code? "
-        f"(Hint: Check for unsafe overload overlap between Literal and str)."
-    )
-
-    try:
-        response = await judge_agent.run(prompt)
-        raw_text = response.output.strip()
-        
-        parts = raw_text.split('|', 1)
-        if len(parts) == 2:
-            verdict_str = parts[0].strip().upper()
-            reason = parts[1].strip()
-        else:
-            verdict_str = raw_text.split(' ')[0].strip().upper()
-            reason = raw_text
+    for attempt in range(max_retries):
+        try:
+            response = agent.predict(prompt)
             
-        is_correct = "CORRECT" in verdict_str and "INCORRECT" not in verdict_str
-        
-        return {
-            "tool": tool_name,
-            "passed": is_correct,
-            "reason": reason
-        }
-    except Exception as e:
-        return {
-            "tool": tool_name,
-            "passed": False,
-            "reason": f"Agent Error: {str(e)}"
-        }
+            lines = response.splitlines()
+            verdict = "UNKNOWN"
+            reason = "Could not parse reason"
+            
+            for line in lines:
+                if line.startswith("VERDICT:"):
+                    verdict = line.replace("VERDICT:", "").strip().upper()
+                if line.startswith("REASON:"):
+                    reason = line.replace("REASON:", "").strip()
+                    
+            return {"verdict": verdict, "reason": reason}
 
-async def main():
-    if not os.path.exists(JSON_INPUT_FILE):
-        print(f"Error: {JSON_INPUT_FILE} not found.")
+        except Exception as e:
+            error_msg = str(e)
+            if "503" in error_msg or "429" in error_msg:
+                if attempt < max_retries - 1:
+                    sleep_time = (base_delay * (2 ** attempt)) + (random.random() * 0.5)
+                    print(f"    [Warn] API Busy (503). Retrying in {sleep_time:.1f}s...")
+                    time.sleep(sleep_time)
+                    continue
+            
+            return {"verdict": "ERROR", "reason": f"API Failed: {error_msg}"}
+
+def main():
+    # 1. Setup Agent
+    token = os.environ.get("GEMINI_API_KEY")
+    if not token:
+        print("[ERROR] GEMINI_API_KEY not set.")
         return
 
-    with open(JSON_INPUT_FILE, "r") as f:
+    # Use Flash for speed
+    agent = GetAccessToGemini(
+        model="gemini-2.5-flash", 
+        token=token,
+        api_base=HttpUrl("https://generativelanguage.googleapis.com/v1beta"),
+        timeout=30.0,
+    )
+
+    # 2. Load Results
+    results_path = get_latest_results_file()
+    if not results_path:
+        print("[ERROR] No results.json found. Run 'run_checkers.py' first.")
+        return
+
+    with open(results_path, "r") as f:
         data = json.load(f)
 
-    source_code = data.get("source_code", "")
-    clean_code = remove_comments(source_code)
-    outputs = data.get("outputs", {})
-    analyzed_file = data.get("analyzed_file", "Unknown File")
+    results = data.get("results", [])
+    print(f"--- AI Judge Evaluation on {len(results)} Files ---")
+    print(f"Source: {results_path}\n")
 
-    print(f"--- AI Judge: Evaluating {len(outputs)} Type Checkers ---")
-    print(f"File: {analyzed_file}")
-    print("Analyizing code safety...\n")
+    # 3. Evaluation Loop
+    tool_stats = {t: {"correct": 0, "total": 0} for t in data.get("checkers_used", [])}
 
-    tasks = [
-        evaluate_single_tool(name, output, clean_code) 
-        for name, output in outputs.items()
-    ]
-    results = await asyncio.gather(*tasks)
-
-    print("="*90)
-    print(f"FINAL EVALUATION REPORT: {analyzed_file}")
-    print("="*90)
-    print(f"{'Tool':<10} | {'Verdict':<8} | {'Reasoning'}")
-    print("-" * 90)
-
-    total_passed = 0
-    for res in results:
-        status = "✅ PASS" if res['passed'] else "❌ FAIL"
-        if res['passed']:
-            total_passed += 1
+    for file_entry in results:
+        filepath = file_entry["filepath"]
+        filename = file_entry["filename"]
+        
+        # Read the source code freshly
+        try:
+            with open(filepath, "r") as src:
+                source_code = src.read()
+        except FileNotFoundError:
+            print(f"[WARN] Source file not found: {filepath}")
+            continue
             
-        reason = res['reason']
-        if len(reason) > 65:
-            reason = reason[:62] + "..."
+        print(f"Evaluating {filename}...")
+        
+        for tool, output in file_entry["outputs"].items():
+            eval_result = evaluate_tool(agent, source_code, tool, output)
             
-        print(f"{res['tool']:<10} | {status:<8} | {reason}")
+            is_correct = "CORRECT" in eval_result["verdict"]
+            status_icon = "✅" if is_correct else "❌"
+            
+            # Update stats
+            if tool not in tool_stats: tool_stats[tool] = {"correct": 0, "total": 0}
+            tool_stats[tool]["total"] += 1
+            if is_correct:
+                tool_stats[tool]["correct"] += 1
+                
+            print(f"  {tool:<10} | {status_icon} {eval_result['verdict']} | {eval_result['reason'][:60]}...")
 
-    print("-" * 90)
-    final_score = total_passed / len(results) if results else 0.0
-    print(f"Overall Accuracy of the type checkers: {final_score:.0%}")
-    print("="*90)
+        print("-" * 60)
+
+    # 4. Final Scorecard
+    print("\n" + "="*40)
+    print("FINAL TYPE CHECKER LEADERBOARD")
+    print("="*40)
+    print(f"{'Tool':<15} | {'Accuracy':<10} | {'Score'}")
+    print("-" * 40)
+    
+    for tool, stats in tool_stats.items():
+        if stats["total"] > 0:
+            acc = (stats["correct"] / stats["total"]) * 100
+            print(f"{tool:<15} | {acc:.1f}%      | {stats['correct']}/{stats['total']}")
+        else:
+            print(f"{tool:<15} | N/A        | 0/0")
+    print("="*40)
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()

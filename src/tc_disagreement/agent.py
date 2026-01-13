@@ -342,6 +342,5 @@ model directly
 python pydantic_better_version.py --model gpt-4-turbo --temperature 0.8
 
 Current commands setup:
-    1. python codegen.py | python create_json.py 
-    2. python automation.py
+    1. python agent.py && python run_checkers.py
 """
