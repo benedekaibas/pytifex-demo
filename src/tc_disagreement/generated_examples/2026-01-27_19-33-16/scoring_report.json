@@ -1,0 +1,397 @@
+{
+  "method": "pytifex_scoring_framework",
+  "tier_weights": {
+    "1": 1.0,
+    "2": 0.9,
+    "3": 0.75
+  },
+  "files_evaluated": 11,
+  "detection_matrix": [
+    {
+      "filename": "literal-str-variable-assignment-divergence.py",
+      "proven_bugs": {
+        "t1": false,
+        "t2": true,
+        "t3": false
+      },
+      "checker_detections": {
+        "mypy": {
+          "t1": -1,
+          "t2": 1,
+          "t3": -1
+        },
+        "pyrefly": {
+          "t1": -1,
+          "t2": 1,
+          "t3": -1
+        },
+        "zuban": {
+          "t1": -1,
+          "t2": 1,
+          "t3": -1
+        },
+        "ty": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        }
+      }
+    },
+    {
+      "filename": "typeguard-tvar-refinement.py",
+      "proven_bugs": {
+        "t1": false,
+        "t2": true,
+        "t3": false
+      },
+      "checker_detections": {
+        "mypy": {
+          "t1": -1,
+          "t2": 1,
+          "t3": -1
+        },
+        "pyrefly": {
+          "t1": -1,
+          "t2": 1,
+          "t3": -1
+        },
+        "zuban": {
+          "t1": -1,
+          "t2": 1,
+          "t3": -1
+        },
+        "ty": {
+          "t1": -1,
+          "t2": 1,
+          "t3": -1
+        }
+      }
+    },
+    {
+      "filename": "self-generic-narrowing-with-factory.py",
+      "proven_bugs": {
+        "t1": false,
+        "t2": true,
+        "t3": false
+      },
+      "checker_detections": {
+        "mypy": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        },
+        "pyrefly": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        },
+        "zuban": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        },
+        "ty": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        }
+      }
+    },
+    {
+      "filename": "newtype-dummy-var-comprehension.py",
+      "proven_bugs": {
+        "t1": false,
+        "t2": true,
+        "t3": false
+      },
+      "checker_detections": {
+        "mypy": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        },
+        "pyrefly": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        },
+        "zuban": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        },
+        "ty": {
+          "t1": -1,
+          "t2": 1,
+          "t3": -1
+        }
+      }
+    },
+    {
+      "filename": "typeddict-total-multi-line-instantiation-ignore.py",
+      "proven_bugs": {
+        "t1": false,
+        "t2": true,
+        "t3": false
+      },
+      "checker_detections": {
+        "mypy": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        },
+        "pyrefly": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        },
+        "zuban": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        },
+        "ty": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        }
+      }
+    },
+    {
+      "filename": "paramspec-dummy-var-return-decorator.py",
+      "proven_bugs": {
+        "t1": false,
+        "t2": true,
+        "t3": false
+      },
+      "checker_detections": {
+        "mypy": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        },
+        "pyrefly": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        },
+        "zuban": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        },
+        "ty": {
+          "t1": -1,
+          "t2": 1,
+          "t3": -1
+        }
+      }
+    },
+    {
+      "filename": "typeguard-typeddict-soundness.py",
+      "proven_bugs": {
+        "t1": true,
+        "t2": false,
+        "t3": false
+      },
+      "checker_detections": {
+        "mypy": {
+          "t1": 0,
+          "t2": -1,
+          "t3": -1
+        },
+        "pyrefly": {
+          "t1": 0,
+          "t2": -1,
+          "t3": -1
+        },
+        "zuban": {
+          "t1": 0,
+          "t2": -1,
+          "t3": -1
+        },
+        "ty": {
+          "t1": 0,
+          "t2": -1,
+          "t3": -1
+        }
+      }
+    },
+    {
+      "filename": "self-generic-dummy-var-abstract-method.py",
+      "proven_bugs": {
+        "t1": false,
+        "t2": true,
+        "t3": false
+      },
+      "checker_detections": {
+        "mypy": {
+          "t1": -1,
+          "t2": 1,
+          "t3": -1
+        },
+        "pyrefly": {
+          "t1": -1,
+          "t2": 1,
+          "t3": -1
+        },
+        "zuban": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        },
+        "ty": {
+          "t1": -1,
+          "t2": 1,
+          "t3": -1
+        }
+      }
+    },
+    {
+      "filename": "newtype-nested-multi-line-ignore.py",
+      "proven_bugs": {
+        "t1": false,
+        "t2": false,
+        "t3": true
+      },
+      "checker_detections": {
+        "mypy": {
+          "t1": -1,
+          "t2": -1,
+          "t3": -1
+        },
+        "pyrefly": {
+          "t1": -1,
+          "t2": -1,
+          "t3": -1
+        },
+        "zuban": {
+          "t1": -1,
+          "t2": -1,
+          "t3": -1
+        },
+        "ty": {
+          "t1": -1,
+          "t2": -1,
+          "t3": 0
+        }
+      }
+    },
+    {
+      "filename": "typeddict-total-union-field-narrowing.py",
+      "proven_bugs": {
+        "t1": false,
+        "t2": true,
+        "t3": false
+      },
+      "checker_detections": {
+        "mypy": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        },
+        "pyrefly": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        },
+        "zuban": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        },
+        "ty": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        }
+      }
+    },
+    {
+      "filename": "self-mutation-divergence-refined.py",
+      "proven_bugs": {
+        "t1": false,
+        "t2": true,
+        "t3": false
+      },
+      "checker_detections": {
+        "mypy": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        },
+        "pyrefly": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        },
+        "zuban": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        },
+        "ty": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        }
+      }
+    }
+  ],
+  "metrics": {
+    "mypy": {
+      "tier1_detection_rate": 0.0,
+      "tier2_detection_rate": 0.3333333333333333,
+      "tier3_detection_rate": 0.0,
+      "true_positives": 2,
+      "false_positives": 0,
+      "false_negatives": 9,
+      "precision": 1.0,
+      "recall": 0.18181818181818182,
+      "f1": 0.3076923076923077,
+      "weighted_score": 0.3
+    },
+    "pyrefly": {
+      "tier1_detection_rate": 0.0,
+      "tier2_detection_rate": 0.3333333333333333,
+      "tier3_detection_rate": 0.0,
+      "true_positives": 7,
+      "false_positives": 0,
+      "false_negatives": 4,
+      "precision": 1.0,
+      "recall": 0.6363636363636364,
+      "f1": 0.7777777777777778,
+      "weighted_score": 0.3
+    },
+    "zuban": {
+      "tier1_detection_rate": 0.0,
+      "tier2_detection_rate": 0.2222222222222222,
+      "tier3_detection_rate": 0.0,
+      "true_positives": 2,
+      "false_positives": 0,
+      "false_negatives": 9,
+      "precision": 1.0,
+      "recall": 0.18181818181818182,
+      "f1": 0.3076923076923077,
+      "weighted_score": 0.19999999999999998
+    },
+    "ty": {
+      "tier1_detection_rate": 0.0,
+      "tier2_detection_rate": 0.4444444444444444,
+      "tier3_detection_rate": 0.0,
+      "true_positives": 6,
+      "false_positives": 0,
+      "false_negatives": 5,
+      "precision": 1.0,
+      "recall": 0.5454545454545454,
+      "f1": 0.7058823529411764,
+      "weighted_score": 0.39999999999999997
+    }
+  },
+  "ranking": [
+    "ty",
+    "mypy",
+    "pyrefly",
+    "zuban"
+  ]
+}

@@ -119,7 +119,8 @@ class SignatureExtractor(ast.NodeVisitor):
 class TryExceptAnalyzer(ast.NodeVisitor):
     """Find try/except blocks that catch type-related exceptions."""
     
-    TYPE_EXCEPTIONS = {'TypeError', 'KeyError', 'AttributeError', 'ValueError'}
+    # Only errors that type checkers are responsible for catching
+    TYPE_EXCEPTIONS = {'TypeError', 'KeyError', 'AttributeError'}
     
     def __init__(self):
         self.expected_errors: list[TypeBug] = []
@@ -569,6 +570,590 @@ def run_hypothesis_tests(source_code: str, signatures: list[FunctionSignature]) 
 
 
 # =============================================================================
+# TYPE-VIOLATING INPUT GENERATION
+# =============================================================================
+
+def generate_type_violating_value(annotation: str) -> list[tuple[Any, str]]:
+    """
+    Generate values that deliberately VIOLATE a type annotation.
+    
+    Returns list of (value, description) tuples that should cause type errors
+    if the annotation is enforced.
+    """
+    annotation = annotation.strip()
+    violations = []
+    
+    # For each type, generate values of WRONG types
+    if annotation == "int":
+        violations = [
+            ("not_an_int", "str instead of int"),
+            (3.14, "float instead of int"),
+            (None, "None instead of int"),
+            ([], "list instead of int"),
+        ]
+    elif annotation == "str":
+        violations = [
+            (42, "int instead of str"),
+            (None, "None instead of str"),
+            ([], "list instead of str"),
+        ]
+    elif annotation == "float":
+        violations = [
+            ("not_a_float", "str instead of float"),
+            (None, "None instead of float"),
+        ]
+    elif annotation == "bool":
+        violations = [
+            ("not_a_bool", "str instead of bool"),
+            (42, "int instead of bool"),  # Note: int is technically a subtype
+        ]
+    elif annotation.startswith("Literal["):
+        # For Literal types, generate values outside the literal set
+        violations = [
+            ("__INVALID_LITERAL__", "value not in Literal set"),
+            (99999, "int not in Literal set"),
+            (None, "None not in Literal set"),
+        ]
+    elif annotation.startswith("List[") or annotation.startswith("list["):
+        violations = [
+            ("not_a_list", "str instead of list"),
+            (42, "int instead of list"),
+            (None, "None instead of list"),
+        ]
+    elif annotation.startswith("Dict[") or annotation.startswith("dict["):
+        violations = [
+            ("not_a_dict", "str instead of dict"),
+            ([], "list instead of dict"),
+            (None, "None instead of dict"),
+        ]
+    elif "TypedDict" in annotation or annotation[0].isupper():
+        # For TypedDict or custom classes, try wrong types
+        violations = [
+            ("not_a_dict", "str instead of TypedDict"),
+            (42, "int instead of TypedDict"),
+            ({}, "empty dict (missing required keys)"),
+        ]
+    
+    # Generic fallback violations
+    if not violations:
+        violations = [
+            (None, "None for unknown type"),
+            ("__WRONG_TYPE__", "str for unknown type"),
+        ]
+    
+    return violations
+
+
+def run_type_violation_tests(source_code: str, signatures: list[FunctionSignature]) -> list[TypeBug]:
+    """
+    Test functions with deliberately WRONG input types.
+    
+    If a function crashes with TypeError/KeyError/AttributeError when given
+    wrong types, this proves the type annotation matters and checkers should
+    have flagged potential violations.
+    
+    Key insight: If code runs fine with valid types but crashes with invalid types,
+    then any checker that allows invalid types to reach this code is INCORRECT.
+    """
+    bugs: list[TypeBug] = []
+    
+    # Compile the module to get access to functions
+    try:
+        module_globals = {"__name__": "__test_module__"}
+        exec(compile(source_code, "<violation_test>", "exec"), module_globals)
+    except Exception:
+        return bugs
+    
+    for sig in signatures:
+        # Skip methods, async, and private functions
+        if sig.is_method or sig.is_async or sig.name.startswith("_"):
+            continue
+        
+        func = module_globals.get(sig.name)
+        if not callable(func):
+            continue
+        
+        # For each parameter with a type annotation, try violating it
+        for param_name, annotation in sig.parameters.items():
+            violations = generate_type_violating_value(annotation)
+            
+            for violating_value, description in violations:
+                try:
+                    # Build kwargs with valid defaults for other params, violating for this one
+                    kwargs = {}
+                    for p, ann in sig.parameters.items():
+                        if p == param_name:
+                            kwargs[p] = violating_value
+                        else:
+                            # Use a safe default for other params
+                            kwargs[p] = get_safe_default(ann)
+                    
+                    # Call the function with the violating input
+                    func(**kwargs)
+                    
+                except (TypeError, KeyError, AttributeError) as e:
+                    # Found a type bug! The function crashes when given wrong types.
+                    bugs.append(TypeBug(
+                        line=sig.line,
+                        bug_type=type(e).__name__,
+                        message=f"Type violation ({description}): {str(e)[:100]}",
+                        source="type_violation",
+                        confidence=0.95,
+                    ))
+                    break  # One violation per parameter is enough
+                except Exception:
+                    # Other exceptions (ValueError, etc.) don't count as type bugs
+                    pass
+    
+    return bugs
+
+
+def get_safe_default(annotation: str) -> Any:
+    """Get a safe default value for a type annotation."""
+    annotation = annotation.strip()
+    
+    defaults = {
+        "int": 0,
+        "str": "",
+        "float": 0.0,
+        "bool": False,
+        "None": None,
+        "bytes": b"",
+        "Any": None,
+    }
+    
+    if annotation in defaults:
+        return defaults[annotation]
+    
+    if annotation.startswith("Optional[") or " | None" in annotation:
+        return None
+    if annotation.startswith("List[") or annotation.startswith("list["):
+        return []
+    if annotation.startswith("Dict[") or annotation.startswith("dict["):
+        return {}
+    if annotation.startswith("Literal["):
+        # Extract first literal value
+        inner = annotation[8:-1]
+        if inner.startswith("'") or inner.startswith('"'):
+            return inner.strip("'\"").split(",")[0].strip().strip("'\"")
+        return inner.split(",")[0].strip()
+    
+    return None
+
+
+def run_typeddict_violation_tests(source_code: str) -> list[TypeBug]:
+    """
+    Specifically test TypedDict usage by providing dicts with missing/wrong keys.
+    
+    This catches issues where:
+    - Required keys are missing
+    - Keys have wrong types
+    - NotRequired keys are accessed without guards
+    """
+    bugs: list[TypeBug] = []
+    
+    # Find all TypedDict definitions
+    try:
+        tree = ast.parse(source_code)
+    except SyntaxError:
+        return bugs
+    
+    typeddict_defs = {}
+    
+    class TypedDictFinder(ast.NodeVisitor):
+        def visit_ClassDef(self, node):
+            # Check if it's a TypedDict
+            for base in node.bases:
+                if isinstance(base, ast.Name) and base.id == "TypedDict":
+                    fields = {}
+                    for stmt in node.body:
+                        if isinstance(stmt, ast.AnnAssign) and isinstance(stmt.target, ast.Name):
+                            fields[stmt.target.id] = ast.unparse(stmt.annotation)
+                    typeddict_defs[node.name] = {
+                        "fields": fields,
+                        "line": node.lineno,
+                    }
+            self.generic_visit(node)
+    
+    finder = TypedDictFinder()
+    finder.visit(tree)
+    
+    if not typeddict_defs:
+        return bugs
+    
+    # Find functions that take TypedDict parameters
+    for sig_class in [ast.FunctionDef, ast.AsyncFunctionDef]:
+        class FuncFinder(ast.NodeVisitor):
+            def visit_FunctionDef(self, node):
+                self._check_func(node)
+            def visit_AsyncFunctionDef(self, node):
+                self._check_func(node)
+            def _check_func(self, node):
+                for arg in node.args.args:
+                    if arg.annotation:
+                        ann = ast.unparse(arg.annotation)
+                        if ann in typeddict_defs:
+                            # This function takes a TypedDict - test it
+                            td_info = typeddict_defs[ann]
+                            # Create a dict missing required keys
+                            bugs.append(TypeBug(
+                                line=node.lineno,
+                                bug_type="PotentialKeyError",
+                                message=f"Function accepts {ann} TypedDict - missing keys could cause KeyError",
+                                source="typeddict_analysis",
+                                confidence=0.7,
+                            ))
+        
+        func_finder = FuncFinder()
+        func_finder.visit(tree)
+    
+    return bugs
+
+
+# =============================================================================
+# PYNGUIN TEST GENERATION ORACLE
+# =============================================================================
+
+def run_pynguin_tests(source_code: str, module_name: str = "test_module") -> list[TypeBug]:
+    """
+    Use Pynguin to generate tests and find type bugs.
+    
+    Pynguin uses search-based algorithms (DYNAMOSA) to generate tests
+    that maximize code coverage, which can find bugs that random testing misses.
+    """
+    import subprocess
+    import tempfile
+    import shutil
+    
+    bugs: list[TypeBug] = []
+    
+    # Check if pynguin is available
+    try:
+        result = subprocess.run(
+            ["pynguin", "--version"],
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+        if result.returncode != 0:
+            return bugs  # Pynguin not available
+    except (FileNotFoundError, subprocess.TimeoutExpired):
+        return bugs  # Pynguin not installed
+    
+    # Create temp directory structure
+    temp_dir = tempfile.mkdtemp(prefix="pynguin_eval_")
+    module_dir = os.path.join(temp_dir, "src")
+    output_dir = os.path.join(temp_dir, "tests")
+    os.makedirs(module_dir, exist_ok=True)
+    os.makedirs(output_dir, exist_ok=True)
+    
+    # Write source file
+    source_file = os.path.join(module_dir, f"{module_name}.py")
+    with open(source_file, "w") as f:
+        f.write(source_code)
+    
+    # Create __init__.py
+    with open(os.path.join(module_dir, "__init__.py"), "w") as f:
+        f.write("")
+    
+    try:
+        # Set environment variable to acknowledge danger
+        env = os.environ.copy()
+        env["PYNGUIN_DANGER_AWARE"] = "1"
+        
+        # Run Pynguin with longer timeout for thorough test generation
+        result = subprocess.run(
+            [
+                "pynguin",
+                "--project-path", module_dir,
+                "--output-path", output_dir,
+                "--module-name", module_name,
+                "--maximum-search-time", "120",
+                "--maximum-iterations", "500",
+                "--algorithm", "DYNAMOSA",
+            ],
+            capture_output=True,
+            text=True,
+            timeout=180,
+            env=env,
+            cwd=module_dir,
+        )
+        
+        # Check if tests were generated
+        test_file = os.path.join(output_dir, f"test_{module_name}.py")
+        if not os.path.exists(test_file):
+            return bugs
+        
+        # Read and execute generated tests
+        with open(test_file) as f:
+            test_code = f.read()
+        
+        # Run the generated tests with pytest and capture failures
+        pytest_result = subprocess.run(
+            ["python", "-m", "pytest", test_file, "-v", "--tb=short"],
+            capture_output=True,
+            text=True,
+            timeout=30,
+            cwd=temp_dir,
+        )
+        
+        # Parse pytest output for failures
+        output = pytest_result.stdout + pytest_result.stderr
+        
+        # Extract type-related failures
+        type_error_patterns = [
+            (r"TypeError:.*", "TypeError"),
+            (r"KeyError:.*", "KeyError"),
+            (r"AttributeError:.*", "AttributeError"),
+        ]
+        
+        for pattern, bug_type in type_error_patterns:
+            for match in re.finditer(pattern, output):
+                # Try to extract line number from traceback
+                line_match = re.search(rf"{module_name}\.py.*line (\d+)", output)
+                line = int(line_match.group(1)) if line_match else 0
+                
+                bugs.append(TypeBug(
+                    line=line,
+                    bug_type=bug_type,
+                    message=f"Pynguin test failure: {match.group(0)[:100]}",
+                    source="pynguin",
+                    confidence=0.95,
+                ))
+        
+    except subprocess.TimeoutExpired:
+        pass  # Pynguin timed out
+    except Exception:
+        pass  # Other errors
+    finally:
+        # Cleanup
+        shutil.rmtree(temp_dir, ignore_errors=True)
+    
+    return bugs
+
+
+# =============================================================================
+# FUNCTION-SCOPE MATCHING (for accurate verdict determination)
+# =============================================================================
+
+@dataclass
+class FunctionSpan:
+    """Represents a function's location in source code."""
+    name: str
+    start_line: int
+    end_line: int
+    class_name: Optional[str] = None
+
+
+def extract_function_spans(source_code: str) -> list[FunctionSpan]:
+    """Extract all function/method spans from source code using AST."""
+    try:
+        tree = ast.parse(source_code)
+    except SyntaxError:
+        return []
+    
+    spans: list[FunctionSpan] = []
+    current_class: Optional[str] = None
+    
+    class FunctionVisitor(ast.NodeVisitor):
+        def __init__(self):
+            self.current_class: Optional[str] = None
+        
+        def visit_ClassDef(self, node: ast.ClassDef):
+            old_class = self.current_class
+            self.current_class = node.name
+            self.generic_visit(node)
+            self.current_class = old_class
+        
+        def visit_FunctionDef(self, node: ast.FunctionDef):
+            end_line = node.end_lineno if hasattr(node, 'end_lineno') and node.end_lineno else node.lineno + 20
+            spans.append(FunctionSpan(
+                name=node.name,
+                start_line=node.lineno,
+                end_line=end_line,
+                class_name=self.current_class,
+            ))
+            self.generic_visit(node)
+        
+        def visit_AsyncFunctionDef(self, node: ast.AsyncFunctionDef):
+            end_line = node.end_lineno if hasattr(node, 'end_lineno') and node.end_lineno else node.lineno + 20
+            spans.append(FunctionSpan(
+                name=node.name,
+                start_line=node.lineno,
+                end_line=end_line,
+                class_name=self.current_class,
+            ))
+            self.generic_visit(node)
+    
+    visitor = FunctionVisitor()
+    visitor.visit(tree)
+    return spans
+
+
+def get_function_at_line(spans: list[FunctionSpan], line: int) -> Optional[FunctionSpan]:
+    """Find which function contains the given line number."""
+    for span in spans:
+        if span.start_line <= line <= span.end_line:
+            return span
+    return None
+
+
+def extract_error_lines_from_output(checker_output: str) -> list[int]:
+    """
+    Extract line numbers from type checker error output.
+    
+    Handles formats: file.py:42: error, line 42, L42, etc.
+    """
+    lines: list[int] = []
+    
+    patterns = [
+        r'\.py:(\d+)(?::\d+)?:',      # file.py:42: or file.py:42:10:
+        r'\.py:(\d+)\s',               # file.py:42 (space after)
+        r'[Ll]ine\s+(\d+)',            # "line 42" or "Line 42"
+        r'\bL(\d+)\b',                 # L42
+        r':(\d+):.*(?:error|Error)',   # :42: ... error
+    ]
+    
+    for pattern in patterns:
+        for match in re.finditer(pattern, checker_output):
+            try:
+                line_num = int(match.group(1))
+                if 1 <= line_num <= 10000:
+                    lines.append(line_num)
+            except (ValueError, IndexError):
+                continue
+    
+    return list(set(lines))
+
+
+def extract_error_types_from_output(checker_output: str) -> set[str]:
+    """Extract error type keywords from checker output for secondary matching."""
+    error_types: set[str] = set()
+    output_lower = checker_output.lower()
+    
+    type_keywords = {
+        'typeerror': 'TypeError',
+        'keyerror': 'KeyError',
+        'attributeerror': 'AttributeError',
+        'missing key': 'KeyError',
+        'incompatible type': 'TypeError',
+        'invalid type': 'TypeError',
+        'type mismatch': 'TypeError',
+        'not callable': 'TypeError',
+        'undefined attribute': 'AttributeError',
+        'no attribute': 'AttributeError',
+    }
+    
+    for keyword, error_type in type_keywords.items():
+        if keyword in output_lower:
+            error_types.add(error_type)
+    
+    return error_types
+
+
+@dataclass
+class MatchResult:
+    """Result of matching a checker's output to a bug."""
+    matched: bool
+    confidence: float  # 1.0 = exact line, 0.85 = same function, 0.0 = no match
+    method: str  # "exact_line", "function_scope", "error_type", "none"
+    matched_line: Optional[int] = None
+
+
+def checker_matches_bug(
+    bug: TypeBug,
+    checker_output: str,
+    function_spans: list[FunctionSpan],
+) -> MatchResult:
+    """
+    Determine if a checker's error output matches a proven bug.
+    
+    Returns a MatchResult with confidence scores:
+    - 1.0: Exact line match (±5 lines)
+    - 0.85: Same function scope
+    - 0.7: Error type match with line proximity (±10 lines)
+    - 0.0: No match
+    """
+    LINE_TOLERANCE_EXACT = 5
+    LINE_TOLERANCE_ERROR_TYPE = 10
+    
+    checker_error_lines = extract_error_lines_from_output(checker_output)
+    
+    if not checker_error_lines:
+        return MatchResult(matched=False, confidence=0.0, method="none")
+    
+    bug_function = get_function_at_line(function_spans, bug.line)
+    best_match = MatchResult(matched=False, confidence=0.0, method="none")
+    
+    for error_line in checker_error_lines:
+        error_function = get_function_at_line(function_spans, error_line)
+        
+        # Tier 1: Same function + close line (±5 lines) - highest confidence
+        # IMPORTANT: Only use line proximity if SAME function to avoid false matches
+        if bug_function and error_function:
+            if (bug_function.name == error_function.name and 
+                bug_function.class_name == error_function.class_name):
+                # Same function - check line proximity
+                if abs(bug.line - error_line) <= LINE_TOLERANCE_EXACT:
+                    return MatchResult(
+                        matched=True,
+                        confidence=1.0,
+                        method="exact_line_same_function",
+                        matched_line=error_line,
+                    )
+                else:
+                    # Same function but farther away
+                    if best_match.confidence < 0.85:
+                        best_match = MatchResult(
+                            matched=True,
+                            confidence=0.85,
+                            method="function_scope",
+                            matched_line=error_line,
+                        )
+        
+        # Tier 2: Both at module level (no enclosing function), use line tolerance
+        if bug_function is None and error_function is None:
+            if abs(bug.line - error_line) <= LINE_TOLERANCE_EXACT:
+                return MatchResult(
+                    matched=True,
+                    confidence=1.0,
+                    method="exact_line_module_level",
+                    matched_line=error_line,
+                )
+            elif abs(bug.line - error_line) <= LINE_TOLERANCE_ERROR_TYPE:
+                if best_match.confidence < 0.7:
+                    best_match = MatchResult(
+                        matched=True,
+                        confidence=0.7,
+                        method="module_level_proximity",
+                        matched_line=error_line,
+                    )
+    
+    # Tier 3: Error-type matching with same function requirement
+    if not best_match.matched:
+        checker_error_types = extract_error_types_from_output(checker_output)
+        if bug.bug_type in checker_error_types:
+            for error_line in checker_error_lines:
+                error_function = get_function_at_line(function_spans, error_line)
+                # Only match if same function or both at module level
+                same_scope = (
+                    (bug_function and error_function and 
+                     bug_function.name == error_function.name and
+                     bug_function.class_name == error_function.class_name) or
+                    (bug_function is None and error_function is None)
+                )
+                if same_scope and abs(bug.line - error_line) <= LINE_TOLERANCE_ERROR_TYPE:
+                    return MatchResult(
+                        matched=True,
+                        confidence=0.7,
+                        method="error_type_same_scope",
+                        matched_line=error_line,
+                    )
+    
+    return best_match
+
+
+# =============================================================================
 # MAIN EVALUATION FUNCTION
 # =============================================================================
 
@@ -580,41 +1165,50 @@ def evaluate_example(
     """
     Evaluate a code example using runtime testing to establish ground truth.
     
+    Core principle: Only count bugs that occur during NORMAL execution.
+    We do NOT artificially create bugs by passing wrong types - that tests
+    function robustness, not type checker correctness.
+    
     Steps:
-    1. Execute code and catch uncaught exceptions
-    2. Find expected errors (try/except blocks)
-    3. Find unsafe TypedDict access
-    4. Run beartype for runtime type checking
-    5. Run Hypothesis property-based tests
-    6. Compare all findings to checker outputs
+    1. Execute code as-is and catch type-related exceptions
+    2. Run beartype for runtime type checking (catches annotation violations)
+    3. Run Hypothesis property-based tests with VALID inputs
+    4. Run Pynguin search-based test generation (if available)
+    5. Compare findings to checker outputs using scope-aware matching
+    
+    Verdict logic:
+    - Runtime crash + checker said OK → INCORRECT (missed real bug)
+    - Runtime crash + checker flagged same location → CORRECT
+    - No crash + checker said OK → UNCERTAIN (might be correct)
+    - No crash + checker said ERROR → UNCERTAIN (might be false positive)
     """
     all_bugs: list[TypeBug] = []
     functions_tested: list[str] = []
     
-    # Step 1: Basic execution with exception tracing
+    # Step 1: Execute code as-is and catch type-related exceptions
+    # This finds REAL bugs that occur during normal execution
     runtime_bugs, execution_success, stdout = execute_with_tracing(source_code)
     all_bugs.extend(runtime_bugs)
     
-    # Step 2: Find expected errors (try/except blocks)
-    expected_bugs = find_expected_errors(source_code)
-    all_bugs.extend(expected_bugs)
-    
-    # Step 3: Find unsafe NotRequired access
-    notrequired_bugs = find_notrequired_access(source_code)
-    all_bugs.extend(notrequired_bugs)
-    
-    # Step 4: Run with beartype
+    # Step 2: Run with beartype runtime type checking
+    # This catches violations of type annotations during normal execution
     beartype_bugs = execute_with_beartype(source_code)
     all_bugs.extend(beartype_bugs)
     
-    # Step 5: Extract signatures and run Hypothesis tests
+    # Step 3: Run Hypothesis tests with VALID inputs
+    # Hypothesis generates valid inputs matching type annotations
     signatures = extract_signatures(source_code)
     functions_tested = [s.name for s in signatures if not s.is_method]
-    
     hypothesis_bugs = run_hypothesis_tests(source_code, signatures)
     all_bugs.extend(hypothesis_bugs)
     
-    # Deduplicate bugs by line
+    # Step 4: Run Pynguin search-based test generation (if available)
+    # Pynguin generates tests that maximize coverage, may find edge cases
+    module_name = filename.replace(".py", "").replace("-", "_")
+    pynguin_bugs = run_pynguin_tests(source_code, module_name)
+    all_bugs.extend(pynguin_bugs)
+    
+    # Deduplicate bugs by (line, type)
     unique_bugs = {}
     for bug in all_bugs:
         key = (bug.line, bug.bug_type)
@@ -622,8 +1216,8 @@ def evaluate_example(
             unique_bugs[key] = bug
     all_bugs = list(unique_bugs.values())
     
-    # Step 6: Evaluate each checker against our findings
-    verdicts = evaluate_checkers(all_bugs, checker_outputs)
+    # Step 5: Evaluate each checker using scope-aware matching
+    verdicts = evaluate_checkers(all_bugs, checker_outputs, source_code)
     
     return TestResult(
         filename=filename,
@@ -638,21 +1232,35 @@ def evaluate_example(
 def evaluate_checkers(
     bugs: list[TypeBug],
     checker_outputs: dict[str, str],
+    source_code: str = "",
 ) -> dict[str, dict]:
     """
-    Evaluate each type checker against discovered bugs.
+    Evaluate each type checker against discovered bugs using tiered scoring.
     
-    Logic:
-    - If we found proven bugs AND checker said OK → INCORRECT (false negative)
-    - If we found proven bugs AND checker reported errors → CORRECT
-    - If no proven bugs AND checker said OK → UNCERTAIN (might be correct)
-    - If no proven bugs AND checker reported errors → UNCERTAIN (might be false positive)
+    Scoring system:
+    - Exact line match (±5 lines): confidence 1.0
+    - Function-scope match: confidence 0.85
+    - Error-type match with proximity: confidence 0.7
+    
+    Verdicts:
+    - Proven bugs + checker caught them → CORRECT (confidence based on match quality)
+    - Proven bugs + checker missed them → INCORRECT
+    - No bugs + checker OK → UNCERTAIN
+    - No bugs + checker ERROR → UNCERTAIN (possible false positive)
     """
     verdicts = {}
     
-    # Get high-confidence bugs (runtime or beartype)
-    proven_bugs = [b for b in bugs if b.confidence >= 0.9]
+    # Get high-confidence bugs (runtime, beartype, or pynguin)
+    # Only type-checker-relevant errors: TypeError, KeyError, AttributeError
+    TYPE_CHECKER_ERRORS = {'TypeError', 'KeyError', 'AttributeError', 'BeartypeViolation'}
+    proven_bugs = [
+        b for b in bugs 
+        if b.confidence >= 0.9 and b.bug_type in TYPE_CHECKER_ERRORS
+    ]
     has_proven_bugs = len(proven_bugs) > 0
+    
+    # Extract function spans for matching
+    function_spans = extract_function_spans(source_code) if source_code else []
     
     for checker, output in checker_outputs.items():
         # Determine if checker reported any errors
@@ -663,25 +1271,99 @@ def evaluate_checkers(
             "success" not in output_lower
         )
         
-        if has_proven_bugs and not checker_reported_error:
-            # Checker missed proven bugs - DEFINITELY INCORRECT
-            verdicts[checker] = {
-                "verdict": "INCORRECT",
-                "reason": f"Missed {len(proven_bugs)} proven type bug(s)",
-                "confidence": 1.0,
-                "missed_bugs": [
-                    {"line": b.line, "type": b.bug_type, "message": b.message}
-                    for b in proven_bugs
-                ],
-            }
-        elif has_proven_bugs and checker_reported_error:
-            # Checker reported errors and we found bugs - likely CORRECT
-            verdicts[checker] = {
-                "verdict": "CORRECT",
-                "reason": "Correctly identified type issues",
-                "confidence": 0.9,
-            }
-        elif not has_proven_bugs and not checker_reported_error:
+        if has_proven_bugs:
+            # Use tiered scoring to evaluate checker matches
+            bugs_caught: list[tuple[TypeBug, MatchResult]] = []
+            bugs_missed: list[TypeBug] = []
+            
+            for bug in proven_bugs:
+                match_result = checker_matches_bug(bug, output, function_spans)
+                
+                if match_result.matched:
+                    bugs_caught.append((bug, match_result))
+                else:
+                    # No scope-aware match found - checker missed this bug
+                    # Note: We don't use "error_type_only" fallback because
+                    # flagging TypeError somewhere doesn't mean catching a 
+                    # specific TypeError bug in a different function
+                    bugs_missed.append(bug)
+            
+            if bugs_missed and not bugs_caught:
+                # Checker missed all proven bugs
+                verdicts[checker] = {
+                    "verdict": "INCORRECT",
+                    "reason": f"Missed {len(bugs_missed)} proven type bug(s)",
+                    "confidence": 1.0,
+                    "missed_bugs": [
+                        {"line": b.line, "type": b.bug_type, "message": b.message}
+                        for b in bugs_missed
+                    ],
+                    "matching_method": "none",
+                }
+            elif bugs_caught:
+                # Checker caught at least some bugs - calculate aggregate score
+                avg_match_confidence = sum(m.confidence for _, m in bugs_caught) / len(bugs_caught)
+                best_method = max(bugs_caught, key=lambda x: x[1].confidence)[1].method
+                
+                if bugs_missed:
+                    verdicts[checker] = {
+                        "verdict": "INCORRECT",
+                        "reason": f"Caught {len(bugs_caught)} but missed {len(bugs_missed)} bug(s)",
+                        "confidence": 0.85,
+                        "bugs_caught": [
+                            {
+                                "line": b.line, 
+                                "type": b.bug_type, 
+                                "match_method": m.method,
+                                "match_confidence": m.confidence,
+                                "matched_line": m.matched_line,
+                            }
+                            for b, m in bugs_caught
+                        ],
+                        "bugs_missed": [
+                            {"line": b.line, "type": b.bug_type, "message": b.message}
+                            for b in bugs_missed
+                        ],
+                        "matching_method": best_method,
+                    }
+                else:
+                    verdicts[checker] = {
+                        "verdict": "CORRECT",
+                        "reason": f"Correctly identified {len(bugs_caught)} type issue(s)",
+                        "confidence": avg_match_confidence,
+                        "bugs_caught": [
+                            {
+                                "line": b.line, 
+                                "type": b.bug_type, 
+                                "match_method": m.method,
+                                "match_confidence": m.confidence,
+                                "matched_line": m.matched_line,
+                            }
+                            for b, m in bugs_caught
+                        ],
+                        "matching_method": best_method,
+                    }
+            else:
+                # No function spans and no matches - fallback
+                if not checker_reported_error:
+                    verdicts[checker] = {
+                        "verdict": "INCORRECT",
+                        "reason": f"Missed {len(proven_bugs)} proven type bug(s)",
+                        "confidence": 1.0,
+                        "missed_bugs": [
+                            {"line": b.line, "type": b.bug_type, "message": b.message}
+                            for b in proven_bugs
+                        ],
+                        "matching_method": "fallback",
+                    }
+                else:
+                    verdicts[checker] = {
+                        "verdict": "UNCERTAIN",
+                        "reason": "Checker reported errors but no specific match to proven bugs",
+                        "confidence": 0.5,
+                        "matching_method": "fallback",
+                    }
+        elif not checker_reported_error:
             # No bugs found, checker agrees - UNCERTAIN but likely correct
             verdicts[checker] = {
                 "verdict": "UNCERTAIN",

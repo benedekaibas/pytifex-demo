@@ -1,0 +1,457 @@
+{
+  "method": "comprehensive_tiered",
+  "tier_distribution": {
+    "1": 3,
+    "2": 1,
+    "3": 1,
+    "4": 4
+  },
+  "summary": {
+    "mypy": {
+      "correct": 3,
+      "incorrect": 2,
+      "uncertain": 4
+    },
+    "pyrefly": {
+      "correct": 1,
+      "incorrect": 3,
+      "uncertain": 5
+    },
+    "zuban": {
+      "correct": 5,
+      "incorrect": 0,
+      "uncertain": 4
+    },
+    "ty": {
+      "correct": 0,
+      "incorrect": 3,
+      "uncertain": 6
+    }
+  },
+  "results": [
+    {
+      "filename": "typeis-variance-divergence-refined.py",
+      "tier_reached": 4,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        }
+      }
+    },
+    {
+      "filename": "typeis-protocol-method.py",
+      "tier_reached": 4,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        }
+      }
+    },
+    {
+      "filename": "typeis-descriptor.py",
+      "tier_reached": 4,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        }
+      }
+    },
+    {
+      "filename": "typeis-decorated-method-refined.py",
+      "tier_reached": 3,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "mypy",
+          "pep": 484,
+          "rule": "Argument type must match parameter annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "mypy",
+          "pep": 484,
+          "rule": "Return value must match return type annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "Return value must match return type annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 647,
+          "rule": "TypeGuard function must accept at least one positional argument (PEP 647)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "mypy",
+          "pep": 742,
+          "rule": "TypeIs function must accept at least one positional argument (PEP 742)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "zuban",
+          "pep": 742,
+          "rule": "TypeIs function must accept at least one positional argument (PEP 742)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Follows PEP specifications (3 checks)",
+          "confidence": 0.75,
+          "tier": 3
+        },
+        "pyrefly": {
+          "verdict": "CORRECT",
+          "reason": "Follows PEP specifications (1 checks)",
+          "confidence": 0.75,
+          "tier": 3
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Follows PEP specifications (2 checks)",
+          "confidence": 0.75,
+          "tier": 3
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        }
+      }
+    },
+    {
+      "filename": "typealiastype-method-binding-refined.py",
+      "tier_reached": 2,
+      "tier1_bugs": [],
+      "tier2_bugs": [
+        {
+          "line": 17,
+          "type": "TypeguardViolation",
+          "msg": "Mutation (int instead of str): TypeCheckError: int is not an instance of str"
+        }
+      ],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 17,
+              "type": "TypeguardViolation"
+            }
+          ]
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven bug(s)",
+          "confidence": 0.8,
+          "tier": 2
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        }
+      }
+    },
+    {
+      "filename": "typealiastype-newtype-container.py",
+      "tier_reached": 1,
+      "tier1_bugs": [
+        {
+          "line": 29,
+          "type": "TypeError",
+          "msg": "'typing.TypeAliasType' object is not callable"
+        }
+      ],
+      "tier2_bugs": [],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 29,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 29,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 29,
+              "type": "TypeError"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "filename": "typealiastype-complex-nested-generics.py",
+      "tier_reached": 4,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        }
+      }
+    },
+    {
+      "filename": "callable-union-generic-protocol.py",
+      "tier_reached": 1,
+      "tier1_bugs": [
+        {
+          "line": 40,
+          "type": "TypeError",
+          "msg": "IntConverter.__call__() got an unexpected keyword argument 'kw'"
+        }
+      ],
+      "tier2_bugs": [],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 40,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 40,
+              "type": "TypeError"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "filename": "callable-union-abc-vs-typing.py",
+      "tier_reached": 1,
+      "tier1_bugs": [
+        {
+          "line": 33,
+          "type": "TypeError",
+          "msg": "specific_int_to_str() takes 1 positional argument but 3 were given"
+        }
+      ],
+      "tier2_bugs": [],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 33,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 33,
+              "type": "TypeError"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,612 @@
+{
+  "method": "comprehensive_tiered",
+  "tier_distribution": {
+    "1": 2,
+    "2": 6,
+    "3": 2,
+    "4": 0
+  },
+  "summary": {
+    "mypy": {
+      "correct": 4,
+      "incorrect": 4,
+      "uncertain": 2
+    },
+    "pyrefly": {
+      "correct": 0,
+      "incorrect": 5,
+      "uncertain": 5
+    },
+    "zuban": {
+      "correct": 7,
+      "incorrect": 3,
+      "uncertain": 0
+    },
+    "ty": {
+      "correct": 0,
+      "incorrect": 5,
+      "uncertain": 5
+    }
+  },
+  "results": [
+    {
+      "filename": "newtype-tuple-list-coercion-refined.py",
+      "tier_reached": 2,
+      "tier1_bugs": [],
+      "tier2_bugs": [
+        {
+          "line": 49,
+          "type": "TypeguardViolation",
+          "msg": "Mutation (str instead of list): TypeCheckError: str is not a list"
+        }
+      ],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 49,
+              "type": "TypeguardViolation"
+            }
+          ]
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 49,
+              "type": "TypeguardViolation"
+            }
+          ]
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 49,
+              "type": "TypeguardViolation"
+            }
+          ]
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        }
+      }
+    },
+    {
+      "filename": "tuple-explicit-typevar-divergence.py",
+      "tier_reached": 1,
+      "tier1_bugs": [
+        {
+          "line": 76,
+          "type": "TypeError",
+          "msg": "'function' object is not subscriptable"
+        }
+      ],
+      "tier2_bugs": [],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 76,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 76,
+              "type": "TypeError"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "filename": "typeddict-readonly-generic-field.py",
+      "tier_reached": 2,
+      "tier1_bugs": [],
+      "tier2_bugs": [
+        {
+          "line": 10,
+          "type": "TypeguardViolation",
+          "msg": "Mutation (int instead of str): TypeCheckError: int is not an instance of str"
+        },
+        {
+          "line": 14,
+          "type": "TypeguardViolation",
+          "msg": "Mutation (int instead of str): TypeCheckError: int is not an instance of str"
+        },
+        {
+          "line": 19,
+          "type": "TypeguardViolation",
+          "msg": "Mutation (int instead of str): TypeCheckError: int is not an instance of str"
+        }
+      ],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 3 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 10,
+              "type": "TypeguardViolation"
+            },
+            {
+              "line": 14,
+              "type": "TypeguardViolation"
+            },
+            {
+              "line": 19,
+              "type": "TypeguardViolation"
+            }
+          ]
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Caught 3 proven bug(s)",
+          "confidence": 0.8,
+          "tier": 2
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 3 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 10,
+              "type": "TypeguardViolation"
+            },
+            {
+              "line": 14,
+              "type": "TypeguardViolation"
+            },
+            {
+              "line": 19,
+              "type": "TypeguardViolation"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "filename": "match-generic-union-typeguard.py",
+      "tier_reached": 3,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "zuban",
+          "pep": 634,
+          "rule": "Unreachable code after exhaustive match (PEP 634)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Follows PEP specifications (1 checks)",
+          "confidence": 0.75,
+          "tier": 3
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        }
+      }
+    },
+    {
+      "filename": "typeguard-self-protocol-refined.py",
+      "tier_reached": 2,
+      "tier1_bugs": [],
+      "tier2_bugs": [
+        {
+          "line": 21,
+          "type": "TypeguardViolation",
+          "msg": "Mutation (int instead of str): TypeCheckError: int is not an instance of str"
+        },
+        {
+          "line": 22,
+          "type": "TypeguardViolation",
+          "msg": "Mutation (str instead of bool): TypeCheckError: str is not an instance of bool"
+        },
+        {
+          "line": 36,
+          "type": "TypeguardViolation",
+          "msg": "Mutation (str instead of float): TypeCheckError: str is neither float or int"
+        },
+        {
+          "line": 37,
+          "type": "TypeguardViolation",
+          "msg": "Mutation (str instead of int): TypeCheckError: str is not an instance of int"
+        }
+      ],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Caught 4 proven bug(s)",
+          "confidence": 0.8,
+          "tier": 2
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Caught 4 proven bug(s)",
+          "confidence": 0.8,
+          "tier": 2
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 4 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 21,
+              "type": "TypeguardViolation"
+            },
+            {
+              "line": 22,
+              "type": "TypeguardViolation"
+            },
+            {
+              "line": 36,
+              "type": "TypeguardViolation"
+            },
+            {
+              "line": 37,
+              "type": "TypeguardViolation"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "filename": "typeddict-readonly-mutation-refined.py",
+      "tier_reached": 2,
+      "tier1_bugs": [],
+      "tier2_bugs": [
+        {
+          "line": 10,
+          "type": "TypeguardViolation",
+          "msg": "Mutation (int instead of str): TypeCheckError: int is not an instance of str"
+        },
+        {
+          "line": 11,
+          "type": "TypeguardViolation",
+          "msg": "Mutation (str instead of list): TypeCheckError: str is not a list"
+        }
+      ],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Caught 2 proven bug(s)",
+          "confidence": 0.8,
+          "tier": 2
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Caught 2 proven bug(s)",
+          "confidence": 0.8,
+          "tier": 2
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 2 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 10,
+              "type": "TypeguardViolation"
+            },
+            {
+              "line": 11,
+              "type": "TypeguardViolation"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "filename": "newtype-typeguard-unreachable-refined.py",
+      "tier_reached": 2,
+      "tier1_bugs": [],
+      "tier2_bugs": [
+        {
+          "line": 39,
+          "type": "TypeguardViolation",
+          "msg": "Mutation (empty dict (missing required keys)): TypeCheckError: dict is not a tuple"
+        },
+        {
+          "line": 54,
+          "type": "TypeguardViolation",
+          "msg": "Mutation (empty dict (missing required keys)): TypeCheckError: dict is not a tuple"
+        }
+      ],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 2 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 39,
+              "type": "TypeguardViolation"
+            },
+            {
+              "line": 54,
+              "type": "TypeguardViolation"
+            }
+          ]
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 2 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 39,
+              "type": "TypeguardViolation"
+            },
+            {
+              "line": 54,
+              "type": "TypeguardViolation"
+            }
+          ]
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 2 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 39,
+              "type": "TypeguardViolation"
+            },
+            {
+              "line": 54,
+              "type": "TypeguardViolation"
+            }
+          ]
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        }
+      }
+    },
+    {
+      "filename": "type-alias-literal-match-exhaustiveness.py",
+      "tier_reached": 3,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "zuban",
+          "pep": 634,
+          "rule": "Unreachable code after exhaustive match (PEP 634)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Follows PEP specifications (1 checks)",
+          "confidence": 0.75,
+          "tier": 3
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        }
+      }
+    },
+    {
+      "filename": "self-generic-match-type.py",
+      "tier_reached": 1,
+      "tier1_bugs": [
+        {
+          "line": 67,
+          "type": "TypeError",
+          "msg": "type() accepts 0 positional sub-patterns (1 given)"
+        }
+      ],
+      "tier2_bugs": [],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 67,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 67,
+              "type": "TypeError"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "filename": "paramspec-classmethod-typeddict-readonly.py",
+      "tier_reached": 2,
+      "tier1_bugs": [],
+      "tier2_bugs": [
+        {
+          "line": 13,
+          "type": "TypeguardViolation",
+          "msg": "Mutation (int instead of str): TypeCheckError: int is not an instance of str"
+        }
+      ],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 13,
+              "type": "TypeguardViolation"
+            }
+          ]
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 13,
+              "type": "TypeguardViolation"
+            }
+          ]
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 13,
+              "type": "TypeguardViolation"
+            }
+          ]
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        }
+      }
+    }
+  ]
+}

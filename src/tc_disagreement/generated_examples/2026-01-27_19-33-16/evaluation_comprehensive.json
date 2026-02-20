@@ -1,0 +1,706 @@
+{
+  "method": "comprehensive_tiered",
+  "tier_distribution": {
+    "1": 1,
+    "2": 9,
+    "3": 1,
+    "4": 0
+  },
+  "summary": {
+    "mypy": {
+      "correct": 3,
+      "incorrect": 6,
+      "uncertain": 2
+    },
+    "pyrefly": {
+      "correct": 3,
+      "incorrect": 4,
+      "uncertain": 4
+    },
+    "zuban": {
+      "correct": 2,
+      "incorrect": 7,
+      "uncertain": 2
+    },
+    "ty": {
+      "correct": 4,
+      "incorrect": 6,
+      "uncertain": 1
+    }
+  },
+  "results": [
+    {
+      "filename": "literal-str-variable-assignment-divergence.py",
+      "tier_reached": 2,
+      "tier1_bugs": [],
+      "tier2_bugs": [
+        {
+          "line": 14,
+          "type": "TypeguardViolation",
+          "msg": "Mutation (int instead of str): TypeCheckError: int is not an instance of str"
+        },
+        {
+          "line": 21,
+          "type": "TypeguardViolation",
+          "msg": "Mutation (empty dict (missing required keys)): TypeError: unsupported operand type(s) for +: 'NoneType' and 'str'"
+        },
+        {
+          "line": 47,
+          "type": "TypeguardViolation",
+          "msg": "Mutation (int instead of str): TypeCheckError: int is not an instance of str"
+        }
+      ],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven bug(s)",
+          "confidence": 0.8,
+          "tier": 2
+        },
+        "pyrefly": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven bug(s)",
+          "confidence": 0.8,
+          "tier": 2
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven bug(s)",
+          "confidence": 0.8,
+          "tier": 2
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 3 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 14,
+              "type": "TypeguardViolation"
+            },
+            {
+              "line": 21,
+              "type": "TypeguardViolation"
+            },
+            {
+              "line": 47,
+              "type": "TypeguardViolation"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "filename": "typeguard-tvar-refinement.py",
+      "tier_reached": 2,
+      "tier1_bugs": [],
+      "tier2_bugs": [
+        {
+          "line": 23,
+          "type": "TypeguardViolation",
+          "msg": "Mutation (int instead of str): TypeError: unsupported operand type(s) for +: 'NoneType' and 'str'"
+        },
+        {
+          "line": 28,
+          "type": "TypeguardViolation",
+          "msg": "Mutation (empty dict (missing required keys)): NameError: name 'TypeGuard' is not defined"
+        },
+        {
+          "line": 49,
+          "type": "TypeguardViolation",
+          "msg": "Mutation (empty dict (missing required keys)): TypeError: unsupported operand type(s) for +: 'NoneType' and 'str'"
+        }
+      ],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven bug(s)",
+          "confidence": 0.8,
+          "tier": 2
+        },
+        "pyrefly": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven bug(s)",
+          "confidence": 0.8,
+          "tier": 2
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven bug(s)",
+          "confidence": 0.8,
+          "tier": 2
+        },
+        "ty": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven bug(s)",
+          "confidence": 0.8,
+          "tier": 2
+        }
+      }
+    },
+    {
+      "filename": "self-generic-narrowing-with-factory.py",
+      "tier_reached": 2,
+      "tier1_bugs": [],
+      "tier2_bugs": [
+        {
+          "line": 21,
+          "type": "TypeguardViolation",
+          "msg": "Mutation (empty dict (missing required keys)): TypeError: unsupported operand type(s) for +: 'NoneType' and 'str'"
+        }
+      ],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 21,
+              "type": "TypeguardViolation"
+            }
+          ]
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 21,
+              "type": "TypeguardViolation"
+            }
+          ]
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 21,
+              "type": "TypeguardViolation"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "filename": "newtype-dummy-var-comprehension.py",
+      "tier_reached": 2,
+      "tier1_bugs": [],
+      "tier2_bugs": [
+        {
+          "line": 6,
+          "type": "TypeguardViolation",
+          "msg": "Mutation (empty dict (missing required keys)): TypeError: unsupported operand type(s) for +: 'NoneType' and 'str'"
+        }
+      ],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 6,
+              "type": "TypeguardViolation"
+            }
+          ]
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 6,
+              "type": "TypeguardViolation"
+            }
+          ]
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 6,
+              "type": "TypeguardViolation"
+            }
+          ]
+        },
+        "ty": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven bug(s)",
+          "confidence": 0.8,
+          "tier": 2
+        }
+      }
+    },
+    {
+      "filename": "typeddict-total-multi-line-instantiation-ignore.py",
+      "tier_reached": 2,
+      "tier1_bugs": [],
+      "tier2_bugs": [
+        {
+          "line": 4,
+          "type": "TypeguardViolation",
+          "msg": "Mutation (str instead of int): TypeCheckError: str is not an instance of int"
+        },
+        {
+          "line": 5,
+          "type": "TypeguardViolation",
+          "msg": "Mutation (str instead of bool): TypeCheckError: str is not an instance of bool"
+        }
+      ],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 2 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 4,
+              "type": "TypeguardViolation"
+            },
+            {
+              "line": 5,
+              "type": "TypeguardViolation"
+            }
+          ]
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 2 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 4,
+              "type": "TypeguardViolation"
+            },
+            {
+              "line": 5,
+              "type": "TypeguardViolation"
+            }
+          ]
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 2 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 4,
+              "type": "TypeguardViolation"
+            },
+            {
+              "line": 5,
+              "type": "TypeguardViolation"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "filename": "paramspec-dummy-var-return-decorator.py",
+      "tier_reached": 2,
+      "tier1_bugs": [],
+      "tier2_bugs": [
+        {
+          "line": 21,
+          "type": "TypeguardViolation",
+          "msg": "Mutation (str instead of int): TypeError: unsupported operand type(s) for +: 'NoneType' and 'str'"
+        },
+        {
+          "line": 25,
+          "type": "TypeguardViolation",
+          "msg": "Mutation (int instead of str): TypeError: unsupported operand type(s) for +: 'NoneType' and 'str'"
+        }
+      ],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 2 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 21,
+              "type": "TypeguardViolation"
+            },
+            {
+              "line": 25,
+              "type": "TypeguardViolation"
+            }
+          ]
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 2 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 21,
+              "type": "TypeguardViolation"
+            },
+            {
+              "line": 25,
+              "type": "TypeguardViolation"
+            }
+          ]
+        },
+        "ty": {
+          "verdict": "CORRECT",
+          "reason": "Caught 2 proven bug(s)",
+          "confidence": 0.8,
+          "tier": 2
+        }
+      }
+    },
+    {
+      "filename": "typeguard-typeddict-soundness.py",
+      "tier_reached": 1,
+      "tier1_bugs": [
+        {
+          "line": 37,
+          "type": "KeyError",
+          "msg": "KeyError: 'value'"
+        }
+      ],
+      "tier2_bugs": [],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 37,
+              "type": "KeyError"
+            }
+          ]
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 37,
+              "type": "KeyError"
+            }
+          ]
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 37,
+              "type": "KeyError"
+            }
+          ]
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 37,
+              "type": "KeyError"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "filename": "self-generic-dummy-var-abstract-method.py",
+      "tier_reached": 2,
+      "tier1_bugs": [],
+      "tier2_bugs": [
+        {
+          "line": 20,
+          "type": "TypeguardViolation",
+          "msg": "Mutation (int instead of str): TypeError: unsupported operand type(s) for +: 'NoneType' and 'str'"
+        },
+        {
+          "line": 37,
+          "type": "TypeguardViolation",
+          "msg": "Mutation (empty dict (missing required keys)): TypeError: unsupported operand type(s) for +: 'NoneType' and 'str'"
+        }
+      ],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven bug(s)",
+          "confidence": 0.8,
+          "tier": 2
+        },
+        "pyrefly": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven bug(s)",
+          "confidence": 0.8,
+          "tier": 2
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 2 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 20,
+              "type": "TypeguardViolation"
+            },
+            {
+              "line": 37,
+              "type": "TypeguardViolation"
+            }
+          ]
+        },
+        "ty": {
+          "verdict": "CORRECT",
+          "reason": "Caught 2 proven bug(s)",
+          "confidence": 0.8,
+          "tier": 2
+        }
+      }
+    },
+    {
+      "filename": "newtype-nested-multi-line-ignore.py",
+      "tier_reached": 3,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "ty",
+          "pep": 484,
+          "rule": "float is a valid base for NewType (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "ok",
+          "is_correct": false,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Violates PEP specifications (1 violations)",
+          "confidence": 0.8,
+          "tier": 3,
+          "pep_findings": [
+            {
+              "checker": "ty",
+              "pep": 484,
+              "rule": "float is a valid base for NewType (PEP 484)",
+              "checker_behavior": "error",
+              "correct_behavior": "ok",
+              "is_correct": false,
+              "confidence": 0.85
+            }
+          ]
+        }
+      }
+    },
+    {
+      "filename": "typeddict-total-union-field-narrowing.py",
+      "tier_reached": 2,
+      "tier1_bugs": [],
+      "tier2_bugs": [
+        {
+          "line": 4,
+          "type": "TypeguardViolation",
+          "msg": "Mutation (int instead of str): TypeCheckError: int is not an instance of str"
+        },
+        {
+          "line": 9,
+          "type": "TypeguardViolation",
+          "msg": "Mutation (empty dict (missing required keys)): TypeError: unsupported operand type(s) for +: 'NoneType' and 'str'"
+        }
+      ],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 2 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 4,
+              "type": "TypeguardViolation"
+            },
+            {
+              "line": 9,
+              "type": "TypeguardViolation"
+            }
+          ]
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 2 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 4,
+              "type": "TypeguardViolation"
+            },
+            {
+              "line": 9,
+              "type": "TypeguardViolation"
+            }
+          ]
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 2 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 4,
+              "type": "TypeguardViolation"
+            },
+            {
+              "line": 9,
+              "type": "TypeguardViolation"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "filename": "self-mutation-divergence-refined.py",
+      "tier_reached": 2,
+      "tier1_bugs": [],
+      "tier2_bugs": [
+        {
+          "line": 52,
+          "type": "TypeguardViolation",
+          "msg": "Mutation (str instead of int): TypeCheckError: str is not an instance of int"
+        },
+        {
+          "line": 72,
+          "type": "TypeguardViolation",
+          "msg": "Mutation (int instead of str): TypeCheckError: int is not an instance of str"
+        }
+      ],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 2 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 52,
+              "type": "TypeguardViolation"
+            },
+            {
+              "line": 72,
+              "type": "TypeguardViolation"
+            }
+          ]
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 2 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 52,
+              "type": "TypeguardViolation"
+            },
+            {
+              "line": 72,
+              "type": "TypeguardViolation"
+            }
+          ]
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        }
+      }
+    }
+  ]
+}

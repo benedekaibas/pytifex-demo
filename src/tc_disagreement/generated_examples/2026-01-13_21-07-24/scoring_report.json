@@ -1,0 +1,367 @@
+{
+  "method": "pytifex_scoring_framework",
+  "tier_weights": {
+    "1": 1.0,
+    "2": 0.9,
+    "3": 0.75
+  },
+  "files_evaluated": 10,
+  "detection_matrix": [
+    {
+      "filename": "param-spec-decorator-classmethod-order.py",
+      "proven_bugs": {
+        "t1": true,
+        "t2": false,
+        "t3": false
+      },
+      "checker_detections": {
+        "mypy": {
+          "t1": 0,
+          "t2": -1,
+          "t3": -1
+        },
+        "pyrefly": {
+          "t1": 0,
+          "t2": -1,
+          "t3": -1
+        },
+        "zuban": {
+          "t1": 0,
+          "t2": -1,
+          "t3": -1
+        },
+        "ty": {
+          "t1": 1,
+          "t2": -1,
+          "t3": -1
+        }
+      }
+    },
+    {
+      "filename": "protocol-default-call-mismatch.py",
+      "proven_bugs": {
+        "t1": true,
+        "t2": false,
+        "t3": false
+      },
+      "checker_detections": {
+        "mypy": {
+          "t1": 1,
+          "t2": -1,
+          "t3": -1
+        },
+        "pyrefly": {
+          "t1": 1,
+          "t2": -1,
+          "t3": -1
+        },
+        "zuban": {
+          "t1": 1,
+          "t2": -1,
+          "t3": -1
+        },
+        "ty": {
+          "t1": 1,
+          "t2": -1,
+          "t3": -1
+        }
+      }
+    },
+    {
+      "filename": "final-attribute-property-override.py",
+      "proven_bugs": {
+        "t1": false,
+        "t2": true,
+        "t3": false
+      },
+      "checker_detections": {
+        "mypy": {
+          "t1": -1,
+          "t2": 1,
+          "t3": -1
+        },
+        "pyrefly": {
+          "t1": -1,
+          "t2": 1,
+          "t3": -1
+        },
+        "zuban": {
+          "t1": -1,
+          "t2": 1,
+          "t3": -1
+        },
+        "ty": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        }
+      }
+    },
+    {
+      "filename": "keyword-vs-positional-protocol.py",
+      "proven_bugs": {
+        "t1": true,
+        "t2": false,
+        "t3": false
+      },
+      "checker_detections": {
+        "mypy": {
+          "t1": 1,
+          "t2": -1,
+          "t3": -1
+        },
+        "pyrefly": {
+          "t1": 1,
+          "t2": -1,
+          "t3": -1
+        },
+        "zuban": {
+          "t1": 1,
+          "t2": -1,
+          "t3": -1
+        },
+        "ty": {
+          "t1": 1,
+          "t2": -1,
+          "t3": -1
+        }
+      }
+    },
+    {
+      "filename": "typed-dict-total-sticky-required.py",
+      "proven_bugs": {
+        "t1": false,
+        "t2": true,
+        "t3": false
+      },
+      "checker_detections": {
+        "mypy": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        },
+        "pyrefly": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        },
+        "zuban": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        },
+        "ty": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        }
+      }
+    },
+    {
+      "filename": "newtype-list-covariance.py",
+      "proven_bugs": {
+        "t1": false,
+        "t2": true,
+        "t3": false
+      },
+      "checker_detections": {
+        "mypy": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        },
+        "pyrefly": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        },
+        "zuban": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        },
+        "ty": {
+          "t1": -1,
+          "t2": 1,
+          "t3": -1
+        }
+      }
+    },
+    {
+      "filename": "self-generic-abstract-inference.py",
+      "proven_bugs": {
+        "t1": true,
+        "t2": false,
+        "t3": false
+      },
+      "checker_detections": {
+        "mypy": {
+          "t1": 1,
+          "t2": -1,
+          "t3": -1
+        },
+        "pyrefly": {
+          "t1": 1,
+          "t2": -1,
+          "t3": -1
+        },
+        "zuban": {
+          "t1": 1,
+          "t2": -1,
+          "t3": -1
+        },
+        "ty": {
+          "t1": 0,
+          "t2": -1,
+          "t3": -1
+        }
+      }
+    },
+    {
+      "filename": "typeguard-generic-list-narrowing.py",
+      "proven_bugs": {
+        "t1": false,
+        "t2": true,
+        "t3": false
+      },
+      "checker_detections": {
+        "mypy": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        },
+        "pyrefly": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        },
+        "zuban": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        },
+        "ty": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        }
+      }
+    },
+    {
+      "filename": "bounded-typevar-nested-protocol.py",
+      "proven_bugs": {
+        "t1": true,
+        "t2": false,
+        "t3": false
+      },
+      "checker_detections": {
+        "mypy": {
+          "t1": 1,
+          "t2": -1,
+          "t3": -1
+        },
+        "pyrefly": {
+          "t1": 1,
+          "t2": -1,
+          "t3": -1
+        },
+        "zuban": {
+          "t1": 1,
+          "t2": -1,
+          "t3": -1
+        },
+        "ty": {
+          "t1": 1,
+          "t2": -1,
+          "t3": -1
+        }
+      }
+    },
+    {
+      "filename": "overload-literal-resolution.py",
+      "proven_bugs": {
+        "t1": false,
+        "t2": true,
+        "t3": false
+      },
+      "checker_detections": {
+        "mypy": {
+          "t1": -1,
+          "t2": 1,
+          "t3": -1
+        },
+        "pyrefly": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        },
+        "zuban": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        },
+        "ty": {
+          "t1": -1,
+          "t2": 0,
+          "t3": -1
+        }
+      }
+    }
+  ],
+  "metrics": {
+    "mypy": {
+      "tier1_detection_rate": 0.8,
+      "tier2_detection_rate": 0.4,
+      "tier3_detection_rate": 0.0,
+      "true_positives": 8,
+      "false_positives": 0,
+      "false_negatives": 2,
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1": 0.888888888888889,
+      "weighted_score": 1.1600000000000001
+    },
+    "pyrefly": {
+      "tier1_detection_rate": 0.8,
+      "tier2_detection_rate": 0.2,
+      "tier3_detection_rate": 0.0,
+      "true_positives": 7,
+      "false_positives": 0,
+      "false_negatives": 3,
+      "precision": 1.0,
+      "recall": 0.7,
+      "f1": 0.8235294117647058,
+      "weighted_score": 0.9800000000000001
+    },
+    "zuban": {
+      "tier1_detection_rate": 0.8,
+      "tier2_detection_rate": 0.2,
+      "tier3_detection_rate": 0.0,
+      "true_positives": 7,
+      "false_positives": 0,
+      "false_negatives": 3,
+      "precision": 1.0,
+      "recall": 0.7,
+      "f1": 0.8235294117647058,
+      "weighted_score": 0.9800000000000001
+    },
+    "ty": {
+      "tier1_detection_rate": 0.8,
+      "tier2_detection_rate": 0.2,
+      "tier3_detection_rate": 0.0,
+      "true_positives": 6,
+      "false_positives": 0,
+      "false_negatives": 4,
+      "precision": 1.0,
+      "recall": 0.6,
+      "f1": 0.7499999999999999,
+      "weighted_score": 0.9800000000000001
+    }
+  },
+  "ranking": [
+    "mypy",
+    "pyrefly",
+    "zuban",
+    "ty"
+  ]
+}

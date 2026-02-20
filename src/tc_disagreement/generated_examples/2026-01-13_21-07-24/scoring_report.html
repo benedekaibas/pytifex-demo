@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Pytifex Scoring Report</title>
+<style>
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #0d1117; color: #e6edf3; padding: 40px; }
+  h1 { color: #58a6ff; font-size: 1.6em; }
+  h2 { color: #79c0ff; font-size: 1.2em; margin-top: 40px; }
+  table { border-collapse: collapse; margin: 16px 0; font-size: 0.85em; }
+  th, td { border: 1px solid #30363d; padding: 8px 14px; text-align: center; }
+  th { background: #161b22; color: #79c0ff; font-weight: 600; }
+  td { background: #0d1117; }
+  .yes { color: #3fb950; font-weight: bold; }
+  .no { color: #f85149; font-weight: bold; }
+  .na { color: #484f58; }
+  .section { margin-top: 50px; border-top: 1px solid #30363d; padding-top: 20px; }
+  .checker-header { background: #1c2333; }
+  .metric-good { color: #3fb950; }
+  .metric-mid { color: #d29922; }
+  .metric-bad { color: #f85149; }
+  .formula { background: #161b22; border: 1px solid #30363d; padding: 12px 20px; border-radius: 6px; margin: 10px 0; font-family: monospace; color: #e6edf3; font-size: 0.9em; }
+  .note { color: #8b949e; font-size: 0.85em; margin-top: 6px; }
+</style>
+</head>
+<body>
+
+<h1>Pytifex Scoring Report</h1>
+<p class="note">Generated from real evaluation data. Files evaluated: 10</p>
+
+<h2>Table 1: Per-File Detection Matrix</h2>
+<p>For each file and tier: does a proven bug exist, and did each checker catch it?</p>
+<table>
+<thead>
+<tr><th rowspan="2">File</th><th colspan="3">Proven Bugs</th><th colspan="3" class="checker-header">mypy</th><th colspan="3" class="checker-header">pyrefly</th><th colspan="3" class="checker-header">zuban</th><th colspan="3" class="checker-header">ty</th></tr>
+<tr><th>T1</th><th>T2</th><th>T3</th><th>T1</th><th>T2</th><th>T3</th><th>T1</th><th>T2</th><th>T3</th><th>T1</th><th>T2</th><th>T3</th><th>T1</th><th>T2</th><th>T3</th></tr>
+</thead>
+<tbody><tr><td style="text-align:left;">param-spec-decorator-classmethod-order.py</td><td class="yes">✓</td><td class="na">—</td><td class="na">—</td><td class="no">0</td><td class="na">—</td><td class="na">—</td><td class="no">0</td><td class="na">—</td><td class="na">—</td><td class="no">0</td><td class="na">—</td><td class="na">—</td><td class="yes">1</td><td class="na">—</td><td class="na">—</td></tr>
+<tr><td style="text-align:left;">protocol-default-call-mismatch.py</td><td class="yes">✓</td><td class="na">—</td><td class="na">—</td><td class="yes">1</td><td class="na">—</td><td class="na">—</td><td class="yes">1</td><td class="na">—</td><td class="na">—</td><td class="yes">1</td><td class="na">—</td><td class="na">—</td><td class="yes">1</td><td class="na">—</td><td class="na">—</td></tr>
+<tr><td style="text-align:left;">final-attribute-property-override.py</td><td class="na">—</td><td class="yes">✓</td><td class="na">—</td><td class="na">—</td><td class="yes">1</td><td class="na">—</td><td class="na">—</td><td class="yes">1</td><td class="na">—</td><td class="na">—</td><td class="yes">1</td><td class="na">—</td><td class="na">—</td><td class="no">0</td><td class="na">—</td></tr>
+<tr><td style="text-align:left;">keyword-vs-positional-protocol.py</td><td class="yes">✓</td><td class="na">—</td><td class="na">—</td><td class="yes">1</td><td class="na">—</td><td class="na">—</td><td class="yes">1</td><td class="na">—</td><td class="na">—</td><td class="yes">1</td><td class="na">—</td><td class="na">—</td><td class="yes">1</td><td class="na">—</td><td class="na">—</td></tr>
+<tr><td style="text-align:left;">typed-dict-total-sticky-required.py</td><td class="na">—</td><td class="yes">✓</td><td class="na">—</td><td class="na">—</td><td class="no">0</td><td class="na">—</td><td class="na">—</td><td class="no">0</td><td class="na">—</td><td class="na">—</td><td class="no">0</td><td class="na">—</td><td class="na">—</td><td class="no">0</td><td class="na">—</td></tr>
+<tr><td style="text-align:left;">newtype-list-covariance.py</td><td class="na">—</td><td class="yes">✓</td><td class="na">—</td><td class="na">—</td><td class="no">0</td><td class="na">—</td><td class="na">—</td><td class="no">0</td><td class="na">—</td><td class="na">—</td><td class="no">0</td><td class="na">—</td><td class="na">—</td><td class="yes">1</td><td class="na">—</td></tr>
+<tr><td style="text-align:left;">self-generic-abstract-inference.py</td><td class="yes">✓</td><td class="na">—</td><td class="na">—</td><td class="yes">1</td><td class="na">—</td><td class="na">—</td><td class="yes">1</td><td class="na">—</td><td class="na">—</td><td class="yes">1</td><td class="na">—</td><td class="na">—</td><td class="no">0</td><td class="na">—</td><td class="na">—</td></tr>
+<tr><td style="text-align:left;">typeguard-generic-list-narrowing.py</td><td class="na">—</td><td class="yes">✓</td><td class="na">—</td><td class="na">—</td><td class="no">0</td><td class="na">—</td><td class="na">—</td><td class="no">0</td><td class="na">—</td><td class="na">—</td><td class="no">0</td><td class="na">—</td><td class="na">—</td><td class="no">0</td><td class="na">—</td></tr>
+<tr><td style="text-align:left;">bounded-typevar-nested-protocol.py</td><td class="yes">✓</td><td class="na">—</td><td class="na">—</td><td class="yes">1</td><td class="na">—</td><td class="na">—</td><td class="yes">1</td><td class="na">—</td><td class="na">—</td><td class="yes">1</td><td class="na">—</td><td class="na">—</td><td class="yes">1</td><td class="na">—</td><td class="na">—</td></tr>
+<tr><td style="text-align:left;">overload-literal-resolution.py</td><td class="na">—</td><td class="yes">✓</td><td class="na">—</td><td class="na">—</td><td class="yes">1</td><td class="na">—</td><td class="na">—</td><td class="no">0</td><td class="na">—</td><td class="na">—</td><td class="no">0</td><td class="na">—</td><td class="na">—</td><td class="no">0</td><td class="na">—</td></tr>
+</tbody>
+</table>
+
+<div class="section">
+<h2>Table 2: Detection Rate Per Tier</h2>
+<div class="formula">Detection Rate = files where checker caught tier bug / files that have a tier bug</div>
+<table>
+<thead><tr><th>Checker</th>
+<th>Tier 1 DR<br><span class="note">5 files</span></th>
+<th>Tier 2 DR<br><span class="note">5 files</span></th>
+<th>Tier 3 DR<br><span class="note">0 files</span></th></tr></thead>
+<tbody><tr><td><b>mypy</b></td><td class="metric-good">0.80</td><td class="metric-bad">0.40</td><td class="metric-bad">0.00</td></tr>
+<tr><td><b>pyrefly</b></td><td class="metric-good">0.80</td><td class="metric-bad">0.20</td><td class="metric-bad">0.00</td></tr>
+<tr><td><b>zuban</b></td><td class="metric-good">0.80</td><td class="metric-bad">0.20</td><td class="metric-bad">0.00</td></tr>
+<tr><td><b>ty</b></td><td class="metric-good">0.80</td><td class="metric-bad">0.20</td><td class="metric-bad">0.00</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="section">
+<h2>Table 3: Precision, Recall, F1</h2>
+<div class="formula">Precision = TP / (TP + FP)&nbsp;&nbsp;&nbsp;Recall = TP / (TP + FN)&nbsp;&nbsp;&nbsp;F1 = 2 * P * R / (P + R)</div>
+<table>
+<thead><tr><th>Checker</th><th>TP</th><th>FP</th><th>FN</th><th>Precision</th><th>Recall</th><th>F1</th></tr></thead>
+<tbody><tr><td><b>mypy</b></td><td>8</td><td>0</td><td>2</td><td class="metric-good">1.00</td><td class="metric-good">0.80</td><td class="metric-good">0.89</td></tr>
+<tr><td><b>pyrefly</b></td><td>7</td><td>0</td><td>3</td><td class="metric-good">1.00</td><td class="metric-mid">0.70</td><td class="metric-good">0.82</td></tr>
+<tr><td><b>zuban</b></td><td>7</td><td>0</td><td>3</td><td class="metric-good">1.00</td><td class="metric-mid">0.70</td><td class="metric-good">0.82</td></tr>
+<tr><td><b>ty</b></td><td>6</td><td>0</td><td>4</td><td class="metric-good">1.00</td><td class="metric-mid">0.60</td><td class="metric-mid">0.75</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="section">
+<h2>Table 4: Weighted Score</h2>
+<div class="formula">Score = (1.00 × T1 DR) + (0.90 × T2 DR) + (0.75 × T3 DR)</div>
+<table>
+<thead><tr><th>Checker</th>
+<th>T1 DR<br><span class="note">w=1.00</span></th>
+<th>T2 DR<br><span class="note">w=0.90</span></th>
+<th>T3 DR<br><span class="note">w=0.75</span></th>
+<th>Weighted Score</th><th>Rank</th></tr></thead>
+<tbody><tr><td><b>mypy</b></td><td>0.80</td><td>0.40</td><td>0.00</td><td class="metric-bad">1.16</td><td>🥇 #1</td></tr>
+<tr><td><b>pyrefly</b></td><td>0.80</td><td>0.20</td><td>0.00</td><td class="metric-bad">0.98</td><td>🥈 #2</td></tr>
+<tr><td><b>zuban</b></td><td>0.80</td><td>0.20</td><td>0.00</td><td class="metric-bad">0.98</td><td>🥉 #3</td></tr>
+<tr><td><b>ty</b></td><td>0.80</td><td>0.20</td><td>0.00</td><td class="metric-bad">0.98</td><td> #4</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="section">
+<h2>Table 5: Combined Summary</h2>
+<table>
+<thead><tr><th>Checker</th><th>Precision</th><th>Recall</th><th>F1</th><th>T1 DR</th><th>T2 DR</th><th>T3 DR</th><th>Weighted Score</th><th>Rank</th></tr></thead>
+<tbody><tr><td><b>mypy</b></td><td class="metric-good">1.00</td><td class="metric-good">0.80</td><td class="metric-good">0.89</td><td>0.80</td><td>0.40</td><td>0.00</td><td class="metric-bad">1.16</td><td>🥇 #1</td></tr>
+<tr><td><b>pyrefly</b></td><td class="metric-good">1.00</td><td class="metric-mid">0.70</td><td class="metric-good">0.82</td><td>0.80</td><td>0.20</td><td>0.00</td><td class="metric-bad">0.98</td><td>🥈 #2</td></tr>
+<tr><td><b>zuban</b></td><td class="metric-good">1.00</td><td class="metric-mid">0.70</td><td class="metric-good">0.82</td><td>0.80</td><td>0.20</td><td>0.00</td><td class="metric-bad">0.98</td><td>🥉 #3</td></tr>
+<tr><td><b>ty</b></td><td class="metric-good">1.00</td><td class="metric-mid">0.60</td><td class="metric-mid">0.75</td><td>0.80</td><td>0.20</td><td>0.00</td><td class="metric-bad">0.98</td><td> #4</td></tr>
+</tbody>
+</table>
+</div>
+
+</body>
+</html>

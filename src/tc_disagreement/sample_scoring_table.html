@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Pytifex Scoring Framework — Sample Table</title>
+<style>
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #0d1117; color: #e6edf3; padding: 40px; }
+  h1 { color: #58a6ff; font-size: 1.6em; }
+  h2 { color: #79c0ff; font-size: 1.2em; margin-top: 40px; }
+  h3 { color: #d2a8ff; font-size: 1.0em; margin-top: 30px; }
+  table { border-collapse: collapse; margin: 16px 0; font-size: 0.85em; }
+  th, td { border: 1px solid #30363d; padding: 8px 14px; text-align: center; }
+  th { background: #161b22; color: #79c0ff; font-weight: 600; }
+  td { background: #0d1117; }
+  .yes { color: #3fb950; font-weight: bold; }
+  .no { color: #f85149; font-weight: bold; }
+  .na { color: #484f58; }
+  .section { margin-top: 50px; border-top: 1px solid #30363d; padding-top: 20px; }
+  .highlight { background: #161b22; }
+  .formula { background: #161b22; border: 1px solid #30363d; padding: 12px 20px; border-radius: 6px; margin: 10px 0; font-family: monospace; color: #e6edf3; font-size: 0.9em; }
+  .note { color: #8b949e; font-size: 0.85em; margin-top: 6px; }
+  .checker-header { background: #1c2333; }
+  .metric-good { color: #3fb950; }
+  .metric-mid { color: #d29922; }
+  .metric-bad { color: #f85149; }
+</style>
+</head>
+<body>
+
+<h1>Pytifex Scoring Framework — Sample Data</h1>
+<p class="note">This table uses fabricated example data to illustrate the scoring methodology.</p>
+
+<!-- ============================================================ -->
+<h2>Table 1: Per-File Detection Matrix</h2>
+<p>For each file and tier: does a proven bug exist (Bug?), and did each checker catch it (1 = caught, 0 = missed, — = no bug at this tier)?</p>
+
+<table>
+  <thead>
+    <tr>
+      <th rowspan="2">File</th>
+      <th colspan="3">Proven Bugs</th>
+      <th colspan="3" class="checker-header">mypy</th>
+      <th colspan="3" class="checker-header">pyrefly</th>
+      <th colspan="3" class="checker-header">zuban</th>
+      <th colspan="3" class="checker-header">ty</th>
+    </tr>
+    <tr>
+      <th>T1</th><th>T2</th><th>T3</th>
+      <th>T1</th><th>T2</th><th>T3</th>
+      <th>T1</th><th>T2</th><th>T3</th>
+      <th>T1</th><th>T2</th><th>T3</th>
+      <th>T1</th><th>T2</th><th>T3</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align:left;">literal-str-assignment.py</td>
+      <td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td>
+      <td class="na">—</td><td class="yes">1</td><td class="yes">1</td>
+      <td class="na">—</td><td class="yes">1</td><td class="yes">1</td>
+      <td class="na">—</td><td class="yes">1</td><td class="no">0</td>
+      <td class="na">—</td><td class="no">0</td><td class="no">0</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;">typeguard-soundness.py</td>
+      <td class="yes">✓</td><td class="yes">✓</td><td class="no">—</td>
+      <td class="yes">1</td><td class="yes">1</td><td class="na">—</td>
+      <td class="yes">1</td><td class="no">0</td><td class="na">—</td>
+      <td class="yes">1</td><td class="yes">1</td><td class="na">—</td>
+      <td class="no">0</td><td class="no">0</td><td class="na">—</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;">newtype-comprehension.py</td>
+      <td class="no">—</td><td class="yes">✓</td><td class="no">—</td>
+      <td class="na">—</td><td class="no">0</td><td class="na">—</td>
+      <td class="na">—</td><td class="no">0</td><td class="na">—</td>
+      <td class="na">—</td><td class="no">0</td><td class="na">—</td>
+      <td class="na">—</td><td class="yes">1</td><td class="na">—</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;">protocol-mismatch.py</td>
+      <td class="yes">✓</td><td class="no">—</td><td class="no">—</td>
+      <td class="yes">1</td><td class="na">—</td><td class="na">—</td>
+      <td class="yes">1</td><td class="na">—</td><td class="na">—</td>
+      <td class="yes">1</td><td class="na">—</td><td class="na">—</td>
+      <td class="yes">1</td><td class="na">—</td><td class="na">—</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;">typeddict-missing-key.py</td>
+      <td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td>
+      <td class="yes">1</td><td class="yes">1</td><td class="yes">1</td>
+      <td class="no">0</td><td class="yes">1</td><td class="no">0</td>
+      <td class="yes">1</td><td class="yes">1</td><td class="yes">1</td>
+      <td class="yes">1</td><td class="no">0</td><td class="no">0</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;">self-generic-abstract.py</td>
+      <td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td>
+      <td class="na">—</td><td class="yes">1</td><td class="yes">1</td>
+      <td class="na">—</td><td class="yes">1</td><td class="yes">1</td>
+      <td class="na">—</td><td class="no">0</td><td class="no">0</td>
+      <td class="na">—</td><td class="yes">1</td><td class="yes">1</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;">union-narrowing.py</td>
+      <td class="no">—</td><td class="no">—</td><td class="yes">✓</td>
+      <td class="na">—</td><td class="na">—</td><td class="yes">1</td>
+      <td class="na">—</td><td class="na">—</td><td class="no">0</td>
+      <td class="na">—</td><td class="na">—</td><td class="yes">1</td>
+      <td class="na">—</td><td class="na">—</td><td class="no">0</td>
+    </tr>
+    <tr>
+      <td style="text-align:left;">paramspec-decorator.py</td>
+      <td class="no">—</td><td class="yes">✓</td><td class="no">—</td>
+      <td class="na">—</td><td class="yes">1</td><td class="na">—</td>
+      <td class="na">—</td><td class="no">0</td><td class="na">—</td>
+      <td class="na">—</td><td class="yes">1</td><td class="na">—</td>
+      <td class="na">—</td><td class="yes">1</td><td class="na">—</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ============================================================ -->
+<div class="section">
+<h2>Table 2: Detection Rate Per Tier</h2>
+<p>Out of files that have a proven bug at each tier, what fraction did each checker catch?</p>
+
+<div class="formula">
+Detection Rate (Tier) = files where checker caught the tier bug / files that have a tier bug
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Checker</th>
+      <th>Tier 1 Detection Rate<br><span class="note">3 files have T1 bugs</span></th>
+      <th>Tier 2 Detection Rate<br><span class="note">6 files have T2 bugs</span></th>
+      <th>Tier 3 Detection Rate<br><span class="note">4 files have T3 bugs</span></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><b>mypy</b></td>
+      <td class="metric-good">3/3 = 1.00</td>
+      <td class="metric-good">5/6 = 0.83</td>
+      <td class="metric-good">4/4 = 1.00</td>
+    </tr>
+    <tr>
+      <td><b>pyrefly</b></td>
+      <td class="metric-mid">2/3 = 0.67</td>
+      <td class="metric-mid">3/6 = 0.50</td>
+      <td class="metric-mid">2/4 = 0.50</td>
+    </tr>
+    <tr>
+      <td><b>zuban</b></td>
+      <td class="metric-good">3/3 = 1.00</td>
+      <td class="metric-mid">4/6 = 0.67</td>
+      <td class="metric-mid">3/4 = 0.75</td>
+    </tr>
+    <tr>
+      <td><b>ty</b></td>
+      <td class="metric-mid">2/3 = 0.67</td>
+      <td class="metric-mid">3/6 = 0.50</td>
+      <td class="metric-bad">1/4 = 0.25</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ============================================================ -->
+<div class="section">
+<h2>Table 3: Precision, Recall, F1 Score</h2>
+<p>Treating each file as a binary classification: does the checker correctly identify files with proven bugs?</p>
+
+<div class="formula">
+True Positive  = checker reported error AND proven bug exists<br>
+False Positive = checker reported error BUT no proven bug exists<br>
+False Negative = checker reported nothing BUT proven bug exists<br>
+<br>
+Precision = TP / (TP + FP)<br>
+Recall    = TP / (TP + FN)<br>
+F1        = 2 × Precision × Recall / (Precision + Recall)
+</div>
+
+<p class="note">In this sample data, all 8 files have at least one proven bug across tiers. We assume checkers report errors on the following counts:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Checker</th>
+      <th>Files with errors reported</th>
+      <th>True Positives</th>
+      <th>False Positives</th>
+      <th>False Negatives</th>
+      <th>Precision</th>
+      <th>Recall</th>
+      <th>F1 Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><b>mypy</b></td>
+      <td>7</td>
+      <td>7</td>
+      <td>0</td>
+      <td>1</td>
+      <td class="metric-good">1.00</td>
+      <td class="metric-good">0.88</td>
+      <td class="metric-good">0.93</td>
+    </tr>
+    <tr>
+      <td><b>pyrefly</b></td>
+      <td>6</td>
+      <td>5</td>
+      <td>1</td>
+      <td>3</td>
+      <td class="metric-mid">0.83</td>
+      <td class="metric-mid">0.63</td>
+      <td class="metric-mid">0.71</td>
+    </tr>
+    <tr>
+      <td><b>zuban</b></td>
+      <td>7</td>
+      <td>6</td>
+      <td>1</td>
+      <td>2</td>
+      <td class="metric-good">0.86</td>
+      <td class="metric-mid">0.75</td>
+      <td class="metric-good">0.80</td>
+    </tr>
+    <tr>
+      <td><b>ty</b></td>
+      <td>6</td>
+      <td>5</td>
+      <td>1</td>
+      <td>3</td>
+      <td class="metric-mid">0.83</td>
+      <td class="metric-mid">0.63</td>
+      <td class="metric-mid">0.71</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ============================================================ -->
+<div class="section">
+<h2>Table 4: Weighted Score</h2>
+<p>Tiers are weighted by evidence strength. Tier 1 (runtime crash) is the strongest proof, Tier 3 (PEP pattern match) is the weakest.</p>
+
+<div class="formula">
+Weighted Score = (1.00 × T1 Detection Rate) + (0.90 × T2 Detection Rate) + (0.75 × T3 Detection Rate)
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Checker</th>
+      <th>T1 DR<br><span class="note">weight 1.00</span></th>
+      <th>T2 DR<br><span class="note">weight 0.90</span></th>
+      <th>T3 DR<br><span class="note">weight 0.75</span></th>
+      <th>Weighted Score</th>
+      <th>Rank</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><b>mypy</b></td>
+      <td>1.00</td>
+      <td>0.83</td>
+      <td>1.00</td>
+      <td class="metric-good"><b>2.50</b></td>
+      <td>🥇 1st</td>
+    </tr>
+    <tr>
+      <td><b>zuban</b></td>
+      <td>1.00</td>
+      <td>0.67</td>
+      <td>0.75</td>
+      <td class="metric-good"><b>2.16</b></td>
+      <td>🥈 2nd</td>
+    </tr>
+    <tr>
+      <td><b>pyrefly</b></td>
+      <td>0.67</td>
+      <td>0.50</td>
+      <td>0.50</td>
+      <td class="metric-mid"><b>1.50</b></td>
+      <td>🥉 3rd</td>
+    </tr>
+    <tr>
+      <td><b>ty</b></td>
+      <td>0.67</td>
+      <td>0.50</td>
+      <td>0.25</td>
+      <td class="metric-bad"><b>1.31</b></td>
+      <td>4th</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ============================================================ -->
+<div class="section">
+<h2>Table 5: Combined Summary</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Checker</th>
+      <th>Precision</th>
+      <th>Recall</th>
+      <th>F1</th>
+      <th>T1 DR</th>
+      <th>T2 DR</th>
+      <th>T3 DR</th>
+      <th>Weighted Score</th>
+      <th>Rank</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><b>mypy</b></td>
+      <td class="metric-good">1.00</td>
+      <td class="metric-good">0.88</td>
+      <td class="metric-good">0.93</td>
+      <td class="metric-good">1.00</td>
+      <td class="metric-good">0.83</td>
+      <td class="metric-good">1.00</td>
+      <td class="metric-good"><b>2.50</b></td>
+      <td>🥇</td>
+    </tr>
+    <tr>
+      <td><b>zuban</b></td>
+      <td class="metric-good">0.86</td>
+      <td class="metric-mid">0.75</td>
+      <td class="metric-good">0.80</td>
+      <td class="metric-good">1.00</td>
+      <td class="metric-mid">0.67</td>
+      <td class="metric-mid">0.75</td>
+      <td class="metric-good"><b>2.16</b></td>
+      <td>🥈</td>
+    </tr>
+    <tr>
+      <td><b>pyrefly</b></td>
+      <td class="metric-mid">0.83</td>
+      <td class="metric-mid">0.63</td>
+      <td class="metric-mid">0.71</td>
+      <td class="metric-mid">0.67</td>
+      <td class="metric-mid">0.50</td>
+      <td class="metric-mid">0.50</td>
+      <td class="metric-mid"><b>1.50</b></td>
+      <td>🥉</td>
+    </tr>
+    <tr>
+      <td><b>ty</b></td>
+      <td class="metric-mid">0.83</td>
+      <td class="metric-mid">0.63</td>
+      <td class="metric-mid">0.71</td>
+      <td class="metric-mid">0.67</td>
+      <td class="metric-mid">0.50</td>
+      <td class="metric-bad">0.25</td>
+      <td class="metric-bad"><b>1.31</b></td>
+      <td>4th</td>
+    </tr>
+  </tbody>
+</table>
+
+<p class="note" style="margin-top: 20px;">
+  All data in these tables is fabricated for illustration purposes only.<br>
+  The scoring framework will be applied to real evaluation results from the pytifex pipeline.
+</p>
+</div>
+
+</body>
+</html>

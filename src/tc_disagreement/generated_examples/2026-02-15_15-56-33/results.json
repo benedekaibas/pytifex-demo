@@ -1,0 +1,185 @@
+{
+  "timestamp": "2026-02-15T15:56:33.764811",
+  "model_used": "gemini-2.5-flash",
+  "total_generated": 15,
+  "disagreements_found": 10,
+  "success_rate": "66.7%",
+  "checkers_used": [
+    "mypy",
+    "pyrefly",
+    "zuban",
+    "ty"
+  ],
+  "results": [
+    {
+      "filename": "newtype-tuple-list-coercion-refined.py",
+      "filepath": "generated_examples/2026-02-15_15-56-33/source_files/newtype-tuple-list-coercion-refined.py",
+      "seed_issue": null,
+      "outputs": {
+        "mypy": "Success: no issues found in 1 source file",
+        "pyrefly": "INFO 0 errors",
+        "zuban": "Success: no issues found in 1 source file",
+        "ty": "error[invalid-argument-type]: Argument to bound method `append` is incorrect\n  --> _pytifex_temp_572074.py:32:40\n   |\n30 |             # Some checkers will allow this `append` directly, others will not.\n31 |             # reveal_type(item) # Uncomment to see what individual checkers think 'item' is here.\n32 |             retyped_order_items.append(item) # <--- EXPECTED DIVERGENCE POINT\n   |                                        ^^^^ Expected `OrderItems`, found `tuple[str, ...]`\n33 |         else:\n34 |             # This branch should not be reached if raw_items_list contains only Tuple[str, ...]\n   |\ninfo: Method defined here\n    --> stdlib/builtins.pyi:2816:9\n     |\n2814 |         \"\"\"Return a shallow copy of the list.\"\"\"\n2815 |\n2816 |     def append(self, object: _T, /) -> None:\n     |         ^^^^^^       ---------- Parameter declared here\n2817 |         \"\"\"Append object to the end of the list.\"\"\"\n     |\ninfo: rule `invalid-argument-type` is enabled by default\n\nFound 1 diagnostic"
+      },
+      "statuses": {
+        "mypy": "ok",
+        "pyrefly": "ok",
+        "zuban": "ok",
+        "ty": "error"
+      }
+    },
+    {
+      "filename": "tuple-explicit-typevar-divergence.py",
+      "filepath": "generated_examples/2026-02-15_15-56-33/source_files/tuple-explicit-typevar-divergence.py",
+      "seed_issue": null,
+      "outputs": {
+        "mypy": "_pytifex_temp_572074.py:76: error: Type application is only supported for generic classes  [misc]\nFound 1 error in 1 file (checked 1 source file)",
+        "pyrefly": "INFO 0 errors",
+        "zuban": "_pytifex_temp_572074.py:76: error: Type application is only supported for generic classes  [misc]\nFound 1 error in 1 file (checked 1 source file)",
+        "ty": "error[non-subscriptable]: Cannot subscript object of type `def process_non_empty_tuple[T](data: tuple[T@process_non_empty_tuple, ...]) -> T@process_non_empty_tuple` with no `__getitem__` method\n  --> _pytifex_temp_572074.py:76:29\n   |\n74 |         # that strictly enforce `Tuple[T, ...]` length and type when T is bound.\n75 |         # mypy is expected to flag this, while others might not.\n76 |         result_divergence = process_non_empty_tuple[int](empty_tuple_literal)\n   |                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n77 |         print(f\"Processing empty tuple with non-empty processor (explicit T=int): {result_divergence}\")\n78 |     except IndexError as e:\n   |\ninfo: rule `non-subscriptable` is enabled by default\n\nFound 1 diagnostic"
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "ok",
+        "zuban": "error",
+        "ty": "error"
+      }
+    },
+    {
+      "filename": "typeddict-readonly-generic-field.py",
+      "filepath": "generated_examples/2026-02-15_15-56-33/source_files/typeddict-readonly-generic-field.py",
+      "seed_issue": "https://github.com/microsoft/pyright/issues/11037",
+      "outputs": {
+        "mypy": "Success: no issues found in 1 source file",
+        "pyrefly": "ERROR TypedDict `ConcreteContainer` does not have key `items` [bad-typed-dict-key]\n  --> _pytifex_temp_572074.py:30:18\n   |\n30 |     if container[\"items\"]:\n   |                  ^^^^^^^\n   |\nERROR TypedDict `ConcreteContainer` does not have key `items` [bad-typed-dict-key]\n  --> _pytifex_temp_572074.py:35:22\n   |\n35 |         if container[\"items\"][0] and \"tags\" in container[\"items\"][0]:\n   |                      ^^^^^^^\n   |\nERROR TypedDict `ConcreteContainer` does not have key `items` [bad-typed-dict-key]\n  --> _pytifex_temp_572074.py:35:58\n   |\n35 |         if container[\"items\"][0] and \"tags\" in container[\"items\"][0]:\n   |                                                          ^^^^^^^\n   |\nERROR TypedDict `ConcreteContainer` does not have key `items` [bad-typed-dict-key]\n  --> _pytifex_temp_572074.py:41:18\n   |\n41 |     if container[\"items\"]:\n   |                  ^^^^^^^\n   |\nERROR TypedDict `ConcreteContainer` does not have key `items` [bad-typed-dict-key]\n  --> _pytifex_temp_572074.py:42:19\n   |\n42 |         container[\"items\"][0][\"id\"] = \"modified_id\" # No error expected\n   |                   ^^^^^^^\n   |\nERROR Key `items` is not defined in TypedDict `ConcreteContainer` [bad-typed-dict-key]\n  --> _pytifex_temp_572074.py:48:9\n   |\n48 |         \"items\": [my_item, {\"id\": \"item2\", \"tags\": []}],\n   |         ^^^^^^^\n   |\n INFO 6 errors",
+        "zuban": "_pytifex_temp_572074.py:15: error: ReadOnly[] can be only used in a TypedDict definition  [valid-type]\nFound 1 error in 1 file (checked 1 source file)",
+        "ty": "All checks passed!"
+      },
+      "statuses": {
+        "mypy": "ok",
+        "pyrefly": "error",
+        "zuban": "error",
+        "ty": "ok"
+      }
+    },
+    {
+      "filename": "match-generic-union-typeguard.py",
+      "filepath": "generated_examples/2026-02-15_15-56-33/source_files/match-generic-union-typeguard.py",
+      "seed_issue": "https://github.com/python/mypy/issues/18524",
+      "outputs": {
+        "mypy": "Success: no issues found in 1 source file",
+        "pyrefly": "INFO 0 errors",
+        "zuban": "_pytifex_temp_572074.py:47: error: Statement is unreachable  [unreachable]\nFound 1 error in 1 file (checked 1 source file)",
+        "ty": "All checks passed!"
+      },
+      "statuses": {
+        "mypy": "ok",
+        "pyrefly": "ok",
+        "zuban": "error",
+        "ty": "ok"
+      }
+    },
+    {
+      "filename": "typeguard-self-protocol-refined.py",
+      "filepath": "generated_examples/2026-02-15_15-56-33/source_files/typeguard-self-protocol-refined.py",
+      "seed_issue": null,
+      "outputs": {
+        "mypy": "_pytifex_temp_572074.py:16: error: TypeGuard functions must have a positional argument  [valid-type]\n_pytifex_temp_572074.py:32: error: TypeGuard functions must have a positional argument  [valid-type]\n_pytifex_temp_572074.py:47: error: TypeGuard functions must have a positional argument  [valid-type]\nFound 3 errors in 1 file (checked 1 source file)",
+        "pyrefly": "ERROR Type guard functions must accept at least one positional argument [bad-function-definition]\n  --> _pytifex_temp_572074.py:16:9\n   |\n16 |     def is_valid(self) -> TypeGuard[Self]:\n   |         ^^^^^^^^\n   |\nERROR Type guard functions must accept at least one positional argument [bad-function-definition]\n  --> _pytifex_temp_572074.py:32:9\n   |\n32 |     def is_valid(self) -> TypeGuard[Self]:\n   |         ^^^^^^^^\n   |\nERROR Type guard functions must accept at least one positional argument [bad-function-definition]\n  --> _pytifex_temp_572074.py:47:9\n   |\n47 |     def is_valid(self) -> TypeGuard[Self]:\n   |         ^^^^^^^^\n   |\n INFO 3 errors",
+        "zuban": "_pytifex_temp_572074.py:16: error: TypeGuard functions must have a positional argument  [misc]\n_pytifex_temp_572074.py:32: error: TypeGuard functions must have a positional argument  [misc]\n_pytifex_temp_572074.py:47: error: TypeGuard functions must have a positional argument  [misc]\nFound 3 errors in 1 file (checked 1 source file)",
+        "ty": "All checks passed!"
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "error",
+        "zuban": "error",
+        "ty": "ok"
+      }
+    },
+    {
+      "filename": "typeddict-readonly-mutation-refined.py",
+      "filepath": "generated_examples/2026-02-15_15-56-33/source_files/typeddict-readonly-mutation-refined.py",
+      "seed_issue": null,
+      "outputs": {
+        "mypy": "_pytifex_temp_572074.py:16: error: Overwriting TypedDict field \"settings\" while extending  [misc]\n_pytifex_temp_572074.py:58: error: Argument 1 to \"process_configurable\" has incompatible type \"MyConfig\"; expected \"Configurable\"  [arg-type]\nFound 2 errors in 1 file (checked 1 source file)",
+        "pyrefly": "ERROR TypedDict field `settings` in `MyConfig` cannot be marked read-only; parent TypedDict `Configurable` defines it as mutable [bad-typed-dict-key]\n  --> _pytifex_temp_572074.py:16:5\n   |\n16 |     settings: ReadOnly[List[str]] # Overrides 'settings' to be ReadOnly\n   |     ^^^^^^^^\n   |\nERROR Argument `MyConfig` is not assignable to parameter `cfg` with type `Configurable` in function `process_configurable` [bad-argument-type]\n  --> _pytifex_temp_572074.py:58:26\n   |\n58 |     process_configurable(mc)\n   |                          ^^\n   |\n  Field `settings` is read-write in `Configurable` but is `ReadOnly` in `MyConfig`\n INFO 2 errors",
+        "zuban": "_pytifex_temp_572074.py:16: error: Overwriting TypedDict field \"settings\" while extending  [misc]\n_pytifex_temp_572074.py:58: error: Argument 1 to \"process_configurable\" has incompatible type \"MyConfig\"; expected \"Configurable\"  [arg-type]\nFound 2 errors in 1 file (checked 1 source file)",
+        "ty": "All checks passed!"
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "error",
+        "zuban": "error",
+        "ty": "ok"
+      }
+    },
+    {
+      "filename": "newtype-typeguard-unreachable-refined.py",
+      "filepath": "generated_examples/2026-02-15_15-56-33/source_files/newtype-typeguard-unreachable-refined.py",
+      "seed_issue": null,
+      "outputs": {
+        "mypy": "Success: no issues found in 1 source file",
+        "pyrefly": "INFO 0 errors",
+        "zuban": "Success: no issues found in 1 source file",
+        "ty": "error[invalid-assignment]: Object of type `tuple[Literal[4], Literal[5]]` is not assignable to `IntSequence`\n  --> _pytifex_temp_572074.py:61:28\n   |\n59 |         # of 'value_to_check') to 'IntSequence'.\n60 |         # This is an incompatible assignment because NewType creates a distinct type.\n61 |         divergence_result: IntSequence = value_to_check \n   |                            -----------   ^^^^^^^^^^^^^^ Incompatible value of type `tuple[Literal[4], Literal[5]]`\n   |                            |\n   |                            Declared type\n62 |     else:\n63 |         print(f\"This path is correctly taken for raw tuples: {value_to_check}\")\n   |\ninfo: rule `invalid-assignment` is enabled by default\n\nFound 1 diagnostic"
+      },
+      "statuses": {
+        "mypy": "ok",
+        "pyrefly": "ok",
+        "zuban": "ok",
+        "ty": "error"
+      }
+    },
+    {
+      "filename": "type-alias-literal-match-exhaustiveness.py",
+      "filepath": "generated_examples/2026-02-15_15-56-33/source_files/type-alias-literal-match-exhaustiveness.py",
+      "seed_issue": null,
+      "outputs": {
+        "mypy": "Success: no issues found in 1 source file",
+        "pyrefly": "INFO 0 errors",
+        "zuban": "_pytifex_temp_572074.py:46: error: Statement is unreachable  [unreachable]\n_pytifex_temp_572074.py:70: error: Statement is unreachable  [unreachable]\nFound 2 errors in 1 file (checked 1 source file)",
+        "ty": "All checks passed!"
+      },
+      "statuses": {
+        "mypy": "ok",
+        "pyrefly": "ok",
+        "zuban": "error",
+        "ty": "ok"
+      }
+    },
+    {
+      "filename": "self-generic-match-type.py",
+      "filepath": "generated_examples/2026-02-15_15-56-33/source_files/self-generic-match-type.py",
+      "seed_issue": "https://github.com/python/mypy/issues/18524",
+      "outputs": {
+        "mypy": "_pytifex_temp_572074.py:44: error: Class \"builtins.type\" doesn't define \"__match_args__\"  [misc]\n_pytifex_temp_572074.py:48: error: Class \"builtins.type\" doesn't define \"__match_args__\"  [misc]\n_pytifex_temp_572074.py:52: error: Class \"builtins.type\" doesn't define \"__match_args__\"  [misc]\nFound 3 errors in 1 file (checked 1 source file)",
+        "pyrefly": "ERROR Cannot match positional sub-patterns in `type` [bad-match]\n  --> _pytifex_temp_572074.py:44:19\n   |\n44 |         case type(IntBox(0)): # Matches if `type(copied_box)` is `IntBox`\n   |                   ^^^^^^^^^\n   |\n  Object of class `type` has no attribute `__match_args__`\nERROR Cannot match positional sub-patterns in `IntBox` [bad-match]\n  --> _pytifex_temp_572074.py:44:26\n   |\n44 |         case type(IntBox(0)): # Matches if `type(copied_box)` is `IntBox`\n   |                          ^\n   |\n  Object of class `IntBox` has no attribute `__match_args__`\nERROR Cannot match positional sub-patterns in `type` [bad-match]\n  --> _pytifex_temp_572074.py:48:19\n   |\n48 |         case type(StrBox(\"\")): # Matches if `type(copied_box)` is `StrBox`\n   |                   ^^^^^^^^^^\n   |\n  Object of class `type` has no attribute `__match_args__`\nERROR Cannot match positional sub-patterns in `StrBox` [bad-match]\n  --> _pytifex_temp_572074.py:48:26\n   |\n48 |         case type(StrBox(\"\")): # Matches if `type(copied_box)` is `StrBox`\n   |                          ^^\n   |\n  Object of class `StrBox` has no attribute `__match_args__`\nERROR Object of class `int` has no attribute `lower` [missing-attribute]\n  --> _pytifex_temp_572074.py:51:47\n   |\n51 |             return f\"Copied a StrBox. Value: {copied_box.unwrap().lower()}\"\n   |                                               ^^^^^^^^^^^^^^^^^^^^^^^^^\n   |\n  Did you mean `islower`?\nERROR Cannot match positional sub-patterns in `type` [bad-match]\n  --> _pytifex_temp_572074.py:52:19\n   |\n52 |         case type(Box(None)): # Matches if `type(copied_box)` is `Box`\n   |                   ^^^^^^^^^\n   |\n  Object of class `type` has no attribute `__match_args__`\nERROR Cannot match positional sub-patterns in `Box[Unknown]` [bad-match]\n  --> _pytifex_temp_572074.py:52:23\n   |\n52 |         case type(Box(None)): # Matches if `type(copied_box)` is `Box`\n   |                       ^^^^\n   |\n  Object of class `Box` has no attribute `__match_args__`\n INFO 7 errors",
+        "zuban": "_pytifex_temp_572074.py:44: error: Class \"type[_pytifex_temp_572074.Box[Any]]\" doesn't define \"__match_args__\"  [misc]\n_pytifex_temp_572074.py:44: error: Class \"type[_pytifex_temp_572074.IntBox]\" doesn't define \"__match_args__\"  [misc]\n_pytifex_temp_572074.py:44: error: Class \"type[_pytifex_temp_572074.StrBox]\" doesn't define \"__match_args__\"  [misc]\n_pytifex_temp_572074.py:44: error: Class \"_pytifex_temp_572074.IntBox\" doesn't define \"__match_args__\"  [misc]\n_pytifex_temp_572074.py:44: error: Class \"_pytifex_temp_572074.IntBox\" doesn't define \"__match_args__\"  [misc]\n_pytifex_temp_572074.py:44: error: Class \"_pytifex_temp_572074.IntBox\" doesn't define \"__match_args__\"  [misc]\n_pytifex_temp_572074.py:48: error: Class \"builtins.type\" doesn't define \"__match_args__\"  [misc]\n_pytifex_temp_572074.py:48: error: Class \"_pytifex_temp_572074.StrBox\" doesn't define \"__match_args__\"  [misc]\n_pytifex_temp_572074.py:51: error: Statement is unreachable  [unreachable]\n_pytifex_temp_572074.py:52: error: Class \"builtins.type\" doesn't define \"__match_args__\"  [misc]\n_pytifex_temp_572074.py:52: error: Class \"_pytifex_temp_572074.Box\" doesn't define \"__match_args__\"  [misc]\n_pytifex_temp_572074.py:54: error: Statement is unreachable  [unreachable]\n_pytifex_temp_572074.py:60: error: Statement is unreachable  [unreachable]\nFound 13 errors in 1 file (checked 1 source file)",
+        "ty": "warning[possibly-missing-attribute]: Attribute `lower` may be missing on object of type `Any | int | str`\n  --> _pytifex_temp_572074.py:51:47\n   |\n49 |             # Here, `copied_box` should be narrowed to `StrBox`.\n50 |             # Checkers should allow `copied_box.unwrap().lower()`.\n51 |             return f\"Copied a StrBox. Value: {copied_box.unwrap().lower()}\"\n   |                                               ^^^^^^^^^^^^^^^^^^^^^^^^^\n52 |         case type(Box(None)): # Matches if `type(copied_box)` is `Box`\n53 |             # Here, `copied_box` should be narrowed to `Box[Any]`.\n   |\ninfo: rule `possibly-missing-attribute` is enabled by default\n\nFound 1 diagnostic"
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "error",
+        "zuban": "error",
+        "ty": "ok"
+      }
+    },
+    {
+      "filename": "paramspec-classmethod-typeddict-readonly.py",
+      "filepath": "generated_examples/2026-02-15_15-56-33/source_files/paramspec-classmethod-typeddict-readonly.py",
+      "seed_issue": "https://github.com/microsoft/pyright/issues/11037",
+      "outputs": {
+        "mypy": "Success: no issues found in 1 source file",
+        "pyrefly": "INFO 0 errors",
+        "zuban": "Success: no issues found in 1 source file",
+        "ty": "error[unresolved-attribute]: Object of type `(...) -> R_ret@log_classmethod_args` has no attribute `__name__`\n  --> _pytifex_temp_572074.py:23:60\n   |\n21 | ) -> Callable[Concatenate[C_cls, P_func], R_ret]:\n22 |     def wrapper(cls: C_cls, *args: P_func.args, **kwargs: P_func.kwargs) -> R_ret:\n23 |         print(f\"DEBUG: Calling classmethod {cls.__name__}.{func.__name__} with args={args}, kwargs={kwargs}\")\n   |                                                            ^^^^^^^^^^^^^\n24 |         return func(cls, *args, **kwargs)\n25 |     return wrapper\n   |\ninfo: rule `unresolved-attribute` is enabled by default\n\nFound 1 diagnostic"
+      },
+      "statuses": {
+        "mypy": "ok",
+        "pyrefly": "ok",
+        "zuban": "ok",
+        "ty": "error"
+      }
+    }
+  ]
+}

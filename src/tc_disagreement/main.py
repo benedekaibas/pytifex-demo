@@ -91,9 +91,9 @@ Options:
     )
     parser.add_argument(
         "--eval-method",
-        choices=["multi_step", "consensus", "runtime", "all", "deterministic", "llm", "testing", "tiered"],
-        default="tiered",
-        help="Evaluation method (default: tiered = multi-level runtime/coverage/mutation testing)",
+        choices=["comprehensive", "multi_step", "consensus", "runtime", "all", "deterministic", "llm", "testing", "tiered"],
+        default="comprehensive",
+        help="Evaluation method (default: comprehensive = 4-tier runtime/mutation/PEP evaluation)",
     )
     parser.add_argument(
         "--max-level",
@@ -132,8 +132,11 @@ Options:
             print(f"\n[STEP 2/2] Evaluating {len(disagreements)} disagreements...")
             results_path = f"{base_path}/results.json"
             
-            if args.eval_method == "tiered":
-                # Use tiered evaluation (Level 1-3: runtime, coverage, mutation)
+            if args.eval_method == "comprehensive":
+                from comprehensive_eval import evaluate_results_comprehensive
+                evaluate_results_comprehensive(results_path)
+                eval_path = f"{base_path}/evaluation_comprehensive.json"
+            elif args.eval_method == "tiered":
                 from tiered_eval import evaluate_results_tiered
                 evaluate_results_tiered(results_path, max_level=args.max_level)
                 eval_path = f"{base_path}/evaluation_tiered.json"
@@ -191,7 +194,11 @@ Options:
                 sys.exit(1)
             results_path = results_files[-1]
             
-            if args.eval_method == "tiered":
+            if args.eval_method == "comprehensive":
+                from comprehensive_eval import evaluate_results_comprehensive
+                evaluate_results_comprehensive(results_path)
+                eval_path = results_path.replace("results.json", "evaluation_comprehensive.json")
+            elif args.eval_method == "tiered":
                 from tiered_eval import evaluate_results_tiered
                 evaluate_results_tiered(results_path, max_level=args.max_level)
                 eval_path = results_path.replace("results.json", "evaluation_tiered.json")

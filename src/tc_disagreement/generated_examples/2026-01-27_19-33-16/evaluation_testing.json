@@ -1,27 +1,27 @@
 {
   "method": "testing",
-  "total_bugs_found": 3,
-  "proven_bugs": 3,
+  "total_bugs_found": 1,
+  "proven_bugs": 1,
   "summary": {
     "mypy": {
       "correct": 0,
-      "incorrect": 3,
-      "uncertain": 8
+      "incorrect": 1,
+      "uncertain": 10
     },
     "pyrefly": {
-      "correct": 2,
+      "correct": 0,
       "incorrect": 1,
-      "uncertain": 8
+      "uncertain": 10
     },
     "zuban": {
       "correct": 0,
-      "incorrect": 3,
-      "uncertain": 8
+      "incorrect": 1,
+      "uncertain": 10
     },
     "ty": {
-      "correct": 2,
+      "correct": 0,
       "incorrect": 1,
-      "uncertain": 8
+      "uncertain": 10
     }
   },
   "results": [
@@ -114,57 +114,29 @@
     },
     {
       "filename": "newtype-dummy-var-comprehension.py",
-      "bugs_found": [
-        {
-          "line": 17,
-          "type": "ValueError",
-          "message": "Code expects ValueError (try block at line 16)",
-          "source": "runtime_caught",
-          "confidence": 0.9
-        }
-      ],
+      "bugs_found": [],
       "execution_success": false,
       "verdicts": {
         "mypy": {
-          "verdict": "INCORRECT",
-          "reason": "Missed 1 proven type bug(s)",
-          "confidence": 1.0,
-          "missed_bugs": [
-            {
-              "line": 17,
-              "type": "ValueError",
-              "message": "Code expects ValueError (try block at line 16)"
-            }
-          ]
+          "verdict": "UNCERTAIN",
+          "reason": "No type bugs detected, checker agrees",
+          "confidence": 0.5
         },
         "pyrefly": {
-          "verdict": "INCORRECT",
-          "reason": "Missed 1 proven type bug(s)",
-          "confidence": 1.0,
-          "missed_bugs": [
-            {
-              "line": 17,
-              "type": "ValueError",
-              "message": "Code expects ValueError (try block at line 16)"
-            }
-          ]
+          "verdict": "UNCERTAIN",
+          "reason": "No type bugs detected, checker agrees",
+          "confidence": 0.5
         },
         "zuban": {
-          "verdict": "INCORRECT",
-          "reason": "Missed 1 proven type bug(s)",
-          "confidence": 1.0,
-          "missed_bugs": [
-            {
-              "line": 17,
-              "type": "ValueError",
-              "message": "Code expects ValueError (try block at line 16)"
-            }
-          ]
+          "verdict": "UNCERTAIN",
+          "reason": "No type bugs detected, checker agrees",
+          "confidence": 0.5
         },
         "ty": {
-          "verdict": "CORRECT",
-          "reason": "Correctly identified type issues",
-          "confidence": 0.9
+          "verdict": "UNCERTAIN",
+          "reason": "Checker reported errors but no runtime proof of bugs",
+          "confidence": 0.5,
+          "note": "May be false positive or bug not triggered at runtime"
         }
       }
     },
@@ -248,12 +220,21 @@
               "type": "KeyError",
               "message": "KeyError: 'value'"
             }
-          ]
+          ],
+          "matching_method": "none"
         },
         "pyrefly": {
-          "verdict": "CORRECT",
-          "reason": "Correctly identified type issues",
-          "confidence": 0.9
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven type bug(s)",
+          "confidence": 1.0,
+          "missed_bugs": [
+            {
+              "line": 37,
+              "type": "KeyError",
+              "message": "KeyError: 'value'"
+            }
+          ],
+          "matching_method": "none"
         },
         "zuban": {
           "verdict": "INCORRECT",
@@ -265,7 +246,8 @@
               "type": "KeyError",
               "message": "KeyError: 'value'"
             }
-          ]
+          ],
+          "matching_method": "none"
         },
         "ty": {
           "verdict": "INCORRECT",
@@ -277,56 +259,37 @@
               "type": "KeyError",
               "message": "KeyError: 'value'"
             }
-          ]
+          ],
+          "matching_method": "none"
         }
       }
     },
     {
       "filename": "self-generic-dummy-var-abstract-method.py",
-      "bugs_found": [
-        {
-          "line": 47,
-          "type": "ValueError",
-          "message": "Code expects ValueError (try block at line 46)",
-          "source": "runtime_caught",
-          "confidence": 0.9
-        }
-      ],
+      "bugs_found": [],
       "execution_success": true,
       "verdicts": {
         "mypy": {
-          "verdict": "INCORRECT",
-          "reason": "Missed 1 proven type bug(s)",
-          "confidence": 1.0,
-          "missed_bugs": [
-            {
-              "line": 47,
-              "type": "ValueError",
-              "message": "Code expects ValueError (try block at line 46)"
-            }
-          ]
+          "verdict": "UNCERTAIN",
+          "reason": "No type bugs detected, checker agrees",
+          "confidence": 0.5
         },
         "pyrefly": {
-          "verdict": "CORRECT",
-          "reason": "Correctly identified type issues",
-          "confidence": 0.9
+          "verdict": "UNCERTAIN",
+          "reason": "Checker reported errors but no runtime proof of bugs",
+          "confidence": 0.5,
+          "note": "May be false positive or bug not triggered at runtime"
         },
         "zuban": {
-          "verdict": "INCORRECT",
-          "reason": "Missed 1 proven type bug(s)",
-          "confidence": 1.0,
-          "missed_bugs": [
-            {
-              "line": 47,
-              "type": "ValueError",
-              "message": "Code expects ValueError (try block at line 46)"
-            }
-          ]
+          "verdict": "UNCERTAIN",
+          "reason": "No type bugs detected, checker agrees",
+          "confidence": 0.5
         },
         "ty": {
-          "verdict": "CORRECT",
-          "reason": "Correctly identified type issues",
-          "confidence": 0.9
+          "verdict": "UNCERTAIN",
+          "reason": "Checker reported errors but no runtime proof of bugs",
+          "confidence": 0.5,
+          "note": "May be false positive or bug not triggered at runtime"
         }
       }
     },
