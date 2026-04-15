@@ -1,0 +1,4 @@
+# file: /home/benedek-kaibas/Documents/pytifex-demo/src/tc_disagreement/hypothesis_tier2.py
+# hypothesis_version: 6.151.9
+
+[0.85, 0.9, '"""', '(', '.', ':(\\d+):', '<source>', 'CORRECT', 'FAIL', 'INCORRECT', 'Literal', 'PASS', 'ParamSpec', 'TypeVar', 'TypeVarTuple', 'UNCERTAIN', 'ValidRejected', '[^\\w]', '_', '__annotations__', '__args__', '__builtins__', '__hypothesis_tier2__', '__name__', '__optional_keys__', '__origin__', '__required_keys__', '__return__', '__supertype__', '_is_protocol', 'annotation', 'count', 'exec', 'failing_example', 'failure_type', 'failures', 'hypothesis_tier2', 'no_enforcement', 'resolved_type', 'test_cases', 'uncaught', 'valid_rejected', 'variable', 'w']

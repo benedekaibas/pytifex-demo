@@ -1,0 +1,12 @@
+File,Mypy_Verdict,Pyrefly_Verdict,Ty_Verdict,Zuban_Verdict
+asyncio-paramspec-partial-callback.py,UNCERTAIN,UNCERTAIN,UNCERTAIN,UNCERTAIN
+newtype-typeguard-divergence-refined.py,UNCERTAIN,UNCERTAIN,UNCERTAIN,UNCERTAIN
+paramspec-concatenate-divergence.py,UNCERTAIN,UNCERTAIN,UNCERTAIN,UNCERTAIN
+dictionary-comprehension-typeddict-literal-divergence.py,UNCERTAIN,UNCERTAIN,INCORRECT,INCORRECT
+asyncio-generic-protocol-callback.py,CORRECT,INCORRECT,INCORRECT,CORRECT
+overload-factory-typeguard-callable.py,INCORRECT,INCORRECT,INCORRECT,INCORRECT
+overload-classmethod-paramspec.py,UNCERTAIN,UNCERTAIN,UNCERTAIN,UNCERTAIN
+self-cyclic-typevar-abstract.py,UNCERTAIN,UNCERTAIN,INCORRECT,INCORRECT
+literal_narrowing.py,INCORRECT,CORRECT,INCORRECT,CORRECT
+walrus_comprehension.py,CORRECT,INCORRECT,INCORRECT,CORRECT
+typeddict_single_field.py,CORRECT,CORRECT,INCORRECT,CORRECT

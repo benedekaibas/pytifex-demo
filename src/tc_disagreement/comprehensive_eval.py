@@ -21,9 +21,9 @@ Tier 1: Runtime Crash Detection (~10% of cases)
     - Execute code and catch type-related exceptions
     - Highest confidence - proves actual bugs exist
 
-Tier 2: Mutation + Typeguard Testing (~40% of cases)  
-    - Mutate values to violate type constraints
-    - Use typeguard to enforce type annotations on assignments
+Tier 2: Hypothesis Property-Based Testing (~40% of cases)  
+    - AST-driven call-site extraction and signature introspection
+    - Hypothesis-generated inputs exercising real code paths
     - Proves type constraints matter in practice
 
 Tier 3: PEP Specification Compliance (~40% of cases)
@@ -53,6 +53,14 @@ from pathlib import Path
 from enum import Enum
 
 
+try:
+    from .oracle import run_oracle_evaluation, OracleVerdict, OracleFinding
+    from .code_metrics import compute_metrics, metrics_to_dict
+except ImportError:
+    from oracle import run_oracle_evaluation, OracleVerdict, OracleFinding
+    from code_metrics import compute_metrics, metrics_to_dict
+
+
 class Verdict(Enum):
     CORRECT = "CORRECT"
     INCORRECT = "INCORRECT"
@@ -79,6 +87,7 @@ class EvaluationResult:
     tier3_findings: list[dict]
     checker_verdicts: dict[str, dict]
     tier_reached: int
+    oracle_verdicts: dict[str, OracleVerdict] = field(default_factory=dict)
 
 
 class DebugArtifactCollector:
@@ -130,7 +139,12 @@ def _extract_all_source_lines(tb_list: list, source_tag: str = "<tier1>") -> lis
 
 
 def _collect_chained_exceptions(exc: BaseException) -> list[BaseException]:
-    """Walk __cause__ and __context__ chains to find all related exceptions."""
+    """Walk __cause__ and __context__ chains to find all related exceptions.
+    
+    Returns exceptions root-cause-first: the deepest chained exception comes
+    first so that _bugs_from_exception attributes bugs to the original fault
+    rather than to re-raise sites in except blocks.
+    """
     seen: set[int] = set()
     chain: list[BaseException] = []
     current: BaseException | None = exc
@@ -138,6 +152,7 @@ def _collect_chained_exceptions(exc: BaseException) -> list[BaseException]:
         seen.add(id(current))
         chain.append(current)
         current = current.__cause__ or current.__context__
+    chain.reverse()
     return chain
 
 
@@ -180,7 +195,17 @@ def _bugs_from_exception(exc: BaseException, source_tag: str) -> list[TypeBug]:
     bugs: list[TypeBug] = []
     seen_lines: set[int] = set()
 
-    for chained_exc in _collect_chained_exceptions(exc):
+    chain = _collect_chained_exceptions(exc)
+    all_chain_lines: list[int] = []
+    for chained_exc in chain:
+        tb_info = traceback.extract_tb(chained_exc.__traceback__)
+        all_chain_lines.extend(_extract_all_source_lines(tb_info, source_tag))
+    if not all_chain_lines:
+        last_exc = chain[-1] if chain else exc
+        tb_info = traceback.extract_tb(last_exc.__traceback__)
+        all_chain_lines = [tb_info[-1].lineno] if tb_info else [0]
+
+    for chained_exc in chain:
         if not isinstance(chained_exc, TYPE_ERROR_EXCEPTIONS):
             continue
 
@@ -190,12 +215,12 @@ def _bugs_from_exception(exc: BaseException, source_tag: str) -> list[TypeBug]:
             message = f"KeyError: {chained_exc}"
 
         tb_info = traceback.extract_tb(chained_exc.__traceback__)
-        all_source_lines = _extract_all_source_lines(tb_info, source_tag)
+        exc_source_lines = _extract_all_source_lines(tb_info, source_tag)
 
-        if not all_source_lines:
-            all_source_lines = [tb_info[-1].lineno] if tb_info else [0]
+        if not exc_source_lines:
+            exc_source_lines = [tb_info[-1].lineno] if tb_info else [0]
 
-        primary_line = all_source_lines[0]
+        primary_line = exc_source_lines[-1]
 
         if primary_line in seen_lines:
             continue
@@ -207,7 +232,7 @@ def _bugs_from_exception(exc: BaseException, source_tag: str) -> list[TypeBug]:
             message=message,
             source="tier1_runtime",
             confidence=1.0,
-            details={"all_traceback_lines": all_source_lines},
+            details={"all_traceback_lines": list(dict.fromkeys(all_chain_lines))},
         ))
 
     return bugs
@@ -250,291 +275,6 @@ def run_tier1(
 
     return bugs
 
-
-# =============================================================================
-# TIER 2: MUTATION + TYPEGUARD TESTING
-# =============================================================================
-
-@dataclass
-class TypeAnnotation:
-    """Represents a type annotation found in the code."""
-    line: int
-    variable_name: str
-    annotation: str
-    value_expr: Optional[str] = None
-
-
-def extract_type_annotations(source_code: str) -> list[TypeAnnotation]:
-    """Extract all type annotations from source code."""
-    annotations = []
-    
-    try:
-        tree = ast.parse(source_code)
-    except SyntaxError:
-        return annotations
-    
-    class AnnotationVisitor(ast.NodeVisitor):
-        def visit_AnnAssign(self, node):
-            """Handle annotated assignments: x: int = 5"""
-            if isinstance(node.target, ast.Name):
-                ann = ast.unparse(node.annotation)
-                val = ast.unparse(node.value) if node.value else None
-                annotations.append(TypeAnnotation(
-                    line=node.lineno,
-                    variable_name=node.target.id,
-                    annotation=ann,
-                    value_expr=val,
-                ))
-            self.generic_visit(node)
-        
-        def visit_FunctionDef(self, node):
-            """Handle function parameter and return annotations."""
-            # Return type
-            if node.returns:
-                annotations.append(TypeAnnotation(
-                    line=node.lineno,
-                    variable_name=f"{node.name}.__return__",
-                    annotation=ast.unparse(node.returns),
-                ))
-            # Parameters
-            for arg in node.args.args:
-                if arg.annotation:
-                    annotations.append(TypeAnnotation(
-                        line=node.lineno,
-                        variable_name=f"{node.name}.{arg.arg}",
-                        annotation=ast.unparse(arg.annotation),
-                    ))
-            self.generic_visit(node)
-    
-    visitor = AnnotationVisitor()
-    visitor.visit(tree)
-    return annotations
-
-
-def generate_violating_values(annotation: str) -> list[tuple[Any, str]]:
-    """
-    Generate values that VIOLATE a given type annotation.
-    
-    Returns list of (value, description) tuples.
-    """
-    annotation = annotation.strip()
-    violations = []
-    
-    # Literal types: generate values not in the literal set
-    if annotation.startswith("Literal["):
-        violations = [
-            ("__INVALID_LITERAL__", "string not in Literal set"),
-            (99999, "int not in Literal set"),
-            (None, "None not in Literal set"),
-        ]
-    
-    # Basic types
-    elif annotation == "int":
-        violations = [
-            ("not_an_int", "str instead of int"),
-            (3.14, "float instead of int"),
-            (None, "None instead of int"),
-        ]
-    elif annotation == "str":
-        violations = [
-            (42, "int instead of str"),
-            (None, "None instead of str"),
-        ]
-    elif annotation == "float":
-        violations = [
-            ("not_a_float", "str instead of float"),
-            (None, "None instead of float"),
-        ]
-    elif annotation == "bool":
-        violations = [
-            ("not_a_bool", "str instead of bool"),
-        ]
-    
-    # List/Dict types
-    elif annotation.startswith(("List[", "list[")):
-        violations = [
-            ("not_a_list", "str instead of list"),
-            (42, "int instead of list"),
-        ]
-    elif annotation.startswith(("Dict[", "dict[")):
-        violations = [
-            ("not_a_dict", "str instead of dict"),
-            ([], "list instead of dict"),
-        ]
-    
-    # TypedDict - provide empty dict (missing required keys)
-    elif "TypedDict" in annotation or (annotation[0].isupper() and "Dict" not in annotation):
-        violations = [
-            ({}, "empty dict (missing required keys)"),
-            ("not_a_dict", "str instead of TypedDict"),
-        ]
-    
-    # Fallback
-    if not violations:
-        violations = [
-            (None, "None for unknown type"),
-            ("__WRONG_TYPE__", "str for unknown type"),
-        ]
-    
-    return violations
-
-
-def _extract_disagreement_lines(
-    checker_outputs: dict[str, str],
-) -> set[int]:
-    """Extract lines where checkers disagree (some report errors, some don't)."""
-    per_checker_lines: dict[str, set[int]] = {}
-    for checker, output in checker_outputs.items():
-        per_checker_lines[checker] = set(extract_checker_error_lines(output))
-
-    all_error_lines: set[int] = set()
-    for lines in per_checker_lines.values():
-        all_error_lines |= lines
-
-    has_error = {c for c, o in checker_outputs.items() if _checker_reports_error(o)}
-    has_ok = set(checker_outputs.keys()) - has_error
-
-    if has_error and has_ok:
-        return all_error_lines
-
-    return all_error_lines
-
-
-def _annotation_near_disagreement(
-    ann: TypeAnnotation,
-    disagreement_lines: set[int],
-    tolerance: int = 15,
-) -> bool:
-    """Check if an annotation is near any disagreement line."""
-    if not disagreement_lines:
-        return True
-    return any(abs(ann.line - dl) <= tolerance for dl in disagreement_lines)
-
-
-def run_tier2(
-    source_code: str,
-    annotations: list[TypeAnnotation],
-    checker_outputs: dict[str, str] | None = None,
-    debug: DebugArtifactCollector | None = None,
-) -> list[TypeBug]:
-    """
-    Tier 2: Mutation + Typeguard testing.
-    
-    Only tests annotations near actual checker disagreement points.
-    For each relevant type annotation:
-    1. Generate values that violate the type
-    2. Create a test that uses typeguard to enforce the annotation
-    3. If typeguard catches the violation, the constraint matters
-    """
-    bugs: list[TypeBug] = []
-    
-    try:
-        import typeguard
-    except ImportError:
-        return bugs
-    
-    disagreement_lines: set[int] = set()
-    if checker_outputs:
-        disagreement_lines = _extract_disagreement_lines(checker_outputs)
-    
-    source_imports = _extract_imports(source_code)
-    
-    for ann in annotations:
-        if "." in ann.variable_name and "__return__" not in ann.variable_name:
-            continue
-
-        if disagreement_lines and not _annotation_near_disagreement(ann, disagreement_lines):
-            continue
-        
-        violations = generate_violating_values(ann.annotation)
-        
-        for violating_value, description in violations:
-            test_code = _create_typeguard_test(ann, violating_value, source_imports)
-            
-            if test_code:
-                if debug:
-                    debug.add_tier2(ann.annotation, description, test_code)
-                crashed, error_msg = _run_typeguard_test(test_code)
-                
-                if crashed:
-                    bugs.append(TypeBug(
-                        line=ann.line,
-                        bug_type="TypeguardViolation",
-                        message=f"Mutation ({description}): {error_msg}",
-                        source="tier2_mutation",
-                        confidence=0.9,
-                        details={
-                            "annotation": ann.annotation,
-                            "mutation": description,
-                        }
-                    ))
-                    break
-    
-    return bugs
-
-
-def _extract_imports(source_code: str) -> str:
-    """Extract all import statements from source code."""
-    try:
-        tree = ast.parse(source_code)
-    except SyntaxError:
-        return ""
-    lines = source_code.splitlines()
-    import_lines: list[str] = []
-    for node in ast.iter_child_nodes(tree):
-        if isinstance(node, (ast.Import, ast.ImportFrom)):
-            start = node.lineno - 1
-            end = (node.end_lineno or node.lineno)
-            import_lines.extend(lines[start:end])
-    return "\n".join(import_lines)
-
-
-def _create_typeguard_test(
-    ann: TypeAnnotation, violating_value: Any, source_imports: str = "",
-) -> Optional[str]:
-    """Create a test script that uses typeguard to check a type violation."""
-    
-    if "__return__" in ann.variable_name:
-        func_name = ann.variable_name.replace(".__return__", "")
-        return f'''
-{source_imports}
-from typeguard import typechecked
-
-@typechecked
-def test_func() -> {ann.annotation}:
-    return {repr(violating_value)}
-
-test_func()
-'''
-    
-    return f'''
-{source_imports}
-from typeguard import check_type
-
-value = {repr(violating_value)}
-check_type(value, {ann.annotation})
-'''
-
-
-HARNESS_ERRORS = (NameError, SyntaxError, ImportError, ModuleNotFoundError)
-
-TYPEGUARD_ERROR_NAMES = {"TypeCheckError", "TypeHintError", "BeartypeCallHintViolation"}
-
-
-def _run_typeguard_test(test_code: str) -> tuple[bool, str]:
-    """Run a typeguard test and return (crashed, error_message)."""
-    try:
-        with contextlib.redirect_stdout(io.StringIO()), \
-             contextlib.redirect_stderr(io.StringIO()):
-            exec(compile(test_code, "<typeguard_test>", "exec"), {})
-        return False, ""
-    except HARNESS_ERRORS:
-        return False, ""
-    except Exception as e:
-        error_name = type(e).__name__
-        if error_name in TYPEGUARD_ERROR_NAMES:
-            return True, f"{error_name}: {str(e)[:100]}"
-        return False, ""
 
 
 # =============================================================================
@@ -604,6 +344,24 @@ PEP_RULES = [
         pep_number=484,
         pattern=r"has no attribute|unresolved.reference",
         rule_description="Attribute access must resolve on the declared type (PEP 484)",
+        correct_behavior="error",
+    ),
+    PEPRule(
+        pep_number=484,
+        pattern=r"(?:Missing return statement|Function.*implicitly return.*None|bad-return|invalid-return-type)",
+        rule_description="Non-Optional return type must return a value on all code paths (PEP 484)",
+        correct_behavior="error",
+    ),
+    PEPRule(
+        pep_number=484,
+        pattern=r"[Ii]ncompatible types? in assignment",
+        rule_description="Assigned value must be compatible with the annotated variable type (PEP 484)",
+        correct_behavior="error",
+    ),
+    PEPRule(
+        pep_number=544,
+        pattern=r"[Ii]nvariant type variable.*protocol.*covariant|protocol.*[Ii]nvariant.*covariant",
+        rule_description="Protocol type parameters must use appropriate variance (PEP 544)",
         correct_behavior="error",
     ),
 
@@ -915,7 +673,11 @@ def run_tier3(source_code: str, checker_outputs: dict[str, str]) -> list[dict]:
             matched = False
             for text_line in output.splitlines():
                 lower = text_line.lower()
-                if "note:" in lower or "info[" in lower:
+                if "note:" in lower or "info[" in lower or lower.startswith("info "):
+                    continue
+                if "unknown-name" in lower and "reveal_type" in text_line:
+                    continue
+                if "undefined-reveal" in lower:
                     continue
                 if MODULE_IMPORT_RE.search(text_line):
                     continue
@@ -926,7 +688,7 @@ def run_tier3(source_code: str, checker_outputs: dict[str, str]) -> list[dict]:
             if not matched:
                 continue
 
-            checker_says_error = _checker_reports_error(output)
+            checker_says_error = _checker_reports_error(output, checker)
             
             is_correct = (
                 (rule.correct_behavior == "error" and checker_says_error) or
@@ -947,11 +709,113 @@ def run_tier3(source_code: str, checker_outputs: dict[str, str]) -> list[dict]:
     code_findings = _analyze_code_patterns(source_code, checker_outputs)
     findings.extend(code_findings)
     
+    # Source-aware analysis: analyze AST independently, then judge each checker
+    source_findings = _run_source_analysis(source_code, checker_outputs)
+    findings.extend(source_findings)
+    
     return findings
 
 
-def _checker_reports_error(output: str) -> bool:
-    """Determine if a checker output indicates an error."""
+def _run_source_analysis(source_code: str, checker_outputs: dict[str, str]) -> list[dict]:
+    """
+    Run AST-level source analysis independently of checker output, then
+    judge each checker by whether it reported errors near the violations found.
+    """
+    try:
+        from .source_analysis import analyze_source
+    except ImportError:
+        from source_analysis import analyze_source
+
+    source_findings = analyze_source(source_code)
+    if not source_findings:
+        return []
+
+    results: list[dict] = []
+    high_confidence_findings = [f for f in source_findings if f.confidence >= 0.85]
+
+    for finding in high_confidence_findings:
+        for checker, output in checker_outputs.items():
+            checker_error_lines = extract_checker_error_lines(output)
+            checker_reports = _checker_reports_error(output, checker)
+
+            has_error_near = any(
+                abs(ln - finding.line) <= 10 for ln in checker_error_lines
+            )
+
+            if has_error_near:
+                results.append({
+                    "checker": checker,
+                    "pep": finding.pep,
+                    "rule": f"[{finding.rule_id}] {finding.message}",
+                    "checker_behavior": "error",
+                    "correct_behavior": "error",
+                    "is_correct": True,
+                    "confidence": finding.confidence,
+                    "source": "source_analysis",
+                })
+            else:
+                is_wrong_location = checker_reports and checker_error_lines
+                results.append({
+                    "checker": checker,
+                    "pep": finding.pep,
+                    "rule": f"[{finding.rule_id}] {finding.message}",
+                    "checker_behavior": "ok" if not checker_reports else "error_wrong_location",
+                    "correct_behavior": "error",
+                    "is_correct": False,
+                    "confidence": 0.5 if is_wrong_location else finding.confidence,
+                    "source": "source_analysis",
+                })
+
+    return results
+
+
+def _checker_reports_error(output: str, checker: str = "") -> bool:
+    """Determine if a checker output indicates an error.
+
+    Uses checker-specific parsing when *checker* is provided so that
+    summary lines like ``"Found 0 errors"`` or ``"INFO 0 errors"`` are
+    not misclassified as errors.
+    """
+    checker = checker.lower()
+
+    if checker == "mypy" or checker == "zuban":
+        # mypy / zuban share the same output format.
+        # Success → "Success: no issues found in 1 source file"
+        # Error   → "Found N errors in M file (checked …)" where N > 0
+        if "success: no issues found" in output.lower():
+            return False
+        m = re.search(r"Found\s+(\d+)\s+errors?\s+in", output)
+        if m:
+            return int(m.group(1)) > 0
+        # Fallback: look for individual error lines
+        for line in output.splitlines():
+            if re.search(r":\s*error\b", line, re.IGNORECASE):
+                return True
+        return False
+
+    if checker == "pyrefly":
+        real_errors = 0
+        for line in output.splitlines():
+            s = line.strip()
+            if not s.startswith("ERROR"):
+                continue
+            if "unknown-name" in s.lower() and "reveal_type" in s:
+                continue
+            real_errors += 1
+        return real_errors > 0
+
+    if checker == "ty":
+        # ty uses "All checks passed!" for clean runs.
+        # Errors are "error[rule-name]:" lines; warnings/infos are not errors.
+        # Summary: "Found N diagnostics" (includes warnings/infos).
+        if "all checks passed" in output.lower():
+            return False
+        for line in output.splitlines():
+            if re.match(r"\s*error\[", line, re.IGNORECASE):
+                return True
+        return False
+
+    # Generic fallback (unknown checker) — preserve old heuristic
     output_lower = output.lower()
     return (
         "error" in output_lower and
@@ -975,7 +839,7 @@ def _analyze_code_patterns(source_code: str, checker_outputs: dict[str, str]) ->
                     if "Literal[" in ann:
                         # This is a Literal annotation - checkers should flag str -> Literal
                         for checker, output in checker_outputs.items():
-                            checker_says_error = _checker_reports_error(output)
+                            checker_says_error = _checker_reports_error(output, checker)
                             # Per PEP 586, str -> Literal should be an error
                             # But we need to check if the SOURCE is str, not the value
                             if "str" in output.lower() and "literal" in output.lower():
@@ -991,21 +855,6 @@ def _analyze_code_patterns(source_code: str, checker_outputs: dict[str, str]) ->
                                 })
         except SyntaxError:
             pass
-    
-    # Pattern 2: TypedDict with missing keys (PEP 589)
-    if "TypedDict" in source_code and "total=False" not in source_code:
-        # Check for potentially missing required keys
-        for checker, output in checker_outputs.items():
-            if re.search(r"missing.*key|key.*missing", output.lower()):
-                findings.append({
-                    "checker": checker,
-                    "pep": 589,
-                    "rule": "Required TypedDict keys must be present (PEP 589)",
-                    "checker_behavior": "error",
-                    "correct_behavior": "error",
-                    "is_correct": True,
-                    "confidence": 0.85,
-                })
     
     return findings
 
@@ -1054,10 +903,41 @@ def extract_function_spans(source_code: str) -> list[FunctionSpan]:
 def extract_checker_error_lines(output: str) -> list[int]:
     """Extract line numbers from checker error output (excludes notes/info)."""
     lines = []
-    for text_line in output.splitlines():
+    output_lines = output.splitlines()
+    awaiting_arrow = False
+    for text_line in output_lines:
         lower = text_line.lower()
         if "note:" in lower or "info[" in lower or "info " in lower:
+            awaiting_arrow = False
             continue
+
+        if text_line.startswith("ERROR ") or re.match(r'error\[', text_line):
+            if "unknown-name" in lower and "reveal_type" in text_line:
+                awaiting_arrow = False
+                continue
+            if "undefined-reveal" in lower:
+                awaiting_arrow = False
+                continue
+            awaiting_arrow = True
+            m = re.search(r'\.py:(\d+)(?::\d+)?:', text_line)
+            if m:
+                try:
+                    lines.append(int(m.group(1)))
+                except (ValueError, IndexError):
+                    pass
+                awaiting_arrow = False
+            continue
+
+        if awaiting_arrow:
+            m = re.search(r'-->\s+\S+?:(\d+)(?::\d+)?', text_line)
+            if m:
+                try:
+                    lines.append(int(m.group(1)))
+                except (ValueError, IndexError):
+                    pass
+                awaiting_arrow = False
+            continue
+
         m = re.search(r'\.py:(\d+)(?::\d+)?:', text_line)
         if m and ("error" in lower or "Error" in text_line):
             try:
@@ -1074,133 +954,326 @@ def extract_checker_error_lines(output: str) -> list[int]:
     return list(set(lines))
 
 
+# Typing constructs the Oracle (source_analysis.py) cannot evaluate.
+# If a source file uses any of these, the Oracle's silence does NOT mean
+# the file is violation-free — it means the Oracle is blind to those
+# constructs.  Derived from COVERAGE_MATRIX.md Section 3 (AGENT-ONLY).
+_UNCOVERED_TYPING_NAMES = frozenset({
+    "TypeGuard", "TypeIs",
+    "ParamSpec", "ParamSpecArgs", "ParamSpecKwargs", "Concatenate",
+    "TypeVarTuple", "Unpack",
+    "TypeAliasType",
+    "ReadOnly",
+    "dataclass_transform",
+    "Required", "NotRequired",
+})
+
+_UNCOVERED_CONSTRUCT_RE = re.compile(
+    r"|".join([
+        r"\bParamSpec\b",
+        r"\bTypeGuard\b",
+        r"\bTypeIs\b",
+        r"\bConcatenate\b",
+        r"\bTypeVarTuple\b",
+        r"\bUnpack\b",
+        r"\bTypeAliasType\b",
+        r"\bReadOnly\b",
+        r"\bdataclass_transform\b",
+        r"\bRequired\b",
+        r"\bNotRequired\b",
+    ])
+)
+
+
+def _source_has_uncovered_constructs(source_code: str) -> bool:
+    """Return True if the source uses typing constructs the Oracle cannot analyze."""
+    try:
+        tree = ast.parse(source_code)
+    except SyntaxError:
+        return True
+
+    for node in ast.walk(tree):
+        if isinstance(node, ast.ImportFrom) and node.module and (
+            node.module in ("typing", "typing_extensions")
+            or node.module.startswith("typing.")
+        ):
+            for alias in node.names:
+                if alias.name in _UNCOVERED_TYPING_NAMES:
+                    return True
+
+    if _UNCOVERED_CONSTRUCT_RE.search(source_code):
+        return True
+
+    return False
+
+
+def _check_bugs_against_checker(
+    bugs: list[TypeBug],
+    checker_error_lines: list[int],
+    function_spans: list[FunctionSpan],
+) -> tuple[list[TypeBug], list[TypeBug]]:
+    """Check which bugs a checker caught vs missed based on error line proximity."""
+    caught = []
+    missed = []
+    for bug in bugs:
+        found = False
+        bug_lines = bug.details.get("all_traceback_lines", [bug.line])
+        for error_line in checker_error_lines:
+            for bl in bug_lines:
+                if abs(bl - error_line) <= 5:
+                    found = True
+                    break
+            if found:
+                break
+            bug_func = _get_function_at_line(function_spans, bug.line)
+            err_func = _get_function_at_line(function_spans, error_line)
+            if bug_func and err_func and bug_func.name == err_func.name:
+                found = True
+                break
+        if found:
+            caught.append(bug)
+        else:
+            missed.append(bug)
+    return caught, missed
+
+
 def determine_verdicts(
     tier1_bugs: list[TypeBug],
     tier2_bugs: list[TypeBug],
     tier3_findings: list[dict],
     checker_outputs: dict[str, str],
     source_code: str,
+    tier4_findings: list[dict] | None = None,
+    oracle_verdicts: dict[str, OracleVerdict] | None = None,
 ) -> dict[str, dict]:
     """
-    Determine final verdict for each checker based on all tiers.
-    
+    Determine final verdict for each checker using all available evidence.
+
     Priority:
-    1. Tier 1 (runtime crashes) - highest confidence
-    2. Tier 2 (mutation testing) - high confidence  
-    3. Tier 3 (PEP compliance) - medium-high confidence
+      1. Tier 1 runtime crashes (highest confidence — runtime proof)
+      2. Tier 0 Oracle (AST-based ground truth)
+      3. Tier 2 Hypothesis bugs (high confidence — runtime proof via fuzzing)
+      4. Tier 3 PEP specification compliance (checker-specific evidence)
+      5. Tier 4 static flow analysis (checker-specific evidence)
+      6. False positive detection (oracle clean + checker reports errors)
     """
+    if tier4_findings is None:
+        tier4_findings = []
+    if oracle_verdicts is None:
+        oracle_verdicts = {}
+
     verdicts = {}
     function_spans = extract_function_spans(source_code)
-    
-    # Combine all bugs
-    all_bugs = tier1_bugs + tier2_bugs
-    proven_bugs = [b for b in all_bugs if b.confidence >= 0.85]
-    
+
+    tier1_bugs_only = [b for b in tier1_bugs if b.confidence >= 0.85 and b.source == "tier1_runtime"]
+    tier2_bugs_high = [b for b in tier2_bugs if b.confidence >= 0.85]
+
+    checker_error_status = {
+        c: _checker_reports_error(o, c) for c, o in checker_outputs.items()
+    }
+
+    oracle_has_no_findings = all(
+        ov.verdict == "UNCERTAIN" and not ov.findings_hit and not ov.findings_missed
+        for ov in oracle_verdicts.values()
+    ) if oracle_verdicts else True
+
     for checker, output in checker_outputs.items():
-        checker_reported_error = _checker_reports_error(output)
+        checker_reported_error = checker_error_status[checker]
         checker_error_lines = extract_checker_error_lines(output)
-        
-        # Check Tier 1 & 2: Did checker catch proven bugs?
-        if proven_bugs:
-            bugs_caught = []
-            bugs_missed = []
-            
-            # For Tier 1 (runtime crashes), use strict matching
-            # For Tier 2 (mutations), checker just needs to report errors to be "correct"
-            # because Tier 2 proves constraints matter, not specific lines
-            
-            is_tier1 = any(b.source == "tier1_runtime" for b in proven_bugs)
-            
-            if is_tier1:
-                # Strict matching for runtime crashes
-                # V2: Also match against all traceback lines, not just primary
-                for bug in proven_bugs:
-                    caught = False
-                    bug_lines = bug.details.get("all_traceback_lines", [bug.line])
-                    for error_line in checker_error_lines:
-                        for bl in bug_lines:
-                            if abs(bl - error_line) <= 5:
-                                caught = True
-                                break
-                        if caught:
-                            break
-                        bug_func = _get_function_at_line(function_spans, bug.line)
-                        err_func = _get_function_at_line(function_spans, error_line)
-                        if bug_func and err_func and bug_func.name == err_func.name:
-                            caught = True
-                            break
-                    
-                    if caught:
-                        bugs_caught.append(bug)
-                    else:
-                        bugs_missed.append(bug)
-            else:
-                # For Tier 2: If checker reported errors, they were being cautious (CORRECT)
-                # If checker said OK, they missed the constraint (need to check specific line)
-                for bug in proven_bugs:
-                    caught = False
-                    # Wider tolerance for Tier 2 - check ±10 lines
-                    for error_line in checker_error_lines:
-                        if abs(bug.line - error_line) <= 10:
-                            caught = True
-                            break
-                    
-                    if caught:
-                        bugs_caught.append(bug)
-                    elif not checker_reported_error:
-                        # Checker said OK but we proved constraint matters
-                        bugs_missed.append(bug)
-            
-            if bugs_missed and not bugs_caught:
+
+        # --- Tier 1: runtime crashes (runtime proof outranks everything) ---
+        if tier1_bugs_only:
+            bugs_caught, bugs_missed = _check_bugs_against_checker(
+                tier1_bugs_only, checker_error_lines, function_spans,
+            )
+
+            if bugs_caught and not bugs_missed:
+                verdicts[checker] = {
+                    "verdict": Verdict.CORRECT.value,
+                    "reason": f"Caught {len(bugs_caught)} proven runtime bug(s)",
+                    "confidence": 0.9,
+                    "tier": 1,
+                }
+                continue
+            elif bugs_missed:
                 verdicts[checker] = {
                     "verdict": Verdict.INCORRECT.value,
-                    "reason": f"Missed {len(bugs_missed)} proven bug(s)",
-                    "confidence": 0.95 if is_tier1 else 0.85,
-                    "tier": 1 if is_tier1 else 2,
+                    "reason": f"Missed {len(bugs_missed)} proven runtime bug(s)",
+                    "confidence": 0.95,
+                    "tier": 1,
                     "missed_bugs": [{"line": b.line, "type": b.bug_type} for b in bugs_missed],
                 }
                 continue
-            elif bugs_caught:
+
+        # --- Tier 0: Oracle (AST-based ground truth) ---
+        ov = oracle_verdicts.get(checker)
+        if ov and ov.verdict != "UNCERTAIN":
+            # Before trusting oracle INCORRECT, check if tier3 has evidence
+            # that this checker is actually correct. The oracle uses line-level
+            # matching which can fail even when the checker caught the right
+            # issue (e.g., different error code or line offset).
+            if ov.verdict == "INCORRECT":
+                checker_t3_override = [
+                    f for f in tier3_findings
+                    if f.get("checker") == checker and f.get("is_correct") is True
+                ]
+                if checker_t3_override:
+                    peps = sorted({f.get("pep", 0) for f in checker_t3_override})
+                    verdicts[checker] = {
+                        "verdict": Verdict.CORRECT.value,
+                        "reason": (
+                            f"Oracle matching failed but tier3 confirms checker is correct "
+                            f"for {len(checker_t3_override)} PEP rule(s) (PEPs {peps})"
+                        ),
+                        "confidence": 0.80,
+                        "tier": 3,
+                        "oracle_overridden": True,
+                        "oracle_hit": len(ov.findings_hit),
+                        "oracle_missed": len(ov.findings_missed),
+                    }
+                    continue
+
+            missed_details = [
+                {"line": f.line, "rule": f.rule_id, "msg": f.message}
+                for f in ov.findings_missed
+            ]
+            verdicts[checker] = {
+                "verdict": ov.verdict,
+                "reason": ov.reason,
+                "confidence": ov.confidence,
+                "tier": 0,
+                "oracle_hit": len(ov.findings_hit),
+                "oracle_missed": len(ov.findings_missed),
+                "missed_findings": missed_details if missed_details else None,
+            }
+            continue
+
+        # --- Tier 2: Hypothesis property-based testing ---
+        if tier2_bugs_high:
+            bugs_caught, bugs_missed = _check_bugs_against_checker(
+                tier2_bugs_high, checker_error_lines, function_spans,
+            )
+
+            if bugs_caught and not bugs_missed:
                 verdicts[checker] = {
                     "verdict": Verdict.CORRECT.value,
-                    "reason": f"Caught {len(bugs_caught)} proven bug(s)",
-                    "confidence": 0.9 if is_tier1 else 0.8,
-                    "tier": 1 if is_tier1 else 2,
+                    "reason": f"Caught {len(bugs_caught)} Hypothesis-proven bug(s)",
+                    "confidence": 0.85,
+                    "tier": 2,
                 }
                 continue
-        
-        # Check Tier 3: PEP compliance
-        checker_findings = [f for f in tier3_findings if f.get("checker") == checker]
-        if checker_findings:
-            correct_count = sum(1 for f in checker_findings if f.get("is_correct"))
-            incorrect_count = len(checker_findings) - correct_count
-            
-            if incorrect_count > correct_count:
+            elif bugs_missed and not bugs_caught:
                 verdicts[checker] = {
                     "verdict": Verdict.INCORRECT.value,
-                    "reason": f"Violates PEP specifications ({incorrect_count} violations)",
-                    "confidence": 0.8,
-                    "tier": 3,
-                    "pep_findings": checker_findings,
+                    "reason": f"Missed {len(bugs_missed)} Hypothesis-proven bug(s)",
+                    "confidence": 0.85,
+                    "tier": 2,
+                    "missed_bugs": [{"line": b.line, "type": b.bug_type} for b in bugs_missed],
                 }
                 continue
-            elif correct_count > 0:
+
+        # --- Tier 3: PEP specification compliance ---
+        # First, check findings tagged to this specific checker
+        checker_t3 = [f for f in tier3_findings if f.get("checker") == checker]
+        if not checker_t3:
+            checker_t3 = [
+                f for f in tier3_findings
+                if "checker" not in f and f.get("checker_behavior") is not None
+            ]
+        if checker_t3:
+            correct_count = sum(1 for f in checker_t3 if f.get("is_correct") is True)
+            incorrect_count = sum(1 for f in checker_t3 if f.get("is_correct") is False)
+
+            if correct_count > 0 and incorrect_count == 0:
+                peps = sorted({f.get("pep", 0) for f in checker_t3 if f.get("is_correct")})
                 verdicts[checker] = {
                     "verdict": Verdict.CORRECT.value,
-                    "reason": f"Follows PEP specifications ({correct_count} checks)",
-                    "confidence": 0.75,
+                    "reason": f"Matches {correct_count} PEP rule(s) (PEPs {peps})",
+                    "confidence": 0.80,
                     "tier": 3,
                 }
                 continue
-        
-        # No definitive verdict
+            elif incorrect_count > 0 and correct_count == 0:
+                peps = sorted({f.get("pep", 0) for f in checker_t3 if f.get("is_correct") is False})
+                verdicts[checker] = {
+                    "verdict": Verdict.INCORRECT.value,
+                    "reason": f"Violates {incorrect_count} PEP rule(s) (PEPs {peps})",
+                    "confidence": 0.80,
+                    "tier": 3,
+                }
+                continue
+
+        # If no checker-specific tier3 finding, check if ANY tier3 finding
+        # established ground truth (a confirmed bug exists). If so, evaluate
+        # this checker by whether it reported errors or not.
+        if not checker_t3:
+            any_confirmed_bug = [
+                f for f in tier3_findings
+                if f.get("is_correct") is True and f.get("correct_behavior") == "error"
+            ]
+            if not any_confirmed_bug:
+                # Also check: any finding where a checker was correct AND reported error
+                any_confirmed_bug = [
+                    f for f in tier3_findings
+                    if f.get("is_correct") is True
+                    and f.get("checker_behavior") == "error"
+                ]
+            if any_confirmed_bug:
+                peps = sorted({f.get("pep", 0) for f in any_confirmed_bug})
+                if checker_reported_error:
+                    verdicts[checker] = {
+                        "verdict": Verdict.CORRECT.value,
+                        "reason": f"Caught PEP-confirmed bug (PEPs {peps}, confirmed by other checker tier3 findings)",
+                        "confidence": 0.80,
+                        "tier": 3,
+                    }
+                    continue
+                else:
+                    verdicts[checker] = {
+                        "verdict": Verdict.INCORRECT.value,
+                        "reason": f"Missed PEP-confirmed bug (PEPs {peps}, confirmed by other checker tier3 findings)",
+                        "confidence": 0.80,
+                        "tier": 3,
+                    }
+                    continue
+
+        # --- Tier 4: Static flow analysis ---
+        checker_t4 = [f for f in tier4_findings if f.get("checker") == checker]
+        if checker_t4:
+            best = max(checker_t4, key=lambda f: f.get("confidence", 0))
+            if best.get("verdict") in ("CORRECT", "INCORRECT") and best.get("confidence", 0) >= 0.80:
+                verdicts[checker] = {
+                    "verdict": best["verdict"],
+                    "reason": best.get("reason", "Tier 4 static analysis"),
+                    "confidence": best["confidence"],
+                    "tier": 4,
+                }
+                continue
+
+        # --- False positive detection ---
+        if oracle_has_no_findings and not tier1_bugs_only and not tier2_bugs_high and checker_reported_error:
+            if not _source_has_uncovered_constructs(source_code):
+                try:
+                    from .source_analysis import analyze_source as _analyze_source
+                except ImportError:
+                    from source_analysis import analyze_source as _analyze_source
+                unfiltered = _analyze_source(source_code)
+                if len(unfiltered) == 0:
+                    verdicts[checker] = {
+                        "verdict": Verdict.INCORRECT.value,
+                        "reason": "Reported errors on violation-free source",
+                        "confidence": 0.80,
+                        "tier": 0,
+                    }
+                    continue
+
         verdicts[checker] = {
             "verdict": Verdict.UNCERTAIN.value,
             "reason": "No definitive evidence from any tier",
             "confidence": 0.5,
             "tier": 4,
         }
-    
+
     return verdicts
 
 
@@ -1221,51 +1294,276 @@ def evaluate_comprehensive(
     checker_outputs: dict[str, str],
     filename: str = "unknown.py",
     debug: DebugArtifactCollector | None = None,
+    debug_dir: str | None = None,
 ) -> EvaluationResult:
     """
     Run comprehensive tiered evaluation on a code example.
-    
-    Returns results from all tiers and final verdicts.
+
+    All tiers always run and contribute evidence to the final verdict:
+      Tier 1: Runtime crash detection (highest confidence)
+      Tier 2: Hypothesis property-based testing (high confidence)
+      Tier 3: PEP specification compliance (medium-high confidence)
     """
-    # Tier 1: Runtime crashes
+    try:
+        from .hypothesis_tier2 import run_hypothesis_tier2
+    except ImportError:
+        from hypothesis_tier2 import run_hypothesis_tier2
+    
+    try:
+        from .targeted_tests import run_targeted_tests
+    except ImportError:
+        from targeted_tests import run_targeted_tests
+
+    try:
+        from .static_tier4 import run_tier4
+    except ImportError:
+        from static_tier4 import run_tier4
+
+    oracle_verdicts = run_oracle_evaluation(source_code, checker_outputs)
+
     tier1_bugs = run_tier1(source_code, debug=debug)
-    
-    tier_reached = 1
-    tier2_bugs = []
-    tier3_findings = []
-    
-    # Only proceed to higher tiers if Tier 1 didn't resolve everything
-    if not tier1_bugs:
+
+    hypothesis_output_dir = None
+    if debug_dir:
+        hypothesis_output_dir = os.path.join(debug_dir, filename.replace(".py", ""))
+
+    tier2_bugs = run_hypothesis_tier2(
+        source_code,
+        checker_outputs=checker_outputs,
+        output_dir=hypothesis_output_dir,
+    )
+
+    targeted_bugs = run_targeted_tests(
+        source_code,
+        output_dir=hypothesis_output_dir,
+        filename=filename,
+    )
+    tier2_bugs = tier2_bugs + targeted_bugs
+
+    tier3_findings = run_tier3(source_code, checker_outputs)
+    tier4_findings = run_tier4(source_code, checker_outputs)
+
+    tier_reached = 0
+    has_oracle_findings = any(
+        ov.verdict != "UNCERTAIN" or ov.findings_hit or ov.findings_missed
+        for ov in oracle_verdicts.values()
+    )
+    if not has_oracle_findings:
+        tier_reached = 1
+    if not has_oracle_findings and not tier1_bugs:
         tier_reached = 2
-        
-        # Tier 2: Mutation + Typeguard
-        annotations = extract_type_annotations(source_code)
-        tier2_bugs = run_tier2(source_code, annotations, checker_outputs, debug=debug)
-        
-        if not tier2_bugs:
-            tier_reached = 3
-            
-            # Tier 3: PEP compliance
-            tier3_findings = run_tier3(source_code, checker_outputs)
-            
-            if not tier3_findings:
-                tier_reached = 4
-    
-    # Determine final verdicts
+    if not has_oracle_findings and not tier1_bugs and not tier2_bugs:
+        tier_reached = 3
+    if not has_oracle_findings and not tier1_bugs and not tier2_bugs and not tier3_findings:
+        tier_reached = 4
+
     verdicts = determine_verdicts(
         tier1_bugs, tier2_bugs, tier3_findings,
-        checker_outputs, source_code
+        checker_outputs, source_code,
+        tier4_findings=tier4_findings,
+        oracle_verdicts=oracle_verdicts,
     )
-    
+
     return EvaluationResult(
         filename=filename,
         tier1_bugs=tier1_bugs,
         tier2_bugs=tier2_bugs,
-        tier3_findings=tier3_findings,
+        tier3_findings=tier3_findings + tier4_findings,
         checker_verdicts=verdicts,
         tier_reached=tier_reached,
+        oracle_verdicts=oracle_verdicts,
     )
 
+
+def _call_gemini_agent(
+    source_code: str,
+    filename: str,
+    checker_name: str,
+    checker_output: str,
+    other_outputs: dict[str, str],
+) -> dict:
+    """Call Google Gemini API to resolve an uncertain verdict."""
+    import httpx
+
+    api_key = os.environ.get("GEMINI_API_KEY", "")
+    if not api_key:
+        return {
+            "verdict": "UNCERTAIN",
+            "reason": "GEMINI_API_KEY not set",
+            "pep_citation": None,
+            "confidence": 0.0,
+        }
+
+    others_text = ""
+    for name, out in other_outputs.items():
+        others_text += f"\n--- {name} ---\n{out}\n"
+
+    prompt = (
+        f"Source file: {filename}\n"
+        f"Source code:\n```python\n{source_code}\n```\n\n"
+        f"Checker: {checker_name}\n"
+        f"Checker output:\n```\n{checker_output}\n```\n\n"
+        f"Other checkers' outputs:\n{others_text}\n\n"
+        "Determine whether this type checker's behavior is CORRECT, INCORRECT, or UNCERTAIN.\n"
+        "Cite the specific PEP section that supports your verdict.\n"
+        "If you cannot determine a definitive answer, return UNCERTAIN with explanation.\n\n"
+        'Respond in JSON: {"verdict": "CORRECT"|"INCORRECT"|"UNCERTAIN", '
+        '"reason": "...", "pep_citation": "..."|null, "confidence": 0.0-1.0}'
+    )
+
+    model = "gemini-2.5-flash"
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+
+    try:
+        resp = httpx.post(
+            url,
+            headers={
+                "Content-Type": "application/json",
+                "x-goog-api-key": api_key,
+            },
+            json={
+                "contents": [{"parts": [{"text": prompt}]}],
+            },
+            timeout=120.0,
+        )
+        resp.raise_for_status()
+        data = resp.json()
+
+        try:
+            candidate = data.get("candidates", [{}])[0]
+            content = candidate.get("content", {})
+            parts = content.get("parts", [{}])
+            text = parts[0].get("text", "")
+        except (IndexError, AttributeError):
+            text = ""
+
+        if not text:
+            return {
+                "verdict": "UNCERTAIN",
+                "reason": f"Empty Gemini response: {data}",
+                "pep_citation": None,
+                "confidence": 0.0,
+            }
+
+        import re as _re
+        m = _re.search(r'\{[^}]*"verdict"\s*:', text)
+        if m:
+            json_str = text[m.start():]
+            brace_count = 0
+            end = 0
+            for i, ch in enumerate(json_str):
+                if ch == '{':
+                    brace_count += 1
+                elif ch == '}':
+                    brace_count -= 1
+                    if brace_count == 0:
+                        end = i + 1
+                        break
+            if end:
+                parsed = json.loads(json_str[:end])
+                verdict = parsed.get("verdict", "UNCERTAIN").upper()
+                if verdict not in ("CORRECT", "INCORRECT", "UNCERTAIN"):
+                    verdict = "UNCERTAIN"
+                return {
+                    "verdict": verdict,
+                    "reason": parsed.get("reason", ""),
+                    "pep_citation": parsed.get("pep_citation"),
+                    "confidence": float(parsed.get("confidence", 0.5)),
+                }
+
+        prose_match = _re.search(
+            r"\b(?:is|behavior is|behaviour is|verdict[:\s]+)\s*\*{0,2}"
+            r"(CORRECT|INCORRECT|UNCERTAIN)\*{0,2}",
+            text,
+            _re.IGNORECASE,
+        )
+        if prose_match:
+            verdict = prose_match.group(1).upper()
+            reason = text[:500].replace("\n", " ").strip()
+            return {
+                "verdict": verdict,
+                "reason": reason,
+                "pep_citation": None,
+                "confidence": 0.7,
+            }
+
+        return {
+            "verdict": "UNCERTAIN",
+            "reason": f"Could not parse agent response: {text[:200]}",
+            "pep_citation": None,
+            "confidence": 0.0,
+        }
+    except Exception as e:
+        return {
+            "verdict": "UNCERTAIN",
+            "reason": f"Agent call failed: {str(e)[:200]}",
+            "pep_citation": None,
+            "confidence": 0.0,
+        }
+
+
+def _resolve_uncertain_via_agent(
+    uncertain_cases: list[dict],
+    file_entries: list[dict],
+    checkers: list[str],
+) -> list[dict]:
+    """Resolve uncertain verdicts by calling an LLM agent via the Gemini API."""
+    agent_verdicts: list[dict] = []
+    file_data: dict[str, dict] = {}
+    for entry in file_entries:
+        fn = entry.get("filename", "")
+        file_data[fn] = entry
+
+    print(f"\nResolving {len(uncertain_cases)} uncertain case(s) via agent...")
+
+    for i, case in enumerate(uncertain_cases, 1):
+        filename = case["filename"]
+        checker = case["checker"]
+        result = case["result"]
+
+        entry = file_data.get(filename, {})
+        filepath = entry.get("filepath", "")
+        outputs = entry.get("outputs", {})
+
+        source_code = entry.get("source_code", "")
+        if not source_code:
+            if not filepath:
+                print(f"  WARNING: no filepath in results for {filename}, skipping agent resolution")
+                agent_verdicts.append({
+                    "filename": filename,
+                    "checker": checker,
+                    "verdict": "UNCERTAIN",
+                    "reason": "No source code or filepath available for agent resolution",
+                    "pep_citation": None,
+                    "confidence": 0.0,
+                })
+                continue
+            try:
+                with open(filepath) as f:
+                    source_code = f.read()
+            except (FileNotFoundError, KeyError):
+                print(f"  WARNING: source file not found for {filename}, skipping agent resolution")
+                agent_verdicts.append({
+                    "filename": filename,
+                    "checker": checker,
+                    "verdict": "UNCERTAIN",
+                    "reason": "Source file not found for agent resolution",
+                    "pep_citation": None,
+                    "confidence": 0.0,
+                })
+                continue
+
+        checker_output = outputs.get(checker, "")
+        other_outputs = {k: v for k, v in outputs.items() if k != checker}
+
+        print(f"  [{i}/{len(uncertain_cases)}] {filename} / {checker}...", end=" ", flush=True)
+        av = _call_gemini_agent(source_code, filename, checker, checker_output, other_outputs)
+        av["filename"] = filename
+        av["checker"] = checker
+        agent_verdicts.append(av)
+        print(f"{av['verdict']}")
+
+    return agent_verdicts
 
 def evaluate_results_comprehensive(
     results_path: str,
@@ -1277,9 +1575,11 @@ def evaluate_results_comprehensive(
     Args:
         results_path: Path to results.json from the pipeline.
         save_tests_dir: If set, save ephemeral Tier 1/2 test snippets to this directory.
+                        If None, automatically saves to a 'tests/' directory next to results.json.
     """
-    if save_tests_dir:
-        os.makedirs(save_tests_dir, exist_ok=True)
+    if save_tests_dir is None:
+        save_tests_dir = os.path.join(os.path.dirname(results_path), "tests")
+    os.makedirs(save_tests_dir, exist_ok=True)
 
     with open(results_path) as f:
         data = json.load(f)
@@ -1292,13 +1592,14 @@ def evaluate_results_comprehensive(
         checker: {"correct": 0, "incorrect": 0, "uncertain": 0}
         for checker in checkers
     }
-    tier_distribution = {1: 0, 2: 0, 3: 0, 4: 0}
+    tier_distribution = {0: 0, 1: 0, 2: 0, 3: 0, 4: 0}
     
     print("=" * 70)
     print("COMPREHENSIVE TIERED EVALUATION")
     print("=" * 70)
+    print("Tier 0: Oracle (AST-based ground truth)")
     print("Tier 1: Runtime crash detection")
-    print("Tier 2: Mutation + Typeguard testing")
+    print("Tier 2: Hypothesis property-based testing")
     print("Tier 3: PEP specification compliance")
     print("Tier 4: Design differences (uncertain)")
     print(f"Files to evaluate: {len(results)}")
@@ -1319,12 +1620,17 @@ def evaluate_results_comprehensive(
             print("  [SKIP] File not found")
             continue
         
-        collector = DebugArtifactCollector() if save_tests_dir else None
-        result = evaluate_comprehensive(source_code, outputs, filename, debug=collector)
-        all_results.append(result)
+        file_metrics = metrics_to_dict(compute_metrics(source_code))
+        file_entry["metrics"] = file_metrics
+
+        collector = DebugArtifactCollector()
+        result = evaluate_comprehensive(
+            source_code, outputs, filename,
+            debug=collector, debug_dir=save_tests_dir,
+        )
+        all_results.append((result, file_metrics))
         tier_distribution[result.tier_reached] += 1
-        if collector and save_tests_dir:
-            collector.save(save_tests_dir, filename)
+        collector.save(save_tests_dir, filename)
         
         # Print summary
         print(f"  Tier reached: {result.tier_reached}")
@@ -1363,30 +1669,88 @@ def evaluate_results_comprehensive(
     
     print("=" * 70)
     
+    # Collect uncertain cases for agent resolution
+    uncertain_cases: list[dict] = []
+    for result, _ in all_results:
+        for checker, verdict in result.checker_verdicts.items():
+            if verdict["verdict"] == "UNCERTAIN":
+                uncertain_cases.append({
+                    "filename": result.filename,
+                    "checker": checker,
+                    "result": result,
+                })
+
+    agent_verdicts: list[dict] = []
+    agent_stats = {
+        checker: {"correct": 0, "incorrect": 0, "uncertain": 0}
+        for checker in checkers
+    }
+
+    if uncertain_cases:
+        agent_verdicts = _resolve_uncertain_via_agent(uncertain_cases, results, checkers)
+        for av in agent_verdicts:
+            v = av.get("verdict", "UNCERTAIN")
+            c = av.get("checker", "")
+            if c in agent_stats:
+                if v == "CORRECT":
+                    agent_stats[c]["correct"] += 1
+                elif v == "INCORRECT":
+                    agent_stats[c]["incorrect"] += 1
+                else:
+                    agent_stats[c]["uncertain"] += 1
+
+        print()
+        print("=" * 70)
+        print("AGENT-RESOLVED UNCERTAIN CASES")
+        print("=" * 70)
+        print(f"\n{'Checker':<12} {'Correct':>10} {'Incorrect':>10} {'Uncertain':>10}")
+        print("-" * 44)
+        for checker in checkers:
+            s = agent_stats[checker]
+            print(f"{checker:<12} {s['correct']:>10} {s['incorrect']:>10} {s['uncertain']:>10}")
+        print("=" * 70)
+
+    # Write metrics back into results.json
+    with open(results_path, "w") as f:
+        json.dump(data, f, indent=2)
+
     # Save results
     output_dir = os.path.dirname(results_path)
     eval_path = os.path.join(output_dir, "evaluation_comprehensive.json")
-    
+
     with open(eval_path, "w") as f:
         json.dump({
             "method": "comprehensive_tiered",
             "tier_distribution": tier_distribution,
             "summary": summary_stats,
-            "results": [
+            "oracle_verdicts": [
                 {
                     "filename": r.filename,
+                    "metrics": m,
                     "tier_reached": r.tier_reached,
                     "tier1_bugs": [{"line": b.line, "type": b.bug_type, "msg": b.message} for b in r.tier1_bugs],
                     "tier2_bugs": [{"line": b.line, "type": b.bug_type, "msg": b.message} for b in r.tier2_bugs],
                     "tier3_findings": r.tier3_findings,
                     "verdicts": r.checker_verdicts,
+                    "oracle": {
+                        checker: {
+                            "verdict": ov.verdict,
+                            "reason": ov.reason,
+                            "confidence": ov.confidence,
+                            "findings_hit": len(ov.findings_hit),
+                            "findings_missed": len(ov.findings_missed),
+                        }
+                        for checker, ov in r.oracle_verdicts.items()
+                    } if r.oracle_verdicts else None,
                 }
-                for r in all_results
+                for r, m in all_results
             ],
+            "agent_verdicts": agent_verdicts,
         }, f, indent=2)
-    
+
     print(f"\nResults saved to: {eval_path}")
-    
+    print(f"Generated tests saved to: {save_tests_dir}/")
+
     return summary_stats
 
 

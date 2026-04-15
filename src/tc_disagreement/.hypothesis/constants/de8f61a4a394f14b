@@ -1,0 +1,4 @@
+# file: /home/benedek-kaibas/Documents/pytifex-demo/src/tc_disagreement/generate_json.py
+# hypothesis_version: 6.151.9
+
+['#', '# id:', '%Y-%m-%d_%H-%M-%S', '---', '```', 'code', 'examples', 'examples.json', 'full_content', 'id', 'metadata', 'model_used', 'raw_response', 'source_files', 'timestamp', 'utf-8', 'w']

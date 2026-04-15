@@ -1,0 +1,4 @@
+# file: /home/benedek-kaibas/Documents/pytifex-demo/src/tc_disagreement/run_checkers.py
+# hypothesis_version: 6.151.9
+
+['\n[STDERR]\n', '*.py', 'Success (No Output)', '__main__', 'checkers_used', 'filename', 'filepath', 'outputs', 'results', 'results.json', 'source_files', 'timestamp', 'utf-8', 'w']

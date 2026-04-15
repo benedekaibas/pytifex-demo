@@ -1,0 +1,42 @@
+File,Construct,mypy Status,pyrefly Status,zuban Status,ty Status,Split,mypy Verdict,pyrefly Verdict,zuban Verdict,ty Verdict
+getattr-classvar-enum-divergence.py,ClassVar,ok,ok,ok,ok,4-0,CORRECT,CORRECT,CORRECT,CORRECT
+classvar-protocol-self.py,ClassVar,ok,error,ok,ok,1-3,CORRECT,CORRECT,CORRECT,CORRECT
+decorator-super-generic-args.py,Decorator,ok,ok,ok,error,1-3,INCORRECT,INCORRECT,INCORRECT,INCORRECT
+generic-closure-paramspec.py,Generic,ok,error,ok,error,2-2,INCORRECT,INCORRECT,INCORRECT,CORRECT
+generic-closure-self.py,Generic,ok,error,ok,ok,1-3,CORRECT,CORRECT,CORRECT,CORRECT
+literal_narrowing.py,Literal,error,ok,ok,error,2-2,INCORRECT,CORRECT,CORRECT,INCORRECT
+newtype-tuple-list-coercion-refined.py,NewType,ok,ok,ok,error,1-3,UNCERTAIN,UNCERTAIN,UNCERTAIN,CORRECT
+newtype-typeguard-unreachable-refined.py,NewType,ok,ok,ok,error,1-3,UNCERTAIN,UNCERTAIN,UNCERTAIN,CORRECT
+newtype-liskov-declaration-divergence.py,NewType,ok,error,ok,error,2-2,INCORRECT,CORRECT,INCORRECT,INCORRECT
+newtype-typeguard-divergence-refined.py,NewType,ok,ok,ok,error,1-3,UNCERTAIN,UNCERTAIN,UNCERTAIN,UNCERTAIN
+typeddict_single_field.py,Other,error,error,error,error,0-4,CORRECT,CORRECT,CORRECT,INCORRECT
+overload-factory-typeguard-callable.py,Overload,ok,ok,ok,error,1-3,INCORRECT,INCORRECT,INCORRECT,INCORRECT
+overload-classmethod-paramspec.py,Overload,error,error,ok,ok,2-2,UNCERTAIN,UNCERTAIN,UNCERTAIN,UNCERTAIN
+paramspec-classmethod-typeddict-readonly.py,ParamSpec,ok,ok,ok,error,1-3,INCORRECT,INCORRECT,INCORRECT,INCORRECT
+paramspec-concatenate-divergence.py,ParamSpec,ok,error,error,error,3-1,UNCERTAIN,UNCERTAIN,UNCERTAIN,UNCERTAIN
+match-generic-union-typeguard.py,Pattern Matching,ok,ok,error,ok,1-3,UNCERTAIN,UNCERTAIN,CORRECT,UNCERTAIN
+match-typeguard-generic-tuple.py,Pattern Matching,error,error,ok,error,3-1,CORRECT,CORRECT,INCORRECT,CORRECT
+match-generic-self.py,Pattern Matching,ok,error,error,ok,2-2,INCORRECT,INCORRECT,CORRECT,INCORRECT
+match-protocol-generic-type.py,Pattern Matching,error,error,error,ok,3-1,CORRECT,INCORRECT,CORRECT,INCORRECT
+protocol-default-mixed-dataclass-transform.py,Protocol,error,error,error,ok,3-1,INCORRECT,INCORRECT,INCORRECT,INCORRECT
+self-cyclic-typevar-abstract.py,Self,error,error,ok,ok,2-2,UNCERTAIN,UNCERTAIN,INCORRECT,INCORRECT
+mixed-tuple-unpacking-newtype.py,Tuple/NewType,error,ok,ok,ok,1-3,INCORRECT,INCORRECT,INCORRECT,INCORRECT
+type-alias-literal-match-exhaustiveness.py,TypeAliasType,ok,ok,error,ok,1-3,UNCERTAIN,UNCERTAIN,CORRECT,UNCERTAIN
+typealiastype-method-binding-refined.py,TypeAliasType,ok,error,error,error,3-1,UNCERTAIN,UNCERTAIN,CORRECT,CORRECT
+typealiastype-complex-nested-generics.py,TypeAliasType,error,ok,ok,ok,1-3,UNCERTAIN,UNCERTAIN,UNCERTAIN,UNCERTAIN
+typeguard-self-protocol-refined.py,TypeGuard,error,error,error,ok,3-1,CORRECT,CORRECT,CORRECT,INCORRECT
+typeguard-list-narrowing-refined.py,TypeGuard,error,ok,ok,ok,1-3,INCORRECT,INCORRECT,INCORRECT,INCORRECT
+typeguard-generic-list-newtype.py,TypeGuard,error,error,ok,ok,2-2,CORRECT,INCORRECT,INCORRECT,INCORRECT
+typeis-variance-divergence-refined.py,TypeIs,error,ok,error,ok,2-2,CORRECT,INCORRECT,CORRECT,INCORRECT
+typeis-protocol-method.py,TypeIs,error,error,ok,error,3-1,CORRECT,CORRECT,INCORRECT,CORRECT
+typeis-descriptor.py,TypeIs,error,error,ok,error,3-1,CORRECT,CORRECT,INCORRECT,CORRECT
+typeis-decorated-method-refined.py,TypeIs,error,error,error,ok,3-1,CORRECT,CORRECT,CORRECT,INCORRECT
+typeddict-readonly-generic-field.py,TypedDict,ok,error,error,ok,2-2,UNCERTAIN,CORRECT,CORRECT,UNCERTAIN
+typeddict-readonly-mutation-refined.py,TypedDict,error,error,error,ok,3-1,CORRECT,CORRECT,CORRECT,UNCERTAIN
+dictionary-comprehension-typeddict-literal-divergence.py,TypedDict,ok,ok,error,error,2-2,UNCERTAIN,UNCERTAIN,INCORRECT,INCORRECT
+walrus_comprehension.py,Walrus/Comprehension,ok,error,ok,error,2-2,CORRECT,INCORRECT,CORRECT,INCORRECT
+asyncio-paramspec-partial-callback.py,asyncio,ok,ok,error,ok,1-3,UNCERTAIN,UNCERTAIN,UNCERTAIN,UNCERTAIN
+asyncio-generic-protocol-callback.py,asyncio,error,ok,error,ok,2-2,CORRECT,INCORRECT,CORRECT,INCORRECT
+dataclass-transform-protocol-default-methods.py,dataclass_transform,error,error,error,ok,3-1,INCORRECT,INCORRECT,INCORRECT,INCORRECT
+dataclass-transform-classmethod-super.py,dataclass_transform,error,error,error,ok,3-1,UNCERTAIN,UNCERTAIN,UNCERTAIN,UNCERTAIN
+pydantic-dataclass-typeddict-property.py,dataclass_transform,ok,error,ok,ok,1-3,CORRECT,CORRECT,CORRECT,CORRECT

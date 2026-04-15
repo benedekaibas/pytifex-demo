@@ -1,0 +1,4 @@
+# file: /home/benedek-kaibas/Documents/pytifex-demo/src/tc_disagreement/main.py
+# hypothesis_version: 6.151.9
+
+['--batch-size', '--eval-method', '--max-attempts', '--max-level', '--max-refinements', '--model', '--no-github', '--num-examples', '--verbose', '-v', '=', '?', 'PIPELINE COMPLETE', 'Verbose output', '__main__', 'all', 'check', 'command', 'comprehensive', 'consensus', 'deterministic', 'eval', 'evaluation_llm.json', 'full', 'gemini-2.5-flash', 'gemini-2.5-pro', 'generate', 'llm', 'multi_step', 'results.json', 'runtime', 'store_true', 'testing', 'tiered']

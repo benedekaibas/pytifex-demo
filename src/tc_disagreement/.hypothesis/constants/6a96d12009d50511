@@ -1,0 +1,4 @@
+# file: /home/benedek-kaibas/Documents/pytifex-demo/src/tc_disagreement/targeted_tests.py
+# hypothesis_version: 6.151.9
+
+[0.9, '<source>', '<targeted_tests>', 'BUGS', 'Callable', 'NewType', 'Protocol', 'Tuple', 'TypeGuard', '[^\\w]', '_', '__abstractmethods__', '__builtins__', '__init__', '__mro__', '__name__', '__protocol_attrs__', '__targeted_tests__', '_is_protocol', 'bytes', 'callable_param', 'classmethod', 'classmethod_super', 'decorator_signature', 'error', 'exec', 'inheritance_override', 'int', 'line', 'main_block_replay', 'newtype', 'object', 'protocol_conformance', 'return', 'str', 'targeted_tests.py', 'test', 'test_', 'test_name', 'tier2_targeted', 'tuple', 'tuple_length', 'type', 'typeguard_narrowing', 'unknown', 'unknown.py', 'w']

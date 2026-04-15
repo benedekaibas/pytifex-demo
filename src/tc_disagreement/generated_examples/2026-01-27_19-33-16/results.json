@@ -42,7 +42,7 @@
         "mypy": "ok",
         "pyrefly": "error",
         "zuban": "ok",
-        "ty": "error"
+        "ty": "ok"
       }
     },
     {

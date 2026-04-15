@@ -1,0 +1,434 @@
+{
+  "method": "comprehensive_tiered",
+  "tier_distribution": {
+    "1": 0,
+    "2": 0,
+    "3": 5,
+    "4": 4
+  },
+  "summary": {
+    "mypy": {
+      "correct": 7,
+      "incorrect": 2,
+      "uncertain": 0
+    },
+    "pyrefly": {
+      "correct": 5,
+      "incorrect": 4,
+      "uncertain": 0
+    },
+    "zuban": {
+      "correct": 6,
+      "incorrect": 3,
+      "uncertain": 0
+    },
+    "ty": {
+      "correct": 6,
+      "incorrect": 3,
+      "uncertain": 0
+    }
+  },
+  "results": [
+    {
+      "filename": "getattr-classvar-enum-divergence.py",
+      "tier_reached": 4,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "All checkers agree: no errors (consensus)",
+          "confidence": 0.55,
+          "tier": 4
+        },
+        "pyrefly": {
+          "verdict": "CORRECT",
+          "reason": "All checkers agree: no errors (consensus)",
+          "confidence": 0.55,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "All checkers agree: no errors (consensus)",
+          "confidence": 0.55,
+          "tier": 4
+        },
+        "ty": {
+          "verdict": "CORRECT",
+          "reason": "All checkers agree: no errors (consensus)",
+          "confidence": 0.55,
+          "tier": 4
+        }
+      }
+    },
+    {
+      "filename": "classvar-protocol-self.py",
+      "tier_reached": 4,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "All checkers agree: no errors (consensus)",
+          "confidence": 0.55,
+          "tier": 4
+        },
+        "pyrefly": {
+          "verdict": "CORRECT",
+          "reason": "All checkers agree: no errors (consensus)",
+          "confidence": 0.55,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "All checkers agree: no errors (consensus)",
+          "confidence": 0.55,
+          "tier": 4
+        },
+        "ty": {
+          "verdict": "CORRECT",
+          "reason": "All checkers agree: no errors (consensus)",
+          "confidence": 0.55,
+          "tier": 4
+        }
+      }
+    },
+    {
+      "filename": "match-typeguard-generic-tuple.py",
+      "tier_reached": 3,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "mypy",
+          "pep": 484,
+          "rule": "Non-Optional return type must return a value on all code paths (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 484,
+          "rule": "Non-Optional return type must return a value on all code paths (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "ty",
+          "pep": 484,
+          "rule": "Non-Optional return type must return a value on all code paths (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Follows PEP specifications (1 checks)",
+          "confidence": 0.75,
+          "tier": 3
+        },
+        "pyrefly": {
+          "verdict": "CORRECT",
+          "reason": "Follows PEP specifications (1 checks)",
+          "confidence": 0.75,
+          "tier": 3
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "Missed PEP-mandated error(s): Non-Optional return type must return a value on all code paths (PEP 484)",
+          "confidence": 0.7,
+          "tier": 3
+        },
+        "ty": {
+          "verdict": "CORRECT",
+          "reason": "Follows PEP specifications (1 checks)",
+          "confidence": 0.75,
+          "tier": 3
+        }
+      }
+    },
+    {
+      "filename": "match-generic-self.py",
+      "tier_reached": 3,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "Attribute access must resolve on the declared type (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "INCORRECT",
+          "reason": "Missed PEP-mandated error(s): Attribute access must resolve on the declared type (PEP 484)",
+          "confidence": 0.7,
+          "tier": 3
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Missed PEP-mandated error(s): Attribute access must resolve on the declared type (PEP 484)",
+          "confidence": 0.7,
+          "tier": 3
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Follows PEP specifications (1 checks)",
+          "confidence": 0.75,
+          "tier": 3
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed PEP-mandated error(s): Attribute access must resolve on the declared type (PEP 484)",
+          "confidence": 0.7,
+          "tier": 3
+        }
+      }
+    },
+    {
+      "filename": "generic-closure-paramspec.py",
+      "tier_reached": 3,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "ty",
+          "pep": 484,
+          "rule": "Attribute access must resolve on the declared type (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "INCORRECT",
+          "reason": "Missed PEP-mandated error(s): Attribute access must resolve on the declared type (PEP 484)",
+          "confidence": 0.7,
+          "tier": 3
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Missed PEP-mandated error(s): Attribute access must resolve on the declared type (PEP 484)",
+          "confidence": 0.7,
+          "tier": 3
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "Missed PEP-mandated error(s): Attribute access must resolve on the declared type (PEP 484)",
+          "confidence": 0.7,
+          "tier": 3
+        },
+        "ty": {
+          "verdict": "CORRECT",
+          "reason": "Follows PEP specifications (1 checks)",
+          "confidence": 0.75,
+          "tier": 3
+        }
+      }
+    },
+    {
+      "filename": "generic-closure-self.py",
+      "tier_reached": 4,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "All checkers agree: no errors (consensus)",
+          "confidence": 0.55,
+          "tier": 4
+        },
+        "pyrefly": {
+          "verdict": "CORRECT",
+          "reason": "All checkers agree: no errors (consensus)",
+          "confidence": 0.55,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "All checkers agree: no errors (consensus)",
+          "confidence": 0.55,
+          "tier": 4
+        },
+        "ty": {
+          "verdict": "CORRECT",
+          "reason": "All checkers agree: no errors (consensus)",
+          "confidence": 0.55,
+          "tier": 4
+        }
+      }
+    },
+    {
+      "filename": "match-protocol-generic-type.py",
+      "tier_reached": 3,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "mypy",
+          "pep": 484,
+          "rule": "Return value must match return type annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "Return value must match return type annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "Attribute access must resolve on the declared type (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "mypy",
+          "pep": 544,
+          "rule": "Protocol type parameters must use appropriate variance (PEP 544)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "zuban",
+          "pep": 544,
+          "rule": "Protocol type parameters must use appropriate variance (PEP 544)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Follows PEP specifications (2 checks)",
+          "confidence": 0.75,
+          "tier": 3
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Missed PEP-mandated error(s): Return value must match return type annotation (PEP 484); Protocol type parameters must use appropriate variance (PEP 544)",
+          "confidence": 0.7,
+          "tier": 3
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Follows PEP specifications (3 checks)",
+          "confidence": 0.75,
+          "tier": 3
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed PEP-mandated error(s): Return value must match return type annotation (PEP 484); Protocol type parameters must use appropriate variance (PEP 544)",
+          "confidence": 0.7,
+          "tier": 3
+        }
+      }
+    },
+    {
+      "filename": "pydantic-dataclass-typeddict-property.py",
+      "tier_reached": 4,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "All checkers agree: no errors (consensus)",
+          "confidence": 0.55,
+          "tier": 4
+        },
+        "pyrefly": {
+          "verdict": "CORRECT",
+          "reason": "All checkers agree: no errors (consensus)",
+          "confidence": 0.55,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "All checkers agree: no errors (consensus)",
+          "confidence": 0.55,
+          "tier": 4
+        },
+        "ty": {
+          "verdict": "CORRECT",
+          "reason": "All checkers agree: no errors (consensus)",
+          "confidence": 0.55,
+          "tier": 4
+        }
+      }
+    },
+    {
+      "filename": "typeguard-generic-list-newtype.py",
+      "tier_reached": 3,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "mypy",
+          "pep": 484,
+          "rule": "Assigned value must be compatible with the annotated variable type (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Follows PEP specifications (1 checks)",
+          "confidence": 0.75,
+          "tier": 3
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Missed PEP-mandated error(s): Assigned value must be compatible with the annotated variable type (PEP 484)",
+          "confidence": 0.7,
+          "tier": 3
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "Missed PEP-mandated error(s): Assigned value must be compatible with the annotated variable type (PEP 484)",
+          "confidence": 0.7,
+          "tier": 3
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed PEP-mandated error(s): Assigned value must be compatible with the annotated variable type (PEP 484)",
+          "confidence": 0.7,
+          "tier": 3
+        }
+      }
+    }
+  ]
+}

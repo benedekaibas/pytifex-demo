@@ -1,0 +1,18 @@
+File,Runtime Error (Yes/No),Error Type,mypy Caught,pyrefly Caught,zuban Caught,ty Caught
+decorator-super-modified-signature.py,Yes,TypeError,✓,✓,✓,✗
+typevartuple-unpacking-precision-refined.py,Yes,TypeError,✓,✓,✓,✗
+dataclass-transform-param-spec-return.py,Yes,TypeError,✓,✓,✓,✗
+inherited-unsound-helper-refined.py,Yes,AttributeError,Partial,✗,Partial,✗
+isinstance-protocol-divergence.py,Yes,TypeError,Partial,✗,✗,✗
+typeddict-unpack-total-false-extra.py,Yes,TypeError,✓,✓,✓,✗
+typeddict-unpack-notrequired-extra.py,Yes,TypeError,✓,✗,✗,✗
+typeddict-unpack-nested-extra.py,Yes,KeyError,✓,✗,✗,✗
+typevartuple-generic-class-nested-func.py,Yes,TypeError,✓,✓,✓,✗
+walrus_comprehension.py,No,,,,,
+typeddict_single_field.py,No,,,,,
+literal-inference-divergence-refined.py,No,,,,,
+list-concat-generic-self.py,No,,,,,
+match-typeguard-generic-tuple.py,No,,,,,
+match-protocol-generic-type.py,No,,,,,
+unsound-self-cast-divergence.py,No,,,,,
+typeddict-total-inheritance-divergence.py,No,,,,,

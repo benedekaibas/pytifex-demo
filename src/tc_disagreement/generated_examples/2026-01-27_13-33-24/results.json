@@ -160,7 +160,7 @@
       "statuses": {
         "mypy": "error",
         "pyrefly": "ok",
-        "zuban": "error",
+        "zuban": "ok",
         "ty": "error"
       }
     }

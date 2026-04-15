@@ -1,0 +1,997 @@
+{
+  "method": "comprehensive_tiered",
+  "tier_distribution": {
+    "0": 0,
+    "1": 0,
+    "2": 2,
+    "3": 3,
+    "4": 3
+  },
+  "summary": {
+    "mypy": {
+      "correct": 2,
+      "incorrect": 2,
+      "uncertain": 4
+    },
+    "pyrefly": {
+      "correct": 1,
+      "incorrect": 2,
+      "uncertain": 5
+    },
+    "zuban": {
+      "correct": 2,
+      "incorrect": 2,
+      "uncertain": 4
+    },
+    "ty": {
+      "correct": 1,
+      "incorrect": 2,
+      "uncertain": 5
+    }
+  },
+  "oracle_verdicts": [
+    {
+      "filename": "loop-newtype-divergence.py",
+      "metrics": {
+        "loc": 21,
+        "num_functions": 1,
+        "type_imports": 4,
+        "type_density": 0.0,
+        "internal_calls": 0
+      },
+      "tier_reached": 2,
+      "tier1_bugs": [],
+      "tier2_bugs": [
+        {
+          "line": 6,
+          "type": "ValueError",
+          "msg": "empty_tuple: not enough values to unpack (expected 2, got 0)"
+        },
+        {
+          "line": 6,
+          "type": "ValueError",
+          "msg": "single_element_tuple: not enough values to unpack (expected 2, got 1)"
+        },
+        {
+          "line": 6,
+          "type": "ValueError",
+          "msg": "none_in_tuple: not enough values to unpack (expected 2, got 1)"
+        },
+        {
+          "line": 6,
+          "type": "ValueError",
+          "msg": "wrong_types_in_tuple: too many values to unpack (expected 2)"
+        },
+        {
+          "line": 6,
+          "type": "ValueError",
+          "msg": "string_instead_of_tuple: too many values to unpack (expected 2)"
+        }
+      ],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 5 Hypothesis-proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 6,
+              "type": "ValueError"
+            },
+            {
+              "line": 6,
+              "type": "ValueError"
+            },
+            {
+              "line": 6,
+              "type": "ValueError"
+            },
+            {
+              "line": 6,
+              "type": "ValueError"
+            },
+            {
+              "line": 6,
+              "type": "ValueError"
+            }
+          ]
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 5 Hypothesis-proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 6,
+              "type": "ValueError"
+            },
+            {
+              "line": 6,
+              "type": "ValueError"
+            },
+            {
+              "line": 6,
+              "type": "ValueError"
+            },
+            {
+              "line": 6,
+              "type": "ValueError"
+            },
+            {
+              "line": 6,
+              "type": "ValueError"
+            }
+          ]
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 5 Hypothesis-proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 6,
+              "type": "ValueError"
+            },
+            {
+              "line": 6,
+              "type": "ValueError"
+            },
+            {
+              "line": 6,
+              "type": "ValueError"
+            },
+            {
+              "line": 6,
+              "type": "ValueError"
+            },
+            {
+              "line": 6,
+              "type": "ValueError"
+            }
+          ]
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 5 Hypothesis-proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 6,
+              "type": "ValueError"
+            },
+            {
+              "line": 6,
+              "type": "ValueError"
+            },
+            {
+              "line": 6,
+              "type": "ValueError"
+            },
+            {
+              "line": 6,
+              "type": "ValueError"
+            },
+            {
+              "line": 6,
+              "type": "ValueError"
+            }
+          ]
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        }
+      }
+    },
+    {
+      "filename": "typeddict-union-typeguard-narrowing.py",
+      "metrics": {
+        "loc": 27,
+        "num_functions": 2,
+        "type_imports": 5,
+        "type_density": 0.3333,
+        "internal_calls": 1
+      },
+      "tier_reached": 2,
+      "tier1_bugs": [],
+      "tier2_bugs": [
+        {
+          "line": 17,
+          "type": "TypeError",
+          "msg": "typeguard_none: argument of type 'NoneType' is not iterable"
+        }
+      ],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 Hypothesis-proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 17,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 Hypothesis-proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 17,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 Hypothesis-proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 17,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 Hypothesis-proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 17,
+              "type": "TypeError"
+            }
+          ]
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        }
+      }
+    },
+    {
+      "filename": "unsound-self-cast-divergence.py",
+      "metrics": {
+        "loc": 50,
+        "num_functions": 6,
+        "type_imports": 7,
+        "type_density": 0.02,
+        "internal_calls": 0
+      },
+      "tier_reached": 4,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        }
+      }
+    },
+    {
+      "filename": "reassign-generic-dict-inference.py",
+      "metrics": {
+        "loc": 32,
+        "num_functions": 1,
+        "type_imports": 6,
+        "type_density": -0.125,
+        "internal_calls": 0
+      },
+      "tier_reached": 3,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "mypy",
+          "pep": 484,
+          "rule": "Argument type must match parameter annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "Attribute access must resolve on the declared type (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Matches 1 PEP rule(s) (PEPs [484])",
+          "confidence": 0.8,
+          "tier": 3
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Matches 1 PEP rule(s) (PEPs [484])",
+          "confidence": 0.8,
+          "tier": 3
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        }
+      }
+    },
+    {
+      "filename": "typeddict-total-inheritance-divergence.py",
+      "metrics": {
+        "loc": 62,
+        "num_functions": 2,
+        "type_imports": 8,
+        "type_density": 0.1129,
+        "internal_calls": 1
+      },
+      "tier_reached": 4,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        }
+      }
+    },
+    {
+      "filename": "typeddict-total-inheritance-required-notrequired.py",
+      "metrics": {
+        "loc": 54,
+        "num_functions": 1,
+        "type_imports": 5,
+        "type_density": 0.1667,
+        "internal_calls": 0
+      },
+      "tier_reached": 4,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        }
+      }
+    },
+    {
+      "filename": "param-spec-decorator-classmethod.py",
+      "metrics": {
+        "loc": 59,
+        "num_functions": 6,
+        "type_imports": 6,
+        "type_density": 0.0847,
+        "internal_calls": 0
+      },
+      "tier_reached": 3,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "ty",
+          "pep": 484,
+          "rule": "Argument type must match parameter annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "ty",
+          "pep": 484,
+          "rule": "Attribute access must resolve on the declared type (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "ty",
+          "pep": 655,
+          "rule": "Required[] TypedDict keys must be present (PEP 655)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "ty": {
+          "verdict": "CORRECT",
+          "reason": "Matches 3 PEP rule(s) (PEPs [484, 655])",
+          "confidence": 0.8,
+          "tier": 3
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        }
+      }
+    },
+    {
+      "filename": "typeddict-match-narrowing-divergence.py",
+      "metrics": {
+        "loc": 60,
+        "num_functions": 7,
+        "type_imports": 11,
+        "type_density": 0.2833,
+        "internal_calls": 3
+      },
+      "tier_reached": 3,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "mypy",
+          "pep": 484,
+          "rule": "Argument type must match parameter annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "Argument type must match parameter annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 586,
+          "rule": "str is not assignable to Literal[...] (PEP 586)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 589,
+          "rule": "Accessing invalid key on TypedDict (PEP 589)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "zuban",
+          "pep": 634,
+          "rule": "Unreachable code after exhaustive match (PEP 634)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "mypy",
+          "pep": 586,
+          "rule": "str is not assignable to Literal (PEP 586)",
+          "line": 40,
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.8
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 586,
+          "rule": "str is not assignable to Literal (PEP 586)",
+          "line": 40,
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.8
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Matches 2 PEP rule(s) (PEPs [484, 586])",
+          "confidence": 0.8,
+          "tier": 3
+        },
+        "pyrefly": {
+          "verdict": "CORRECT",
+          "reason": "Matches 3 PEP rule(s) (PEPs [586, 589])",
+          "confidence": 0.8,
+          "tier": 3
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Matches 2 PEP rule(s) (PEPs [484, 634])",
+          "confidence": 0.8,
+          "tier": 3
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        }
+      }
+    }
+  ],
+  "agent_verdicts": [
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "unsound-self-cast-divergence.py",
+      "checker": "mypy"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "unsound-self-cast-divergence.py",
+      "checker": "pyrefly"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "unsound-self-cast-divergence.py",
+      "checker": "zuban"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "unsound-self-cast-divergence.py",
+      "checker": "ty"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "reassign-generic-dict-inference.py",
+      "checker": "pyrefly"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "reassign-generic-dict-inference.py",
+      "checker": "ty"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "typeddict-total-inheritance-divergence.py",
+      "checker": "mypy"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "typeddict-total-inheritance-divergence.py",
+      "checker": "pyrefly"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "typeddict-total-inheritance-divergence.py",
+      "checker": "zuban"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "typeddict-total-inheritance-divergence.py",
+      "checker": "ty"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "typeddict-total-inheritance-required-notrequired.py",
+      "checker": "mypy"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "typeddict-total-inheritance-required-notrequired.py",
+      "checker": "pyrefly"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "typeddict-total-inheritance-required-notrequired.py",
+      "checker": "zuban"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "typeddict-total-inheritance-required-notrequired.py",
+      "checker": "ty"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "param-spec-decorator-classmethod.py",
+      "checker": "mypy"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "param-spec-decorator-classmethod.py",
+      "checker": "pyrefly"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "param-spec-decorator-classmethod.py",
+      "checker": "zuban"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "typeddict-match-narrowing-divergence.py",
+      "checker": "ty"
+    }
+  ]
+}

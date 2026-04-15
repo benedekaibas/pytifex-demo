@@ -1,0 +1,1 @@
+        StatusEnum.get_status_for_user(UserID("non_existent"))

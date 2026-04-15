@@ -1,0 +1,1087 @@
+{
+  "method": "comprehensive_tiered",
+  "tier_distribution": {
+    "0": 3,
+    "1": 0,
+    "2": 1,
+    "3": 4,
+    "4": 0
+  },
+  "summary": {
+    "mypy": {
+      "correct": 1,
+      "incorrect": 1,
+      "uncertain": 6
+    },
+    "pyrefly": {
+      "correct": 0,
+      "incorrect": 2,
+      "uncertain": 6
+    },
+    "zuban": {
+      "correct": 1,
+      "incorrect": 3,
+      "uncertain": 4
+    },
+    "ty": {
+      "correct": 0,
+      "incorrect": 4,
+      "uncertain": 4
+    }
+  },
+  "oracle_verdicts": [
+    {
+      "filename": "asyncio-paramspec-partial-callback.py",
+      "metrics": {
+        "loc": 32,
+        "num_functions": 5,
+        "type_imports": 5,
+        "type_density": 0.0625,
+        "internal_calls": 1
+      },
+      "tier_reached": 3,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "Argument type must match parameter annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        }
+      }
+    },
+    {
+      "filename": "newtype-typeguard-divergence-refined.py",
+      "metrics": {
+        "loc": 25,
+        "num_functions": 1,
+        "type_imports": 4,
+        "type_density": -0.08,
+        "internal_calls": 0
+      },
+      "tier_reached": 3,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "ty",
+          "pep": 484,
+          "rule": "float is a valid base for NewType (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "ok",
+          "is_correct": false,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        }
+      }
+    },
+    {
+      "filename": "paramspec-concatenate-divergence.py",
+      "metrics": {
+        "loc": 51,
+        "num_functions": 7,
+        "type_imports": 6,
+        "type_density": 0.098,
+        "internal_calls": 2
+      },
+      "tier_reached": 3,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "Argument type must match parameter annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "ty",
+          "pep": 484,
+          "rule": "Attribute access must resolve on the declared type (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        }
+      }
+    },
+    {
+      "filename": "dictionary-comprehension-typeddict-literal-divergence.py",
+      "metrics": {
+        "loc": 45,
+        "num_functions": 0,
+        "type_imports": 5,
+        "type_density": 0.1333,
+        "internal_calls": 0
+      },
+      "tier_reached": 3,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "ty",
+          "pep": 484,
+          "rule": "Assigned value must be compatible with declared type (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "zuban",
+          "pep": 589,
+          "rule": "Missing required key in TypedDict (PEP 589)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "zuban",
+          "pep": 589,
+          "rule": "Missing required key in TypedDict (PEP 589)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "zuban",
+          "pep": 589,
+          "rule": "Extra keys not allowed in TypedDict (PEP 589)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "Reported errors on violation-free source",
+          "confidence": 0.8,
+          "tier": 0
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Reported errors on violation-free source",
+          "confidence": 0.8,
+          "tier": 0
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        }
+      }
+    },
+    {
+      "filename": "asyncio-generic-protocol-callback.py",
+      "metrics": {
+        "loc": 35,
+        "num_functions": 8,
+        "type_imports": 6,
+        "type_density": 0.2286,
+        "internal_calls": 3
+      },
+      "tier_reached": 0,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "Argument type must match parameter annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "mypy",
+          "pep": 544,
+          "rule": "[VARIANCE002] Invariant TypeVar `T` used in Protocol `TaskResultProcessor` only in parameter positions \u2014 should be declared contravariant",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 544,
+          "rule": "[VARIANCE002] Invariant TypeVar `T` used in Protocol `TaskResultProcessor` only in parameter positions \u2014 should be declared contravariant",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.85,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "zuban",
+          "pep": 544,
+          "rule": "[VARIANCE002] Invariant TypeVar `T` used in Protocol `TaskResultProcessor` only in parameter positions \u2014 should be declared contravariant",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "ty",
+          "pep": 544,
+          "rule": "[VARIANCE002] Invariant TypeVar `T` used in Protocol `TaskResultProcessor` only in parameter positions \u2014 should be declared contravariant",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.85,
+          "source": "source_analysis"
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "All 1 oracle finding(s) matched by checker diagnostics",
+          "confidence": 0.85,
+          "tier": 0,
+          "oracle_hit": 1,
+          "oracle_missed": 0,
+          "missed_findings": null
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "1 of 1 oracle finding(s) not reported by checker",
+          "confidence": 0.85,
+          "tier": 0,
+          "oracle_hit": 0,
+          "oracle_missed": 1,
+          "missed_findings": [
+            {
+              "line": 5,
+              "rule": "VARIANCE002",
+              "msg": "Invariant TypeVar `T` used in Protocol `TaskResultProcessor` only in parameter positions \u2014 should be declared contravariant"
+            }
+          ]
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "All 1 oracle finding(s) matched by checker diagnostics",
+          "confidence": 0.85,
+          "tier": 0,
+          "oracle_hit": 1,
+          "oracle_missed": 0,
+          "missed_findings": null
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "1 of 1 oracle finding(s) not reported by checker",
+          "confidence": 0.85,
+          "tier": 0,
+          "oracle_hit": 0,
+          "oracle_missed": 1,
+          "missed_findings": [
+            {
+              "line": 5,
+              "rule": "VARIANCE002",
+              "msg": "Invariant TypeVar `T` used in Protocol `TaskResultProcessor` only in parameter positions \u2014 should be declared contravariant"
+            }
+          ]
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "All 1 oracle finding(s) matched by checker diagnostics",
+          "confidence": 0.85,
+          "findings_hit": 1,
+          "findings_missed": 0
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "1 of 1 oracle finding(s) not reported by checker",
+          "confidence": 0.85,
+          "findings_hit": 0,
+          "findings_missed": 1
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "All 1 oracle finding(s) matched by checker diagnostics",
+          "confidence": 0.85,
+          "findings_hit": 1,
+          "findings_missed": 0
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "1 of 1 oracle finding(s) not reported by checker",
+          "confidence": 0.85,
+          "findings_hit": 0,
+          "findings_missed": 1
+        }
+      }
+    },
+    {
+      "filename": "overload-factory-typeguard-callable.py",
+      "metrics": {
+        "loc": 57,
+        "num_functions": 8,
+        "type_imports": 7,
+        "type_density": 0.2807,
+        "internal_calls": 0
+      },
+      "tier_reached": 0,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "ty",
+          "pep": 484,
+          "rule": "Argument type must match parameter annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "ty",
+          "pep": 484,
+          "rule": "Attribute access must resolve on the declared type (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "mypy",
+          "pep": 647,
+          "rule": "[TYPEGUARD001] Function `create` returns `TypeGuard` but has no argument to narrow",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 647,
+          "rule": "[TYPEGUARD001] Function `create` returns `TypeGuard` but has no argument to narrow",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "zuban",
+          "pep": 647,
+          "rule": "[TYPEGUARD001] Function `create` returns `TypeGuard` but has no argument to narrow",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "ty",
+          "pep": 647,
+          "rule": "[TYPEGUARD001] Function `create` returns `TypeGuard` but has no argument to narrow",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.5,
+          "source": "source_analysis"
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "INCORRECT",
+          "reason": "1 of 1 oracle finding(s) not reported by checker",
+          "confidence": 0.9,
+          "tier": 0,
+          "oracle_hit": 0,
+          "oracle_missed": 1,
+          "missed_findings": [
+            {
+              "line": 26,
+              "rule": "TYPEGUARD001",
+              "msg": "Function `create` returns `TypeGuard` but has no argument to narrow"
+            }
+          ]
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "1 of 1 oracle finding(s) not reported by checker",
+          "confidence": 0.9,
+          "tier": 0,
+          "oracle_hit": 0,
+          "oracle_missed": 1,
+          "missed_findings": [
+            {
+              "line": 26,
+              "rule": "TYPEGUARD001",
+              "msg": "Function `create` returns `TypeGuard` but has no argument to narrow"
+            }
+          ]
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "1 of 1 oracle finding(s) not reported by checker",
+          "confidence": 0.9,
+          "tier": 0,
+          "oracle_hit": 0,
+          "oracle_missed": 1,
+          "missed_findings": [
+            {
+              "line": 26,
+              "rule": "TYPEGUARD001",
+              "msg": "Function `create` returns `TypeGuard` but has no argument to narrow"
+            }
+          ]
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "1 of 1 oracle finding(s) not reported by checker",
+          "confidence": 0.9,
+          "tier": 0,
+          "oracle_hit": 0,
+          "oracle_missed": 1,
+          "missed_findings": [
+            {
+              "line": 26,
+              "rule": "TYPEGUARD001",
+              "msg": "Function `create` returns `TypeGuard` but has no argument to narrow"
+            }
+          ]
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "INCORRECT",
+          "reason": "1 of 1 oracle finding(s) not reported by checker",
+          "confidence": 0.9,
+          "findings_hit": 0,
+          "findings_missed": 1
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "1 of 1 oracle finding(s) not reported by checker",
+          "confidence": 0.9,
+          "findings_hit": 0,
+          "findings_missed": 1
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "1 of 1 oracle finding(s) not reported by checker",
+          "confidence": 0.9,
+          "findings_hit": 0,
+          "findings_missed": 1
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "1 of 1 oracle finding(s) not reported by checker",
+          "confidence": 0.9,
+          "findings_hit": 0,
+          "findings_missed": 1
+        }
+      }
+    },
+    {
+      "filename": "overload-classmethod-paramspec.py",
+      "metrics": {
+        "loc": 56,
+        "num_functions": 9,
+        "type_imports": 6,
+        "type_density": 0.25,
+        "internal_calls": 0
+      },
+      "tier_reached": 2,
+      "tier1_bugs": [],
+      "tier2_bugs": [
+        {
+          "line": 18,
+          "type": "TypeError",
+          "msg": "decorated_no_args: Invalid usage of register"
+        }
+      ],
+      "tier3_findings": [
+        {
+          "checker": "mypy",
+          "pep": 484,
+          "rule": "Assigned value must be compatible with the annotated variable type (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        }
+      }
+    },
+    {
+      "filename": "self-cyclic-typevar-abstract.py",
+      "metrics": {
+        "loc": 49,
+        "num_functions": 11,
+        "type_imports": 5,
+        "type_density": 0.2041,
+        "internal_calls": 0
+      },
+      "tier_reached": 0,
+      "tier1_bugs": [],
+      "tier2_bugs": [
+        {
+          "line": 16,
+          "type": "TypeError",
+          "msg": "Container() -> TypeError: Can't instantiate abstract class Container without an implementation for abstract methods 'add_item', 'get_first_item'"
+        },
+        {
+          "line": 22,
+          "type": "TypeError",
+          "msg": "Item() -> TypeError: Can't instantiate abstract class Item without an implementation for abstract methods 'get_parent_container', 'to_container'"
+        }
+      ],
+      "tier3_findings": [
+        {
+          "checker": "mypy",
+          "pep": 484,
+          "rule": "[LSP002] `MyContainer.add_item` parameter `item` has type `'MyItem'` but base `Container.add_item` has `ItemT` \u2014 incompatible override",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.5,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 484,
+          "rule": "[LSP002] `MyContainer.add_item` parameter `item` has type `'MyItem'` but base `Container.add_item` has `ItemT` \u2014 incompatible override",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.5,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "[LSP002] `MyContainer.add_item` parameter `item` has type `'MyItem'` but base `Container.add_item` has `ItemT` \u2014 incompatible override",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.85,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "ty",
+          "pep": 484,
+          "rule": "[LSP002] `MyContainer.add_item` parameter `item` has type `'MyItem'` but base `Container.add_item` has `ItemT` \u2014 incompatible override",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.85,
+          "source": "source_analysis"
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "1 of 1 oracle finding(s) not reported by checker",
+          "confidence": 0.85,
+          "tier": 0,
+          "oracle_hit": 0,
+          "oracle_missed": 1,
+          "missed_findings": [
+            {
+              "line": 48,
+              "rule": "LSP002",
+              "msg": "`MyContainer.add_item` parameter `item` has type `'MyItem'` but base `Container.add_item` has `ItemT` \u2014 incompatible override"
+            }
+          ]
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "1 of 1 oracle finding(s) not reported by checker",
+          "confidence": 0.85,
+          "tier": 0,
+          "oracle_hit": 0,
+          "oracle_missed": 1,
+          "missed_findings": [
+            {
+              "line": 48,
+              "rule": "LSP002",
+              "msg": "`MyContainer.add_item` parameter `item` has type `'MyItem'` but base `Container.add_item` has `ItemT` \u2014 incompatible override"
+            }
+          ]
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "1 oracle finding(s) blocked by upstream checker errors",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "1 oracle finding(s) blocked by upstream checker errors",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "1 of 1 oracle finding(s) not reported by checker",
+          "confidence": 0.85,
+          "findings_hit": 0,
+          "findings_missed": 1
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "1 of 1 oracle finding(s) not reported by checker",
+          "confidence": 0.85,
+          "findings_hit": 0,
+          "findings_missed": 1
+        }
+      }
+    }
+  ],
+  "agent_verdicts": [
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "asyncio-paramspec-partial-callback.py",
+      "checker": "mypy"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "asyncio-paramspec-partial-callback.py",
+      "checker": "pyrefly"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "asyncio-paramspec-partial-callback.py",
+      "checker": "zuban"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "asyncio-paramspec-partial-callback.py",
+      "checker": "ty"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "newtype-typeguard-divergence-refined.py",
+      "checker": "mypy"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "newtype-typeguard-divergence-refined.py",
+      "checker": "pyrefly"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "newtype-typeguard-divergence-refined.py",
+      "checker": "zuban"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "newtype-typeguard-divergence-refined.py",
+      "checker": "ty"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "paramspec-concatenate-divergence.py",
+      "checker": "mypy"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "paramspec-concatenate-divergence.py",
+      "checker": "pyrefly"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "paramspec-concatenate-divergence.py",
+      "checker": "zuban"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "paramspec-concatenate-divergence.py",
+      "checker": "ty"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "dictionary-comprehension-typeddict-literal-divergence.py",
+      "checker": "mypy"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "dictionary-comprehension-typeddict-literal-divergence.py",
+      "checker": "pyrefly"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "overload-classmethod-paramspec.py",
+      "checker": "mypy"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "overload-classmethod-paramspec.py",
+      "checker": "pyrefly"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "overload-classmethod-paramspec.py",
+      "checker": "zuban"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "overload-classmethod-paramspec.py",
+      "checker": "ty"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "self-cyclic-typevar-abstract.py",
+      "checker": "mypy"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "GEMINI_API_KEY not set",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "self-cyclic-typevar-abstract.py",
+      "checker": "pyrefly"
+    }
+  ]
+}

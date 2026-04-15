@@ -1,0 +1,1 @@
+        make_request(method="GET", url="/api/data")

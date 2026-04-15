@@ -1,0 +1,14 @@
+File,Minority Checker,Minority Position,Majority Position,Minority Verdict,Minority Was Correct
+decorator-super-modified-signature.py,ty,ok,error,INCORRECT,No
+typevartuple-unpacking-precision-refined.py,ty,ok,error,INCORRECT,No
+dataclass-transform-param-spec-return.py,ty,ok,error,INCORRECT,No
+inherited-unsound-helper-refined.py,ty,ok,error,INCORRECT,No
+isinstance-protocol-divergence.py,mypy,error,ok,INCORRECT,No
+typeddict-unpack-total-false-extra.py,ty,ok,error,INCORRECT,No
+typeddict-unpack-notrequired-extra.py,ty,ok,error,INCORRECT,No
+typeddict-unpack-nested-extra.py,ty,ok,error,INCORRECT,No
+typevartuple-generic-class-nested-func.py,ty,ok,error,INCORRECT,No
+literal-inference-divergence-refined.py,ty,ok,error,UNCERTAIN,Uncertain
+match-typeguard-generic-tuple.py,zuban,ok,error,INCORRECT,No
+match-protocol-generic-type.py,ty,ok,error,INCORRECT,No
+typeddict-total-inheritance-divergence.py,pyrefly,ok,error,UNCERTAIN,Uncertain

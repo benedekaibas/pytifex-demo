@@ -1,0 +1,4 @@
+# file: /home/benedek-kaibas/Documents/pytifex-demo/src/tc_disagreement/config.py
+# hypothesis_version: 6.151.9
+
+['check', 'generated_examples', 'mypy', 'pyrefly', 'ty', 'zuban']

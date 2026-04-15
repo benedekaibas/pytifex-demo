@@ -1,0 +1,15 @@
+Category,Count,Percentage (%),Example Files
+Generics,24,16.3,"double-bound-typevar-resolution.py, self-in-generics-abstract-method.py, self-generic-abstract-inference.py"
+Protocol,24,16.3,"protocol-call-keyword-only-vs-positional.py, protocol-default-arg-absence.py, protocol-default-arg-compatibility.py"
+TypedDict,24,16.3,"typeddict-required-notrequired-total-false.py, typed-dict-total-sticky-required.py, typed-dict-mixed-total-inheritance.py"
+TypeGuard / TypeIs,23,15.6,"typeguard-generic-list-narrowing.py, typeguard-generic-list-narrowing.py, typeguard-generic-dict-narrowing.py"
+Other,16,10.9,"self-constructor-divergence-refined.py, ternary-union-attribute-method-call.py, type-self-init-divergence-refined.py"
+ParamSpec,14,9.5,"paramspec-decorator-classmethod.py, param-spec-decorator-classmethod-order.py, paramspec-decorator-with-classmethod-and-overload.py"
+NewType,10,6.8,"newtype-base-type-attribute-access.py, newtype-list-covariance.py, newtype-list-covariance.py"
+Overloads,4,2.7,"overload-literal-discrimination.py, overload-literal-resolution.py, overload-decorator-any-refined.py"
+Final,3,2.0,"final-property-override.py, final-class-var-subclass-access.py, final-attribute-property-override.py"
+Inheritance / Override,2,1.4,"inherited-unsound-helper-refined.py, dataclass-transform-classmethod-super.py"
+Variance,1,0.7,t-variance-divergence.py
+Callable,1,0.7,callable-union-abc-vs-typing.py
+Decorators,1,0.7,decorator-super-modified-signature.py
+TOTAL,147,100.0,

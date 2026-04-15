@@ -1,0 +1,135 @@
+{
+  "timestamp": "2026-04-02T13:36:30.914480",
+  "model_used": "gemini-2.5-flash",
+  "total_generated": 15,
+  "disagreements_found": 5,
+  "success_rate": "33.3%",
+  "checkers_used": [
+    "mypy",
+    "pyrefly",
+    "zuban",
+    "ty"
+  ],
+  "results": [
+    {
+      "filename": "type-is-type-generic-narrowing-refined.py",
+      "filepath": "generated_examples/2026-04-02_13-36-30/source_files/type-is-type-generic-narrowing-refined.py",
+      "seed_issue": null,
+      "metrics": {
+        "loc": 21,
+        "num_functions": 2,
+        "type_imports": 4,
+        "type_density": -0.0476,
+        "internal_calls": 0
+      },
+      "outputs": {
+        "mypy": "_pytifex_temp_890093.py:25: note: Revealed type is \"type[_pytifex_temp_890093.BaseThing[T`1]]\"\n_pytifex_temp_890093.py:33: error: \"object\" has no attribute \"value\"  [attr-defined]\nFound 1 error in 1 file (checked 1 source file)",
+        "pyrefly": "INFO revealed type: type[BaseThing] [reveal-type]\n  --> _pytifex_temp_890093.py:25:20\n   |\n25 |         reveal_type(type(self)) # Expect: `Type[BaseThing[UserId]]` when `self` is `BaseThing[UserId]`\n   |                    ------------\n   |\n INFO 0 errors",
+        "zuban": "_pytifex_temp_890093.py:25: note: Revealed type is \"type[Self]\"\nSuccess: no issues found in 1 source file",
+        "ty": "info[revealed-type]: Revealed type\n  --> _pytifex_temp_890093.py:25:21\n   |\n23 |         # Without it, if `other` is BaseThing[DeviceId], `other.value` is str, not int.\n24 |         # This comparison should fail if types are different, but pass if they're the same class and generic param.\n25 |         reveal_type(type(self)) # Expect: `Type[BaseThing[UserId]]` when `self` is `BaseThing[UserId]`\n   |                     ^^^^^^^^^^ `type[Self@__eq__]`\n26 |         \n27 |         # The `type: ignore[attr-defined]` has been removed.\n   |\n\nerror[unresolved-attribute]: Object of type `object` has no attribute `value`\n  --> _pytifex_temp_890093.py:33:30\n   |\n31 |         # might allow `other.value` to be accessed, while others that lose generic information\n32 |         # or don't narrow sufficiently will flag an error (e.g., `object` has no `value` attribute).\n33 |         return self.value == other.value\n   |                              ^^^^^^^^^^^\n   |\ninfo: rule `unresolved-attribute` is enabled by default\n\nFound 2 diagnostics"
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "ok",
+        "zuban": "ok",
+        "ty": "error"
+      }
+    },
+    {
+      "filename": "NewType-ParamSpec-divergence.py",
+      "filepath": "generated_examples/2026-04-02_13-36-30/source_files/NewType-ParamSpec-divergence.py",
+      "seed_issue": null,
+      "metrics": {
+        "loc": 35,
+        "num_functions": 5,
+        "type_imports": 11,
+        "type_density": 0.0,
+        "internal_calls": 0
+      },
+      "outputs": {
+        "mypy": "_pytifex_temp_890093.py:56: error: Argument \"item\" to \"Box\" has incompatible type \"int\"; expected \"Key\"  [arg-type]\n_pytifex_temp_890093.py:64: note: Revealed type is \"_pytifex_temp_890093.Box[_pytifex_temp_890093.KeyId]\"\n_pytifex_temp_890093.py:67: note: Revealed type is \"_pytifex_temp_890093.Box[_pytifex_temp_890093.KeyId]\"\n_pytifex_temp_890093.py:71: note: Revealed type is \"_pytifex_temp_890093.Box[_pytifex_temp_890093.KeyId]\"\nFound 1 error in 1 file (checked 1 source file)",
+        "pyrefly": "INFO revealed type: Box[KeyId] [reveal-type]\n  --> _pytifex_temp_890093.py:64:16\n   |\n64 |     reveal_type(my_box) # Expect: Box[KeyId]\n   |                --------\n   |\n INFO revealed type: Box[KeyId] [reveal-type]\n  --> _pytifex_temp_890093.py:67:16\n   |\n67 |     reveal_type(bigger_box) # Expect: Box[KeyId] (if decorator's effect is consistent)\n   |                ------------\n   |\n INFO revealed type: Box[KeyId] [reveal-type]\n  --> _pytifex_temp_890093.py:71:16\n   |\n71 |     reveal_type(changed_box)\n   |                -------------\n   |\n INFO 0 errors",
+        "zuban": "_pytifex_temp_890093.py:64: note: Revealed type is \"_pytifex_temp_890093.Box[_pytifex_temp_890093.KeyId]\"\n_pytifex_temp_890093.py:67: note: Revealed type is \"_pytifex_temp_890093.Box[_pytifex_temp_890093.KeyId]\"\n_pytifex_temp_890093.py:71: note: Revealed type is \"_pytifex_temp_890093.Box[_pytifex_temp_890093.KeyId]\"\nSuccess: no issues found in 1 source file",
+        "ty": "info[revealed-type]: Revealed type\n  --> _pytifex_temp_890093.py:64:17\n   |\n62 |     my_key = KeyId(42)\n63 |     my_box = Box(item=my_key) # 'Key' is inferred as 'KeyId' here\n64 |     reveal_type(my_box) # Expect: Box[KeyId]\n   |                 ^^^^^^ `Box[KeyId]`\n65 |\n66 |     bigger_box = my_box.grow()\n   |\n\ninfo[revealed-type]: Revealed type\n  --> _pytifex_temp_890093.py:67:17\n   |\n66 |     bigger_box = my_box.grow()\n67 |     reveal_type(bigger_box) # Expect: Box[KeyId] (if decorator's effect is consistent)\n   |                 ^^^^^^^^^^ `Box[KeyId]`\n68 |\n69 |     new_key = KeyId(99)\n   |\n\ninfo[revealed-type]: Revealed type\n  --> _pytifex_temp_890093.py:71:17\n   |\n69 |     new_key = KeyId(99)\n70 |     changed_box = bigger_box.change_item(new_key)\n71 |     reveal_type(changed_box)\n   |                 ^^^^^^^^^^^ `Box[KeyId]`\n72 |\n73 |     # Box(item=100) # This should still be a type error if KeyId is expected.\n   |\n\nFound 3 diagnostics"
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "ok",
+        "zuban": "ok",
+        "ty": "error"
+      }
+    },
+    {
+      "filename": "newtype-cast-divergence-refined.py",
+      "filepath": "generated_examples/2026-04-02_13-36-30/source_files/newtype-cast-divergence-refined.py",
+      "seed_issue": null,
+      "metrics": {
+        "loc": 34,
+        "num_functions": 4,
+        "type_imports": 7,
+        "type_density": 0.0294,
+        "internal_calls": 0
+      },
+      "outputs": {
+        "mypy": "Success: no issues found in 1 source file",
+        "pyrefly": "INFO 0 errors",
+        "zuban": "_pytifex_temp_890093.py:27: error: Type variable \"_pytifex_temp_890093.T\" is unbound  [misc]\n_pytifex_temp_890093.py:27: note: (Hint: Use \"Generic[T]\" or \"Protocol[T]\" base class to bind \"T\" inside a class)\n_pytifex_temp_890093.py:27: note: (Hint: Use \"T\" in function signature to bind \"T\" inside a function)\nFound 1 error in 1 file (checked 1 source file)",
+        "ty": "All checks passed!"
+      },
+      "statuses": {
+        "mypy": "ok",
+        "pyrefly": "ok",
+        "zuban": "error",
+        "ty": "ok"
+      }
+    },
+    {
+      "filename": "typeguard-unsound-with-isinstance-helper-refined.py",
+      "filepath": "generated_examples/2026-04-02_13-36-30/source_files/typeguard-unsound-with-isinstance-helper-refined.py",
+      "seed_issue": null,
+      "metrics": {
+        "loc": 35,
+        "num_functions": 4,
+        "type_imports": 5,
+        "type_density": 0.2286,
+        "internal_calls": 2
+      },
+      "outputs": {
+        "mypy": "_pytifex_temp_890093.py:41: note: Revealed type is \"_pytifex_temp_890093.Box[builtins.int]\"\n_pytifex_temp_890093.py:51: note: Revealed type is \"builtins.int | None\"\nSuccess: no issues found in 1 source file",
+        "pyrefly": "INFO revealed type: Box[int] [reveal-type]\n  --> _pytifex_temp_890093.py:41:20\n   |\n41 |         reveal_type(box_or_any) # Expect: Box[int] (all checkers agree here)\n   |                    ------------\n   |\n INFO revealed type: int | None [reveal-type]\n  --> _pytifex_temp_890093.py:51:20\n   |\n51 |         reveal_type(actual_content) # Divergence point: Expect `int` vs `int | None`\n   |                    ----------------\n   |\n INFO 0 errors",
+        "zuban": "_pytifex_temp_890093.py:33: error: \"type[T]\" has no attribute \"__name__\"  [attr-defined]\n_pytifex_temp_890093.py:33: error: \"type[T]\" has no attribute \"__name__\"  [attr-defined]\n_pytifex_temp_890093.py:41: note: Revealed type is \"_pytifex_temp_890093.Box[builtins.int]\"\n_pytifex_temp_890093.py:51: note: Revealed type is \"builtins.int | None\"\nFound 2 errors in 1 file (checked 1 source file)",
+        "ty": "info[revealed-type]: Revealed type\n  --> _pytifex_temp_890093.py:41:21\n   |\n39 |     if is_same_box_type(box_or_any, box1):\n40 |         # The TypeGuard `is_same_box_type` claims `box_or_any` is `Box[int]`.\n41 |         reveal_type(box_or_any) # Expect: Box[int] (all checkers agree here)\n   |                     ^^^^^^^^^^ `Any`\n42 |\n43 |         # Call the new helper function.\n   |\n\ninfo[revealed-type]: Revealed type\n  --> _pytifex_temp_890093.py:51:21\n   |\n49 |         # The `isinstance(\"hello\", int)` check will be `False` at runtime.\n50 |         actual_content = process_content_with_type(box_or_any, int)\n51 |         reveal_type(actual_content) # Divergence point: Expect `int` vs `int | None`\n   |                     ^^^^^^^^^^^^^^ `int | None`\n52 |\n53 |         if actual_content is not None:\n   |\n\nFound 2 diagnostics"
+      },
+      "statuses": {
+        "mypy": "ok",
+        "pyrefly": "ok",
+        "zuban": "error",
+        "ty": "ok"
+      }
+    },
+    {
+      "filename": "typevartuple-generic-class-nested-func.py",
+      "filepath": "generated_examples/2026-04-02_13-36-30/source_files/typevartuple-generic-class-nested-func.py",
+      "seed_issue": "https://github.com/zubanls/zuban/issues/197",
+      "metrics": {
+        "loc": 23,
+        "num_functions": 5,
+        "type_imports": 5,
+        "type_density": 0.4783,
+        "internal_calls": 0
+      },
+      "outputs": {
+        "mypy": "_pytifex_temp_890093.py:5: error: Generic[...] base class is redundant  [misc]\n_pytifex_temp_890093.py:19: note: Revealed type is \"tuple[Unpack[Ts`1]]\"\n_pytifex_temp_890093.py:20: note: Revealed type is \"P.args`-1\"\n_pytifex_temp_890093.py:28: note: Revealed type is \"_pytifex_temp_890093.ConfigStore[builtins.str, builtins.int, builtins.bool]\"\n_pytifex_temp_890093.py:35: note: Revealed type is \"def (user_id: builtins.int, status: builtins.str) -> builtins.bool\"\nFound 1 error in 1 file (checked 1 source file)",
+        "pyrefly": "ERROR Redundant type parameter declaration [invalid-type-var]\n --> _pytifex_temp_890093.py:5:7\n  |\n5 | class ConfigStore[*Ts](Generic[*Ts]): # Generic class with TypeVarTuple\n  |       ^^^^^^^^^^^\n  |\n INFO revealed type: tuple[*Ts] [reveal-type]\n  --> _pytifex_temp_890093.py:19:28\n   |\n19 |                 reveal_type(self.values) # Expect: Tuple[*Ts@ConfigStore]\n   |                            -------------\n   |\n INFO revealed type: Args[P] [reveal-type]\n  --> _pytifex_temp_890093.py:20:28\n   |\n20 |                 reveal_type(args) # Expect: P.args\n   |                            ------\n   |\n INFO revealed type: ConfigStore[str, int, bool] [reveal-type]\n  --> _pytifex_temp_890093.py:28:16\n   |\n28 |     reveal_type(store) # Expect: ConfigStore[str, int, bool]\n   |                -------\n   |\n INFO revealed type: (user_id: int, status: str) -> bool [reveal-type]\n  --> _pytifex_temp_890093.py:35:16\n   |\n35 |     reveal_type(update_user_status) # Expect: Callable[[int, str], bool]\n   |                --------------------\n   |\n INFO 1 error",
+        "zuban": "_pytifex_temp_890093.py:5: error: Generic[...] base class is redundant  [misc]\n_pytifex_temp_890093.py:19: note: Revealed type is \"builtins.tuple[Unpack[Ts]]\"\n_pytifex_temp_890093.py:20: note: Revealed type is \"P.args\"\n_pytifex_temp_890093.py:28: note: Revealed type is \"_pytifex_temp_890093.ConfigStore[Literal['admin']?, Literal[123]?, Literal[True]?]\"\n_pytifex_temp_890093.py:30: error: Argument 1 has incompatible type \"Callable[[int, str], bool]\"; expected \"Callable[Never, Never]\"  [arg-type]\n_pytifex_temp_890093.py:35: note: Revealed type is \"Never\"\nFound 2 errors in 1 file (checked 1 source file)",
+        "ty": "info[revealed-type]: Revealed type\n  --> _pytifex_temp_890093.py:19:29\n   |\n17 |                 print(f\"Updating key '{key}' from store: {self.values}\")\n18 |                 # Type checkers must track `*Ts` from `self.values` and `P` from the wrapper.\n19 |                 reveal_type(self.values) # Expect: Tuple[*Ts@ConfigStore]\n   |                             ^^^^^^^^^^^ `@Todo`\n20 |                 reveal_type(args) # Expect: P.args\n21 |                 return func(*args, **kwargs)\n   |\n\ninfo[revealed-type]: Revealed type\n  --> _pytifex_temp_890093.py:20:29\n   |\n18 |                 # Type checkers must track `*Ts` from `self.values` and `P` from the wrapper.\n19 |                 reveal_type(self.values) # Expect: Tuple[*Ts@ConfigStore]\n20 |                 reveal_type(args) # Expect: P.args\n   |                             ^^^^ `P@get_updater_factory.args`\n21 |                 return func(*args, **kwargs)\n22 |             return _updater_wrapper\n   |\n\ninfo[revealed-type]: Revealed type\n  --> _pytifex_temp_890093.py:28:17\n   |\n26 |     # Create a store with (str, int, bool)\n27 |     store = ConfigStore(\"admin\", 123, True)\n28 |     reveal_type(store) # Expect: ConfigStore[str, int, bool]\n   |                 ^^^^^ `ConfigStore[]`\n29 |\n30 |     @store.get_updater_factory(\"user_status\")\n   |\n\ninfo[revealed-type]: Revealed type\n  --> _pytifex_temp_890093.py:35:17\n   |\n33 |         return True\n34 |\n35 |     reveal_type(update_user_status) # Expect: Callable[[int, str], bool]\n   |                 ^^^^^^^^^^^^^^^^^^ `((...) -> Unknown) | @Todo`\n36 |     update_user_status(456, \"active\")\n   |\n\nFound 4 diagnostics"
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "error",
+        "zuban": "error",
+        "ty": "ok"
+      }
+    }
+  ]
+}

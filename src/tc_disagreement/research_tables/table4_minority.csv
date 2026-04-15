@@ -1,0 +1,11 @@
+File,MinorityCheckers,MinorityC,MinorityI,MinorityU,MajorityC,MajorityI,MajorityU
+asyncio-paramspec-partial-callback.py,ZUBAN,0,0,1,0,0,3
+newtype-typeguard-divergence-refined.py,TY,0,0,1,0,0,3
+paramspec-concatenate-divergence.py,MYPY,0,0,1,0,0,3
+dictionary-comprehension-typeddict-literal-divergence.py,"MYPY,PYREFLY",0,0,2,0,2,0
+asyncio-generic-protocol-callback.py,"PYREFLY,TY",0,2,0,2,0,0
+overload-factory-typeguard-callable.py,TY,0,1,0,0,3,0
+overload-classmethod-paramspec.py,"ZUBAN,TY",0,0,2,0,0,2
+self-cyclic-typevar-abstract.py,"ZUBAN,TY",0,2,0,0,0,2
+literal_narrowing.py,"PYREFLY,ZUBAN",2,0,0,0,2,0
+walrus_comprehension.py,"MYPY,ZUBAN",2,0,0,0,2,0

@@ -2,63 +2,186 @@
   "method": "comprehensive_tiered",
   "tier_distribution": {
     "1": 3,
-    "2": 1,
+    "2": 2,
     "3": 1,
-    "4": 4
+    "4": 3
   },
   "summary": {
     "mypy": {
-      "correct": 3,
-      "incorrect": 2,
-      "uncertain": 4
+      "correct": 6,
+      "incorrect": 1,
+      "uncertain": 2
     },
     "pyrefly": {
-      "correct": 1,
-      "incorrect": 3,
-      "uncertain": 5
+      "correct": 5,
+      "incorrect": 2,
+      "uncertain": 2
     },
     "zuban": {
-      "correct": 5,
-      "incorrect": 0,
-      "uncertain": 4
+      "correct": 6,
+      "incorrect": 2,
+      "uncertain": 1
     },
     "ty": {
-      "correct": 0,
-      "incorrect": 3,
-      "uncertain": 6
+      "correct": 4,
+      "incorrect": 4,
+      "uncertain": 1
     }
   },
   "results": [
     {
       "filename": "typeis-variance-divergence-refined.py",
-      "tier_reached": 4,
+      "tier_reached": 2,
       "tier1_bugs": [],
-      "tier2_bugs": [],
-      "tier3_findings": [],
+      "tier2_bugs": [
+        {
+          "line": 14,
+          "type": "TypeError",
+          "msg": "MyContainer() -> TypeError: list() takes no keyword arguments"
+        },
+        {
+          "line": 16,
+          "type": "TypeError",
+          "msg": "decorated_no_args: MyContainer.contains_int() missing 1 required positional argument: 'item'"
+        },
+        {
+          "line": 21,
+          "type": "TypeError",
+          "msg": "decorated_no_args: MyContainer.contains_str() missing 1 required positional argument: 'item'"
+        },
+        {
+          "line": 16,
+          "type": "TypeError",
+          "msg": "classmethod_call: MyContainer.contains_int() missing 1 required positional argument: 'item'"
+        },
+        {
+          "line": 21,
+          "type": "TypeError",
+          "msg": "classmethod_call: MyContainer.contains_str() missing 1 required positional argument: 'item'"
+        }
+      ],
+      "tier3_findings": [
+        {
+          "checker": "mypy",
+          "verdict": "CORRECT",
+          "reason": "Correctly flags covariant TypeVar `T_co` used in invariant `list` (PEP 484)",
+          "confidence": 0.9,
+          "analysis_type": "variance_check",
+          "line": 14,
+          "details": {
+            "typevar": "T_co",
+            "base": "list",
+            "variance": "covariant"
+          }
+        },
+        {
+          "checker": "pyrefly",
+          "verdict": "INCORRECT",
+          "reason": "Failed to flag covariant TypeVar `T_co` in invariant `list` (PEP 484)",
+          "confidence": 0.85,
+          "analysis_type": "variance_check",
+          "line": 14,
+          "details": {
+            "typevar": "T_co",
+            "base": "list",
+            "variance": "covariant"
+          }
+        },
+        {
+          "checker": "zuban",
+          "verdict": "CORRECT",
+          "reason": "Correctly flags covariant TypeVar `T_co` used in invariant `list` (PEP 484)",
+          "confidence": 0.9,
+          "analysis_type": "variance_check",
+          "line": 14,
+          "details": {
+            "typevar": "T_co",
+            "base": "list",
+            "variance": "covariant"
+          }
+        },
+        {
+          "checker": "ty",
+          "verdict": "INCORRECT",
+          "reason": "Failed to flag covariant TypeVar `T_co` in invariant `list` (PEP 484)",
+          "confidence": 0.85,
+          "analysis_type": "variance_check",
+          "line": 14,
+          "details": {
+            "typevar": "T_co",
+            "base": "list",
+            "variance": "covariant"
+          }
+        }
+      ],
       "verdicts": {
         "mypy": {
-          "verdict": "UNCERTAIN",
-          "reason": "No definitive evidence from any tier",
-          "confidence": 0.5,
-          "tier": 4
+          "verdict": "CORRECT",
+          "reason": "Caught 5 proven bug(s)",
+          "confidence": 0.8,
+          "tier": 2
         },
         "pyrefly": {
-          "verdict": "UNCERTAIN",
-          "reason": "No definitive evidence from any tier",
-          "confidence": 0.5,
-          "tier": 4
+          "verdict": "INCORRECT",
+          "reason": "Missed 5 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 14,
+              "type": "TypeError"
+            },
+            {
+              "line": 16,
+              "type": "TypeError"
+            },
+            {
+              "line": 21,
+              "type": "TypeError"
+            },
+            {
+              "line": 16,
+              "type": "TypeError"
+            },
+            {
+              "line": 21,
+              "type": "TypeError"
+            }
+          ]
         },
         "zuban": {
-          "verdict": "UNCERTAIN",
-          "reason": "No definitive evidence from any tier",
-          "confidence": 0.5,
-          "tier": 4
+          "verdict": "CORRECT",
+          "reason": "Caught 5 proven bug(s)",
+          "confidence": 0.8,
+          "tier": 2
         },
         "ty": {
-          "verdict": "UNCERTAIN",
-          "reason": "No definitive evidence from any tier",
-          "confidence": 0.5,
-          "tier": 4
+          "verdict": "INCORRECT",
+          "reason": "Missed 5 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 14,
+              "type": "TypeError"
+            },
+            {
+              "line": 16,
+              "type": "TypeError"
+            },
+            {
+              "line": 21,
+              "type": "TypeError"
+            },
+            {
+              "line": 16,
+              "type": "TypeError"
+            },
+            {
+              "line": 21,
+              "type": "TypeError"
+            }
+          ]
         }
       }
     },
@@ -67,31 +190,115 @@
       "tier_reached": 4,
       "tier1_bugs": [],
       "tier2_bugs": [],
-      "tier3_findings": [],
+      "tier3_findings": [
+        {
+          "checker": "mypy",
+          "verdict": "CORRECT",
+          "reason": "Correctly flags: `TypeIs` is in `typing` since Python 3.13, not available in 3.12",
+          "confidence": 0.95,
+          "analysis_type": "import_availability",
+          "line": 1,
+          "details": {
+            "feature": "TypeIs",
+            "module": "typing"
+          }
+        },
+        {
+          "checker": "pyrefly",
+          "verdict": "CORRECT",
+          "reason": "Correctly flags: `TypeIs` is in `typing` since Python 3.13, not available in 3.12",
+          "confidence": 0.95,
+          "analysis_type": "import_availability",
+          "line": 1,
+          "details": {
+            "feature": "TypeIs",
+            "module": "typing"
+          }
+        },
+        {
+          "checker": "zuban",
+          "verdict": "INCORRECT",
+          "reason": "Failed to flag: `TypeIs` is in `typing` since Python 3.13, not available in 3.12",
+          "confidence": 0.9,
+          "analysis_type": "import_availability",
+          "line": 1,
+          "details": {
+            "feature": "TypeIs",
+            "module": "typing"
+          }
+        },
+        {
+          "checker": "ty",
+          "verdict": "CORRECT",
+          "reason": "Correctly flags: `TypeIs` is in `typing` since Python 3.13, not available in 3.12",
+          "confidence": 0.95,
+          "analysis_type": "import_availability",
+          "line": 1,
+          "details": {
+            "feature": "TypeIs",
+            "module": "typing"
+          }
+        },
+        {
+          "checker": "mypy",
+          "verdict": "UNCERTAIN",
+          "reason": "Reports error near TypeIs narrowing site (is_string_method -> str)",
+          "confidence": 0.6,
+          "analysis_type": "narrowing_flow",
+          "line": 8,
+          "details": {
+            "guard_func": "is_string_method",
+            "line": 8,
+            "guard_type": "TypeIs",
+            "narrows_to": "str",
+            "is_method": true
+          }
+        }
+      ],
       "verdicts": {
         "mypy": {
-          "verdict": "UNCERTAIN",
-          "reason": "No definitive evidence from any tier",
-          "confidence": 0.5,
-          "tier": 4
+          "verdict": "CORRECT",
+          "reason": "Correctly flags: `TypeIs` is in `typing` since Python 3.13, not available in 3.12",
+          "confidence": 0.95,
+          "tier": 4,
+          "analysis_type": "import_availability",
+          "details": {
+            "feature": "TypeIs",
+            "module": "typing"
+          }
         },
         "pyrefly": {
-          "verdict": "UNCERTAIN",
-          "reason": "No definitive evidence from any tier",
-          "confidence": 0.5,
-          "tier": 4
+          "verdict": "CORRECT",
+          "reason": "Correctly flags: `TypeIs` is in `typing` since Python 3.13, not available in 3.12",
+          "confidence": 0.95,
+          "tier": 4,
+          "analysis_type": "import_availability",
+          "details": {
+            "feature": "TypeIs",
+            "module": "typing"
+          }
         },
         "zuban": {
-          "verdict": "UNCERTAIN",
-          "reason": "No definitive evidence from any tier",
-          "confidence": 0.5,
-          "tier": 4
+          "verdict": "INCORRECT",
+          "reason": "Failed to flag: `TypeIs` is in `typing` since Python 3.13, not available in 3.12",
+          "confidence": 0.9,
+          "tier": 4,
+          "analysis_type": "import_availability",
+          "details": {
+            "feature": "TypeIs",
+            "module": "typing"
+          }
         },
         "ty": {
-          "verdict": "UNCERTAIN",
-          "reason": "No definitive evidence from any tier",
-          "confidence": 0.5,
-          "tier": 4
+          "verdict": "CORRECT",
+          "reason": "Correctly flags: `TypeIs` is in `typing` since Python 3.13, not available in 3.12",
+          "confidence": 0.95,
+          "tier": 4,
+          "analysis_type": "import_availability",
+          "details": {
+            "feature": "TypeIs",
+            "module": "typing"
+          }
         }
       }
     },
@@ -100,39 +307,119 @@
       "tier_reached": 4,
       "tier1_bugs": [],
       "tier2_bugs": [],
-      "tier3_findings": [],
+      "tier3_findings": [
+        {
+          "checker": "mypy",
+          "verdict": "CORRECT",
+          "reason": "Correctly flags: `TypeIs` is in `typing` since Python 3.13, not available in 3.12",
+          "confidence": 0.95,
+          "analysis_type": "import_availability",
+          "line": 1,
+          "details": {
+            "feature": "TypeIs",
+            "module": "typing"
+          }
+        },
+        {
+          "checker": "pyrefly",
+          "verdict": "CORRECT",
+          "reason": "Correctly flags: `TypeIs` is in `typing` since Python 3.13, not available in 3.12",
+          "confidence": 0.95,
+          "analysis_type": "import_availability",
+          "line": 1,
+          "details": {
+            "feature": "TypeIs",
+            "module": "typing"
+          }
+        },
+        {
+          "checker": "zuban",
+          "verdict": "INCORRECT",
+          "reason": "Failed to flag: `TypeIs` is in `typing` since Python 3.13, not available in 3.12",
+          "confidence": 0.9,
+          "analysis_type": "import_availability",
+          "line": 1,
+          "details": {
+            "feature": "TypeIs",
+            "module": "typing"
+          }
+        },
+        {
+          "checker": "ty",
+          "verdict": "CORRECT",
+          "reason": "Correctly flags: `TypeIs` is in `typing` since Python 3.13, not available in 3.12",
+          "confidence": 0.95,
+          "analysis_type": "import_availability",
+          "line": 1,
+          "details": {
+            "feature": "TypeIs",
+            "module": "typing"
+          }
+        }
+      ],
       "verdicts": {
         "mypy": {
-          "verdict": "UNCERTAIN",
-          "reason": "No definitive evidence from any tier",
-          "confidence": 0.5,
-          "tier": 4
+          "verdict": "CORRECT",
+          "reason": "Correctly flags: `TypeIs` is in `typing` since Python 3.13, not available in 3.12",
+          "confidence": 0.95,
+          "tier": 4,
+          "analysis_type": "import_availability",
+          "details": {
+            "feature": "TypeIs",
+            "module": "typing"
+          }
         },
         "pyrefly": {
-          "verdict": "UNCERTAIN",
-          "reason": "No definitive evidence from any tier",
-          "confidence": 0.5,
-          "tier": 4
+          "verdict": "CORRECT",
+          "reason": "Correctly flags: `TypeIs` is in `typing` since Python 3.13, not available in 3.12",
+          "confidence": 0.95,
+          "tier": 4,
+          "analysis_type": "import_availability",
+          "details": {
+            "feature": "TypeIs",
+            "module": "typing"
+          }
         },
         "zuban": {
-          "verdict": "UNCERTAIN",
-          "reason": "No definitive evidence from any tier",
-          "confidence": 0.5,
-          "tier": 4
+          "verdict": "INCORRECT",
+          "reason": "Failed to flag: `TypeIs` is in `typing` since Python 3.13, not available in 3.12",
+          "confidence": 0.9,
+          "tier": 4,
+          "analysis_type": "import_availability",
+          "details": {
+            "feature": "TypeIs",
+            "module": "typing"
+          }
         },
         "ty": {
-          "verdict": "UNCERTAIN",
-          "reason": "No definitive evidence from any tier",
-          "confidence": 0.5,
-          "tier": 4
+          "verdict": "CORRECT",
+          "reason": "Correctly flags: `TypeIs` is in `typing` since Python 3.13, not available in 3.12",
+          "confidence": 0.95,
+          "tier": 4,
+          "analysis_type": "import_availability",
+          "details": {
+            "feature": "TypeIs",
+            "module": "typing"
+          }
         }
       }
     },
     {
       "filename": "typeis-decorated-method-refined.py",
-      "tier_reached": 3,
+      "tier_reached": 2,
       "tier1_bugs": [],
-      "tier2_bugs": [],
+      "tier2_bugs": [
+        {
+          "line": 17,
+          "type": "TypeError",
+          "msg": "Validator.is_list_of_ints(...) -> TypeError: Validator.is_list_of_ints() missing 1 required positional argument: 'x'"
+        },
+        {
+          "line": 17,
+          "type": "TypeError",
+          "msg": "decorated_no_args: Validator.is_list_of_ints() missing 1 required positional argument: 'x'"
+        }
+      ],
       "tier3_findings": [
         {
           "checker": "mypy",
@@ -187,59 +474,146 @@
           "correct_behavior": "error",
           "is_correct": true,
           "confidence": 0.85
+        },
+        {
+          "checker": "mypy",
+          "pep": 742,
+          "rule": "[FORM001] `TypeIs` can only be used as a function return annotation",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 742,
+          "rule": "[FORM001] `TypeIs` can only be used as a function return annotation",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "zuban",
+          "pep": 742,
+          "rule": "[FORM001] `TypeIs` can only be used as a function return annotation",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "ty",
+          "pep": 742,
+          "rule": "[FORM001] `TypeIs` can only be used as a function return annotation",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "mypy",
+          "verdict": "UNCERTAIN",
+          "reason": "Reports error near TypeIs narrowing site (is_list_of_ints -> list[int])",
+          "confidence": 0.6,
+          "analysis_type": "narrowing_flow",
+          "line": 17,
+          "details": {
+            "guard_func": "is_list_of_ints",
+            "line": 17,
+            "guard_type": "TypeIs",
+            "narrows_to": "list[int]",
+            "is_method": true
+          }
+        },
+        {
+          "checker": "zuban",
+          "verdict": "UNCERTAIN",
+          "reason": "Reports error near TypeIs narrowing site (is_list_of_ints -> list[int])",
+          "confidence": 0.6,
+          "analysis_type": "narrowing_flow",
+          "line": 17,
+          "details": {
+            "guard_func": "is_list_of_ints",
+            "line": 17,
+            "guard_type": "TypeIs",
+            "narrows_to": "list[int]",
+            "is_method": true
+          }
         }
       ],
       "verdicts": {
         "mypy": {
           "verdict": "CORRECT",
-          "reason": "Follows PEP specifications (3 checks)",
-          "confidence": 0.75,
-          "tier": 3
+          "reason": "Caught 2 proven bug(s)",
+          "confidence": 0.8,
+          "tier": 2
         },
         "pyrefly": {
           "verdict": "CORRECT",
-          "reason": "Follows PEP specifications (1 checks)",
-          "confidence": 0.75,
-          "tier": 3
+          "reason": "Caught 2 proven bug(s)",
+          "confidence": 0.8,
+          "tier": 2
         },
         "zuban": {
           "verdict": "CORRECT",
-          "reason": "Follows PEP specifications (2 checks)",
-          "confidence": 0.75,
-          "tier": 3
+          "reason": "Caught 2 proven bug(s)",
+          "confidence": 0.8,
+          "tier": 2
         },
         "ty": {
-          "verdict": "UNCERTAIN",
-          "reason": "No definitive evidence from any tier",
-          "confidence": 0.5,
-          "tier": 4
-        }
-      }
-    },
-    {
-      "filename": "typealiastype-method-binding-refined.py",
-      "tier_reached": 2,
-      "tier1_bugs": [],
-      "tier2_bugs": [
-        {
-          "line": 17,
-          "type": "TypeguardViolation",
-          "msg": "Mutation (int instead of str): TypeCheckError: int is not an instance of str"
-        }
-      ],
-      "tier3_findings": [],
-      "verdicts": {
-        "mypy": {
           "verdict": "INCORRECT",
-          "reason": "Missed 1 proven bug(s)",
+          "reason": "Missed 2 proven bug(s)",
           "confidence": 0.85,
           "tier": 2,
           "missed_bugs": [
             {
               "line": 17,
-              "type": "TypeguardViolation"
+              "type": "TypeError"
+            },
+            {
+              "line": 17,
+              "type": "TypeError"
             }
           ]
+        }
+      }
+    },
+    {
+      "filename": "typealiastype-method-binding-refined.py",
+      "tier_reached": 3,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "Argument type must match parameter annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "ty",
+          "pep": 484,
+          "rule": "Attribute access must resolve on the declared type (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
         },
         "pyrefly": {
           "verdict": "UNCERTAIN",
@@ -249,15 +623,15 @@
         },
         "zuban": {
           "verdict": "CORRECT",
-          "reason": "Caught 1 proven bug(s)",
-          "confidence": 0.8,
-          "tier": 2
+          "reason": "Follows PEP specifications (1 checks)",
+          "confidence": 0.75,
+          "tier": 3
         },
         "ty": {
-          "verdict": "UNCERTAIN",
-          "reason": "No definitive evidence from any tier",
-          "confidence": 0.5,
-          "tier": 4
+          "verdict": "CORRECT",
+          "reason": "Follows PEP specifications (1 checks)",
+          "confidence": 0.75,
+          "tier": 3
         }
       }
     },
@@ -266,55 +640,62 @@
       "tier_reached": 1,
       "tier1_bugs": [
         {
-          "line": 29,
+          "line": 22,
           "type": "TypeError",
           "msg": "'typing.TypeAliasType' object is not callable"
         }
       ],
-      "tier2_bugs": [],
+      "tier2_bugs": [
+        {
+          "line": 21,
+          "type": "TypeError",
+          "msg": "test_newtype_typealiastype(...) -> TypeError: 'typing.TypeAliasType' object is not callable"
+        },
+        {
+          "line": 22,
+          "type": "TypeError",
+          "msg": "main_block_call: 'typing.TypeAliasType' object is not callable"
+        }
+      ],
       "tier3_findings": [],
       "verdicts": {
         "mypy": {
           "verdict": "INCORRECT",
-          "reason": "Missed 1 proven bug(s)",
+          "reason": "Missed 3 proven bug(s)",
           "confidence": 0.95,
           "tier": 1,
           "missed_bugs": [
             {
-              "line": 29,
+              "line": 22,
+              "type": "TypeError"
+            },
+            {
+              "line": 21,
+              "type": "TypeError"
+            },
+            {
+              "line": 22,
               "type": "TypeError"
             }
           ]
         },
         "pyrefly": {
-          "verdict": "INCORRECT",
-          "reason": "Missed 1 proven bug(s)",
-          "confidence": 0.95,
-          "tier": 1,
-          "missed_bugs": [
-            {
-              "line": 29,
-              "type": "TypeError"
-            }
-          ]
+          "verdict": "CORRECT",
+          "reason": "Caught 3 proven bug(s)",
+          "confidence": 0.9,
+          "tier": 1
         },
         "zuban": {
           "verdict": "CORRECT",
-          "reason": "Caught 1 proven bug(s)",
+          "reason": "Caught 3 proven bug(s)",
           "confidence": 0.9,
           "tier": 1
         },
         "ty": {
-          "verdict": "INCORRECT",
-          "reason": "Missed 1 proven bug(s)",
-          "confidence": 0.95,
-          "tier": 1,
-          "missed_bugs": [
-            {
-              "line": 29,
-              "type": "TypeError"
-            }
-          ]
+          "verdict": "CORRECT",
+          "reason": "Caught 3 proven bug(s)",
+          "confidence": 0.9,
+          "tier": 1
         }
       }
     },
@@ -323,7 +704,30 @@
       "tier_reached": 4,
       "tier1_bugs": [],
       "tier2_bugs": [],
-      "tier3_findings": [],
+      "tier3_findings": [
+        {
+          "checker": "mypy",
+          "verdict": "UNCERTAIN",
+          "reason": "Cannot infer lambda type (line 40) \u2014 inference limitation, not necessarily wrong",
+          "confidence": 0.5,
+          "analysis_type": "lambda_inference",
+          "line": 40,
+          "details": {
+            "message": "_pytifex_temp_1498324.py:40: error: Cannot infer type of lambda  [misc]"
+          }
+        },
+        {
+          "checker": "mypy",
+          "verdict": "UNCERTAIN",
+          "reason": "Cannot infer lambda type (line 41) \u2014 inference limitation, not necessarily wrong",
+          "confidence": 0.5,
+          "analysis_type": "lambda_inference",
+          "line": 41,
+          "details": {
+            "message": "_pytifex_temp_1498324.py:41: error: Cannot infer type of lambda  [misc]"
+          }
+        }
+      ],
       "verdicts": {
         "mypy": {
           "verdict": "UNCERTAIN",
@@ -356,46 +760,74 @@
       "tier_reached": 1,
       "tier1_bugs": [
         {
-          "line": 40,
+          "line": 23,
           "type": "TypeError",
           "msg": "IntConverter.__call__() got an unexpected keyword argument 'kw'"
         }
       ],
-      "tier2_bugs": [],
+      "tier2_bugs": [
+        {
+          "line": 6,
+          "type": "TypeError",
+          "msg": "Converter() -> TypeError: Protocols cannot be instantiated"
+        },
+        {
+          "line": 16,
+          "type": "TypeError",
+          "msg": "wrong_arity_callable: test_handle_mixed_callable_wrong_arity_callable.<locals>.<lambda>() got an unexpected keyword argument 'kw'"
+        },
+        {
+          "line": 23,
+          "type": "TypeError",
+          "msg": "main_block_call: IntConverter.__call__() got an unexpected keyword argument 'kw'"
+        }
+      ],
       "tier3_findings": [],
       "verdicts": {
         "mypy": {
           "verdict": "CORRECT",
-          "reason": "Caught 1 proven bug(s)",
+          "reason": "Caught 4 proven bug(s)",
           "confidence": 0.9,
           "tier": 1
         },
         "pyrefly": {
           "verdict": "INCORRECT",
-          "reason": "Missed 1 proven bug(s)",
-          "confidence": 0.95,
+          "reason": "Caught 3 but missed 1 proven bug(s)",
+          "confidence": 0.85,
           "tier": 1,
           "missed_bugs": [
             {
-              "line": 40,
+              "line": 6,
               "type": "TypeError"
             }
           ]
         },
         "zuban": {
           "verdict": "CORRECT",
-          "reason": "Caught 1 proven bug(s)",
+          "reason": "Caught 4 proven bug(s)",
           "confidence": 0.9,
           "tier": 1
         },
         "ty": {
           "verdict": "INCORRECT",
-          "reason": "Missed 1 proven bug(s)",
+          "reason": "Missed 4 proven bug(s)",
           "confidence": 0.95,
           "tier": 1,
           "missed_bugs": [
             {
-              "line": 40,
+              "line": 23,
+              "type": "TypeError"
+            },
+            {
+              "line": 6,
+              "type": "TypeError"
+            },
+            {
+              "line": 16,
+              "type": "TypeError"
+            },
+            {
+              "line": 23,
               "type": "TypeError"
             }
           ]
@@ -407,46 +839,59 @@
       "tier_reached": 1,
       "tier1_bugs": [
         {
-          "line": 33,
+          "line": 22,
           "type": "TypeError",
           "msg": "specific_int_to_str() takes 1 positional argument but 3 were given"
         }
       ],
-      "tier2_bugs": [],
+      "tier2_bugs": [
+        {
+          "line": 13,
+          "type": "TypeError",
+          "msg": "wrong_arity_callable: test_process_callable_types_union_wrong_arity_callable.<locals>.<lambda>() takes 0 positional arguments but 3 were given"
+        },
+        {
+          "line": 22,
+          "type": "TypeError",
+          "msg": "main_block_call: specific_int_to_str() takes 1 positional argument but 3 were given"
+        }
+      ],
       "tier3_findings": [],
       "verdicts": {
         "mypy": {
           "verdict": "CORRECT",
-          "reason": "Caught 1 proven bug(s)",
+          "reason": "Caught 3 proven bug(s)",
           "confidence": 0.9,
           "tier": 1
         },
         "pyrefly": {
-          "verdict": "INCORRECT",
-          "reason": "Missed 1 proven bug(s)",
-          "confidence": 0.95,
-          "tier": 1,
-          "missed_bugs": [
-            {
-              "line": 33,
-              "type": "TypeError"
-            }
-          ]
+          "verdict": "CORRECT",
+          "reason": "Caught 3 proven bug(s)",
+          "confidence": 0.9,
+          "tier": 1
         },
         "zuban": {
           "verdict": "CORRECT",
-          "reason": "Caught 1 proven bug(s)",
+          "reason": "Caught 3 proven bug(s)",
           "confidence": 0.9,
           "tier": 1
         },
         "ty": {
           "verdict": "INCORRECT",
-          "reason": "Missed 1 proven bug(s)",
+          "reason": "Missed 3 proven bug(s)",
           "confidence": 0.95,
           "tier": 1,
           "missed_bugs": [
             {
-              "line": 33,
+              "line": 22,
+              "type": "TypeError"
+            },
+            {
+              "line": 13,
+              "type": "TypeError"
+            },
+            {
+              "line": 22,
               "type": "TypeError"
             }
           ]

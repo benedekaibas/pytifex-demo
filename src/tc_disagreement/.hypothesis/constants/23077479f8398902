@@ -1,0 +1,4 @@
+# file: /home/benedek-kaibas/Documents/pytifex-demo/src/tc_disagreement/github_issues.py
+# hypothesis_version: 6.151.9
+
+[100, ',', ', ', '2022-11-28', 'Accept', 'Authorization', 'GITHUB_TOKEN', 'X-GitHub-Api-Version', 'astral-sh/ty', 'body', 'bug', 'bug: false negative', 'bug: false positive', 'class ', 'closed', 'code', 'content', 'def ', 'desc', 'direction', 'facebook/pyrefly', 'false negative', 'false positive', 'false-alarm', 'false-negative', 'false-positive', 'files', 'html_url', 'incorrect-error', 'labels', 'microsoft/pyright', 'missed-error', 'mypy', 'name', 'none', 'not_planned', 'number', 'page', 'per_page', 'pyrefly', 'pyright', 'python/mypy', 'should-error', 'sort', 'source', 'spurious', 'state', 'state_reason', 'title', 'topic-generics', 'topic-overloads', 'topic-paramspec', 'topic-protocols', 'topic-type-inference', 'topic-typeddict', 'topic-typeguard', 'ty', 'updated', 'utf-8', 'zuban', 'zubanls/zuban']

@@ -1,0 +1,12 @@
+File,HasDisagreement,MinorityCheckers,MinorityVerdicts,Mypy,Pyrefly,Ty,Zuban
+asyncio-paramspec-partial-callback.py,Yes,ZUBAN,ZUBAN:UNCERTAIN,ok,ok,ok,error
+newtype-typeguard-divergence-refined.py,Yes,TY,TY:UNCERTAIN,ok,ok,error,ok
+paramspec-concatenate-divergence.py,Yes,MYPY,MYPY:UNCERTAIN,ok,error,error,error
+dictionary-comprehension-typeddict-literal-divergence.py,Yes,"MYPY,PYREFLY",MYPY:UNCERTAIN;PYREFLY:UNCERTAIN,ok,ok,error,error
+asyncio-generic-protocol-callback.py,Yes,"PYREFLY,TY",PYREFLY:INCORRECT;TY:INCORRECT,error,ok,ok,error
+overload-factory-typeguard-callable.py,Yes,TY,TY:INCORRECT,ok,ok,error,ok
+overload-classmethod-paramspec.py,Yes,"ZUBAN,TY",ZUBAN:UNCERTAIN;TY:UNCERTAIN,error,error,ok,ok
+self-cyclic-typevar-abstract.py,Yes,"ZUBAN,TY",ZUBAN:INCORRECT;TY:INCORRECT,error,error,ok,ok
+literal_narrowing.py,Yes,"PYREFLY,ZUBAN",PYREFLY:CORRECT;ZUBAN:CORRECT,error,ok,error,ok
+walrus_comprehension.py,Yes,"MYPY,ZUBAN",MYPY:CORRECT;ZUBAN:CORRECT,ok,error,error,ok
+typeddict_single_field.py,No,,,error,error,error,error

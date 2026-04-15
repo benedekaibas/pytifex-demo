@@ -1,0 +1,5 @@
+Pattern,Count,Percentage,Example Files
+3 error / 1 ok,12,70.6%,"decorator-super-modified-signature.py, typevartuple-unpacking-precision-refined.py, dataclass-transform-param-spec-return.py (+9 more)"
+2 error / 2 ok,3,17.6%,"walrus_comprehension.py, list-concat-generic-self.py, unsound-self-cast-divergence.py"
+1 error / 3 ok,1,5.9%,isinstance-protocol-divergence.py
+4 error / 0 ok (consensus error),1,5.9%,typeddict_single_field.py

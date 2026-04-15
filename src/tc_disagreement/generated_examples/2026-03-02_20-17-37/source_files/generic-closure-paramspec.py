@@ -1,0 +1,49 @@
+import typing as t
+from typing import Generic, TypeVar, Callable, ParamSpec, Any
+#from typing import reveal_type
+T = TypeVar("T")
+P = ParamSpec("P")
+R = TypeVar("R")
+
+def timing_decorator(func: Callable[P, R]) -> Callable[P, R]:
+    """A decorator that measures execution time."""
+    def wrapper(*args: P.args, **kwargs: P.kwargs) -> R:
+        import time
+        start = time.perf_counter()
+        result = func(*args, **kwargs)
+        end = time.perf_counter()
+        print(f"Execution of {func.__name__} took {end - start:.4f} seconds.")
+        return result
+    return wrapper
+
+class DataProcessor(Generic[T]):
+    def __init__(self, processing_id: str):
+        self.processing_id = processing_id
+
+    @timing_decorator
+    def create_transformer(self, operation_name: str) -> Callable[[list[T]], list[T]]:
+        # The closure captures 'self' (and thus 'T' and 'processing_id') and 'operation_name'.
+        # Type checkers might struggle to maintain the correct type for 'T' within
+        # the nested callable's signature, especially with the ParamSpec decorator
+        # wrapping the outer method.
+        def transformer_func(items: list[T]) -> list[T]:
+            print(f"Processor '{self.processing_id}' performing '{operation_name}' on list of size {len(items)}...")
+            # This line might cause issues if T's type is not correctly propagated.
+            # E.g., if T is int, 'item' should be int.
+            return [t.cast(T, item) for item in items if hasattr(item, '__str__')] # Dummy transformation
+        return transformer_func
+
+if __name__ == "__main__":
+    str_processor = DataProcessor[str]("string_handler")
+    upper_case_transformer = str_processor.create_transformer("uppercase")
+    
+    reveal_type(upper_case_transformer) # Expected: Callable[[list[str]], list[str]]
+    
+    print(upper_case_transformer(["apple", "banana", "strawberry"]))
+
+    int_processor = DataProcessor[int]("int_handler")
+    double_transformer = int_processor.create_transformer("double")
+    
+    reveal_type(double_transformer) # Expected: Callable[[list[int]], list[int]]
+    
+    print(double_transformer([1, 2, 3, 4, 5]))

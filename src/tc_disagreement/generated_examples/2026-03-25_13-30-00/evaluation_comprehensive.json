@@ -1,0 +1,264 @@
+{
+  "method": "manual_analysis",
+  "tier_distribution": {
+    "0": 0,
+    "1": 0,
+    "2": 0,
+    "3": 2,
+    "4": 1
+  },
+  "summary": {
+    "mypy": {
+      "correct": 1,
+      "incorrect": 2,
+      "uncertain": 0
+    },
+    "pyrefly": {
+      "correct": 2,
+      "incorrect": 1,
+      "uncertain": 0
+    },
+    "zuban": {
+      "correct": 2,
+      "incorrect": 1,
+      "uncertain": 0
+    },
+    "ty": {
+      "correct": 0,
+      "incorrect": 3,
+      "uncertain": 0
+    }
+  },
+  "oracle_verdicts": [
+    {
+      "filename": "literal_narrowing.py",
+      "metrics": {
+        "loc": 16,
+        "num_functions": 4,
+        "type_imports": 1,
+        "type_density": 0.0,
+        "internal_calls": 0
+      },
+      "tier_reached": 4,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "Design difference - type narrowing after 'in' is not mandated by PEP",
+          "confidence": 0.7,
+          "tier": 4
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "Design difference - type narrowing after 'in' is not mandated by PEP",
+          "confidence": 0.7,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "Design difference - type narrowing after 'in' is not mandated by PEP",
+          "confidence": 0.7,
+          "tier": 4
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "Design difference - type narrowing after 'in' is not mandated by PEP",
+          "confidence": 0.7,
+          "tier": 4
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "Design difference - type narrowing after 'in' is not mandated by PEP",
+          "confidence": 0.7,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "Design difference - type narrowing after 'in' is not mandated by PEP",
+          "confidence": 0.7,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "Design difference - type narrowing after 'in' is not mandated by PEP",
+          "confidence": 0.7,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "Design difference - type narrowing after 'in' is not mandated by PEP",
+          "confidence": 0.7,
+          "findings_hit": 0,
+          "findings_missed": 0
+        }
+      }
+    },
+    {
+      "filename": "walrus_comprehension.py",
+      "metrics": {
+        "loc": 5,
+        "num_functions": 0,
+        "type_imports": 0,
+        "type_density": 0.0,
+        "internal_calls": 0
+      },
+      "tier_reached": 3,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "mypy",
+          "pep": 572,
+          "rule": "Walrus operator scope",
+          "checker_behavior": "ok",
+          "correct_behavior": "ok",
+          "is_correct": true,
+          "confidence": 0.95
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Correctly recognizes walrus operator can reference prior variable per PEP 572",
+          "confidence": 0.95,
+          "tier": 3
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Wrongly reports uninitialized variable - PEP 572 allows referencing prior scope",
+          "confidence": 0.95,
+          "tier": 3
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Correctly recognizes walrus operator can reference prior variable per PEP 572",
+          "confidence": 0.95,
+          "tier": 3
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Wrongly reports unresolved reference - PEP 572 allows referencing prior scope",
+          "confidence": 0.95,
+          "tier": 3
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Correctly recognizes walrus operator can reference prior variable per PEP 572",
+          "confidence": 0.95,
+          "findings_hit": 1,
+          "findings_missed": 0
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Wrongly reports uninitialized variable - PEP 572 allows referencing prior scope",
+          "confidence": 0.95,
+          "findings_hit": 0,
+          "findings_missed": 1
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Correctly recognizes walrus operator can reference prior variable per PEP 572",
+          "confidence": 0.95,
+          "findings_hit": 1,
+          "findings_missed": 0
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Wrongly reports unresolved reference - PEP 572 allows referencing prior scope",
+          "confidence": 0.95,
+          "findings_hit": 0,
+          "findings_missed": 1
+        }
+      }
+    },
+    {
+      "filename": "typeddict_single_field.py",
+      "metrics": {
+        "loc": 5,
+        "num_functions": 1,
+        "type_imports": 1,
+        "type_density": 0.0,
+        "internal_calls": 0
+      },
+      "tier_reached": 3,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "ty",
+          "pep": 589,
+          "rule": "TypedDict key access",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.95
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Reveals Any for invalid key (acceptable per PEP 589)",
+          "confidence": 0.85,
+          "tier": 3
+        },
+        "pyrefly": {
+          "verdict": "CORRECT",
+          "reason": "Reveals Unknown for invalid key (correct per PEP 589)",
+          "confidence": 0.9,
+          "tier": 3
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Reveals Any for invalid key (acceptable per PEP 589)",
+          "confidence": 0.85,
+          "tier": 3
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Reveals str instead of Unknown/Any for invalid TypedDict key",
+          "confidence": 0.95,
+          "tier": 3
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Reveals Any for invalid key (acceptable per PEP 589)",
+          "confidence": 0.85,
+          "findings_hit": 1,
+          "findings_missed": 0
+        },
+        "pyrefly": {
+          "verdict": "CORRECT",
+          "reason": "Reveals Unknown for invalid key (correct per PEP 589)",
+          "confidence": 0.9,
+          "findings_hit": 1,
+          "findings_missed": 0
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Reveals Any for invalid key (acceptable per PEP 589)",
+          "confidence": 0.85,
+          "findings_hit": 1,
+          "findings_missed": 0
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Reveals str instead of Unknown/Any for invalid TypedDict key",
+          "confidence": 0.95,
+          "findings_hit": 0,
+          "findings_missed": 1
+        }
+      }
+    }
+  ]
+}

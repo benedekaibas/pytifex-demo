@@ -1,0 +1,3418 @@
+{
+  "method": "curated_manual_verified",
+  "total_files": 25,
+  "tier_distribution": {
+    "0": 3,
+    "1": 9,
+    "2": 4,
+    "3": 7,
+    "uncertain": 2
+  },
+  "summary": {
+    "mypy": {
+      "correct": 18,
+      "incorrect": 5,
+      "uncertain": 2
+    },
+    "pyrefly": {
+      "correct": 12,
+      "incorrect": 11,
+      "uncertain": 2
+    },
+    "zuban": {
+      "correct": 16,
+      "incorrect": 7,
+      "uncertain": 2
+    },
+    "ty": {
+      "correct": 1,
+      "incorrect": 21,
+      "uncertain": 3
+    }
+  },
+  "files": [
+    {
+      "filename": "decorator-super-modified-signature.py",
+      "run": "2026-02-20_13-08-02",
+      "seed_issue": "astral-sh/ty#2646",
+      "metrics": {},
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "error",
+        "zuban": "error",
+        "ty": "ok"
+      },
+      "split_pattern": "3-1",
+      "tier_reached": 1,
+      "tier1_bugs": [
+        {
+          "line": 11,
+          "type": "TypeError",
+          "msg": "Derived.process_data() missing 1 required positional argument: 'data'"
+        }
+      ],
+      "tier2_bugs": [
+        {
+          "line": 20,
+          "type": "TypeError",
+          "msg": "Derived.process_data(...) -> TypeError: Derived.process_data() missing 2 required positional arguments: 'context' and 'data'"
+        },
+        {
+          "line": 20,
+          "type": "TypeError",
+          "msg": "override_via_base: inject_context.<locals>.wrapper() missing 1 required positional argument: 'context'"
+        },
+        {
+          "line": 20,
+          "type": "TypeError",
+          "msg": "override_direct: inject_context.<locals>.wrapper() missing 1 required positional argument: 'context'"
+        },
+        {
+          "line": 20,
+          "type": "TypeError",
+          "msg": "super_call: Base.process_data() missing 1 required positional argument: 'data'"
+        },
+        {
+          "line": 20,
+          "type": "TypeError",
+          "msg": "decorated_no_args: inject_context.<locals>.wrapper() missing 1 required positional argument: 'context'"
+        }
+      ],
+      "tier3_findings": [
+        {
+          "checker": "mypy",
+          "pep": 484,
+          "rule": "Argument type must match parameter annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "Argument type must match parameter annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 586,
+          "rule": "Literal[...] is assignable to str (PEP 586)",
+          "checker_behavior": "error",
+          "correct_behavior": "ok",
+          "is_correct": false,
+          "confidence": 0.85
+        },
+        {
+          "checker": "mypy",
+          "pep": 484,
+          "rule": "[LSP001] `Derived.process_data` requires 2 params but base `Base.process_data` requires 1 \u2014 incompatible override (LSP)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 484,
+          "rule": "[LSP001] `Derived.process_data` requires 2 params but base `Base.process_data` requires 1 \u2014 incompatible override (LSP)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "[LSP001] `Derived.process_data` requires 2 params but base `Base.process_data` requires 1 \u2014 incompatible override (LSP)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "ty",
+          "pep": 484,
+          "rule": "[LSP001] `Derived.process_data` requires 2 params but base `Base.process_data` requires 1 \u2014 incompatible override (LSP)",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Caught 6 proven bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "pyrefly": {
+          "verdict": "CORRECT",
+          "reason": "Caught 6 proven bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Caught 6 proven bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 6 proven bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 11,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            }
+          ]
+        }
+      },
+      "oracle": null
+    },
+    {
+      "filename": "typevartuple-unpacking-precision-refined.py",
+      "run": "2026-02-20_13-08-02",
+      "seed_issue": null,
+      "metrics": {},
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "error",
+        "zuban": "error",
+        "ty": "ok"
+      },
+      "split_pattern": "3-1",
+      "tier_reached": 1,
+      "tier1_bugs": [
+        {
+          "line": 11,
+          "type": "TypeError",
+          "msg": "Value after * must be an iterable, not typing.ParamSpec"
+        }
+      ],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "mypy",
+          "pep": 612,
+          "rule": "ParamSpec must be used correctly (PEP 612)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "zuban",
+          "pep": 612,
+          "rule": "ParamSpec must be used correctly (PEP 612)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "mypy",
+          "pep": 646,
+          "rule": "Unpack must be used with TypeVarTuple (PEP 646)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "zuban",
+          "pep": 646,
+          "rule": "Unpack must be used with TypeVarTuple (PEP 646)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "pyrefly": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 11,
+              "type": "TypeError"
+            }
+          ]
+        }
+      },
+      "oracle": null
+    },
+    {
+      "filename": "dataclass-transform-param-spec-return.py",
+      "run": "2026-02-20_13-08-02",
+      "seed_issue": "https://github.com/microsoft/pyright/issues/11015",
+      "metrics": {},
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "error",
+        "zuban": "error",
+        "ty": "ok"
+      },
+      "split_pattern": "3-1",
+      "tier_reached": 1,
+      "tier1_bugs": [
+        {
+          "line": 19,
+          "type": "TypeError",
+          "msg": "object.__init__() takes exactly one argument (the instance to initialize)"
+        }
+      ],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "Argument type must match parameter annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "mypy",
+          "pep": 484,
+          "rule": "Return value must match return type annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "Return value must match return type annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "pyrefly": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 19,
+              "type": "TypeError"
+            }
+          ]
+        }
+      },
+      "oracle": null
+    },
+    {
+      "filename": "inherited-unsound-helper-refined.py",
+      "run": "2026-02-20_13-08-02",
+      "seed_issue": null,
+      "metrics": {},
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "error",
+        "zuban": "error",
+        "ty": "ok"
+      },
+      "split_pattern": "3-1",
+      "tier_reached": 1,
+      "tier1_bugs": [
+        {
+          "line": 68,
+          "type": "AttributeError",
+          "msg": "'BasicFactory' object has no attribute '_prefix'"
+        }
+      ],
+      "tier2_bugs": [
+        {
+          "line": 6,
+          "type": "TypeError",
+          "msg": "AbstractFactory() -> TypeError: Can't instantiate abstract class AbstractFactory without an implementation for abstract methods 'create', 'register_type'"
+        },
+        {
+          "line": 8,
+          "type": "TypeError",
+          "msg": "decorated_callable: Can't instantiate abstract class AbstractFactory without an implementation for abstract methods 'create', 'register_type'"
+        },
+        {
+          "line": 8,
+          "type": "TypeError",
+          "msg": "decorated_no_args: Can't instantiate abstract class AbstractFactory without an implementation for abstract methods 'create', 'register_type'"
+        },
+        {
+          "line": 12,
+          "type": "TypeError",
+          "msg": "decorated_callable: Can't instantiate abstract class AbstractFactory without an implementation for abstract methods 'create', 'register_type'"
+        },
+        {
+          "line": 12,
+          "type": "TypeError",
+          "msg": "decorated_no_args: Can't instantiate abstract class AbstractFactory without an implementation for abstract methods 'create', 'register_type'"
+        }
+      ],
+      "tier3_findings": [
+        {
+          "checker": "mypy",
+          "pep": 484,
+          "rule": "Return value must match return type annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "Return value must match return type annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "mypy",
+          "pep": 484,
+          "rule": "[LSP002] `BasicFactory.register_type` parameter `value` has type `str` but base `AbstractFactory.register_type` has `T` \u2014 incompatible override",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 484,
+          "rule": "[LSP002] `BasicFactory.register_type` parameter `value` has type `str` but base `AbstractFactory.register_type` has `T` \u2014 incompatible override",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "[LSP002] `BasicFactory.register_type` parameter `value` has type `str` but base `AbstractFactory.register_type` has `T` \u2014 incompatible override",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "ty",
+          "pep": 484,
+          "rule": "[LSP002] `BasicFactory.register_type` parameter `value` has type `str` but base `AbstractFactory.register_type` has `T` \u2014 incompatible override",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.85,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "mypy",
+          "pep": 3119,
+          "rule": "[ABC001] Class `ExtendedFactory` doesn't implement abstract method(s) `create`, `register_type` from AbstractFactory, AbstractFactory",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 3119,
+          "rule": "[ABC001] Class `ExtendedFactory` doesn't implement abstract method(s) `create`, `register_type` from AbstractFactory, AbstractFactory",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.5,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "zuban",
+          "pep": 3119,
+          "rule": "[ABC001] Class `ExtendedFactory` doesn't implement abstract method(s) `create`, `register_type` from AbstractFactory, AbstractFactory",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "ty",
+          "pep": 3119,
+          "rule": "[ABC001] Class `ExtendedFactory` doesn't implement abstract method(s) `create`, `register_type` from AbstractFactory, AbstractFactory",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "INCORRECT",
+          "reason": "Caught 2 but missed 4 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 68,
+              "type": "AttributeError"
+            },
+            {
+              "line": 6,
+              "type": "TypeError"
+            },
+            {
+              "line": 12,
+              "type": "TypeError"
+            },
+            {
+              "line": 12,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 6 proven bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 68,
+              "type": "AttributeError"
+            },
+            {
+              "line": 6,
+              "type": "TypeError"
+            },
+            {
+              "line": 8,
+              "type": "TypeError"
+            },
+            {
+              "line": 8,
+              "type": "TypeError"
+            },
+            {
+              "line": 12,
+              "type": "TypeError"
+            },
+            {
+              "line": 12,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "Caught 2 but missed 4 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 68,
+              "type": "AttributeError"
+            },
+            {
+              "line": 6,
+              "type": "TypeError"
+            },
+            {
+              "line": 12,
+              "type": "TypeError"
+            },
+            {
+              "line": 12,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 6 proven bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 68,
+              "type": "AttributeError"
+            },
+            {
+              "line": 6,
+              "type": "TypeError"
+            },
+            {
+              "line": 8,
+              "type": "TypeError"
+            },
+            {
+              "line": 8,
+              "type": "TypeError"
+            },
+            {
+              "line": 12,
+              "type": "TypeError"
+            },
+            {
+              "line": 12,
+              "type": "TypeError"
+            }
+          ]
+        }
+      },
+      "oracle": null
+    },
+    {
+      "filename": "isinstance-protocol-divergence.py",
+      "run": "2026-02-20_13-08-02",
+      "seed_issue": null,
+      "metrics": {},
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "ok",
+        "zuban": "ok",
+        "ty": "ok"
+      },
+      "split_pattern": "1-3",
+      "tier_reached": 1,
+      "tier1_bugs": [
+        {
+          "line": 13,
+          "type": "TypeError",
+          "msg": "Instance and class checks can only be used with @runtime_checkable protocols"
+        }
+      ],
+      "tier2_bugs": [
+        {
+          "line": 7,
+          "type": "TypeError",
+          "msg": "all_instances_of(...) -> TypeError: Instance and class checks can only be used with @runtime_checkable protocols"
+        },
+        {
+          "line": 20,
+          "type": "TypeError",
+          "msg": "Barkable() -> TypeError: Protocols cannot be instantiated"
+        },
+        {
+          "line": 32,
+          "type": "TypeError",
+          "msg": "process_animals(...) -> TypeError: Instance and class checks can only be used with @runtime_checkable protocols"
+        },
+        {
+          "line": 7,
+          "type": "TypeError",
+          "msg": "typeguard_empty_list: all_instances_of() missing 1 required positional argument: 'cls'"
+        },
+        {
+          "line": 7,
+          "type": "TypeError",
+          "msg": "typeguard_none: all_instances_of() missing 1 required positional argument: 'cls'"
+        },
+        {
+          "line": 7,
+          "type": "TypeError",
+          "msg": "typeguard_ints: all_instances_of() missing 1 required positional argument: 'cls'"
+        },
+        {
+          "line": 7,
+          "type": "TypeError",
+          "msg": "typeguard_strings: all_instances_of() missing 1 required positional argument: 'cls'"
+        },
+        {
+          "line": 7,
+          "type": "TypeError",
+          "msg": "typeguard_mixed: all_instances_of() missing 1 required positional argument: 'cls'"
+        },
+        {
+          "line": 7,
+          "type": "TypeError",
+          "msg": "typeguard_bools: all_instances_of() missing 1 required positional argument: 'cls'"
+        }
+      ],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "INCORRECT",
+          "reason": "Caught 2 but missed 8 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 10 proven bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 13,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 32,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 10 proven bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 13,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 32,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 10 proven bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 13,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 32,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            }
+          ]
+        }
+      },
+      "oracle": null
+    },
+    {
+      "filename": "typeddict-unpack-total-false-extra.py",
+      "run": "2026-04-01_18-42-26",
+      "seed_issue": "https://github.com/microsoft/pyright/issues/10998",
+      "metrics": {
+        "loc": 20,
+        "num_functions": 1,
+        "type_imports": 3,
+        "type_density": 0.3,
+        "internal_calls": 0
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "error",
+        "zuban": "error",
+        "ty": "ok"
+      },
+      "split_pattern": "3-1",
+      "tier_reached": 1,
+      "tier1_bugs": [
+        {
+          "line": 7,
+          "type": "TypeError",
+          "msg": "_TypedDictMeta.__new__() got an unexpected keyword argument 'extra_items'"
+        }
+      ],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "mypy",
+          "pep": 589,
+          "rule": "Extra keys not allowed in TypedDict (PEP 589)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven runtime bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "pyrefly": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven runtime bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven runtime bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven runtime bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 7,
+              "type": "TypeError"
+            }
+          ]
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        }
+      }
+    },
+    {
+      "filename": "typeddict-unpack-notrequired-extra.py",
+      "run": "2026-04-01_18-42-26",
+      "seed_issue": "https://github.com/microsoft/pyright/issues/10998",
+      "metrics": {
+        "loc": 39,
+        "num_functions": 1,
+        "type_imports": 4,
+        "type_density": 0.1538,
+        "internal_calls": 0
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "error",
+        "zuban": "error",
+        "ty": "ok"
+      },
+      "split_pattern": "3-1",
+      "tier_reached": 1,
+      "tier1_bugs": [
+        {
+          "line": 7,
+          "type": "TypeError",
+          "msg": "_TypedDictMeta.__new__() got an unexpected keyword argument 'extra_items'"
+        }
+      ],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "mypy",
+          "pep": 589,
+          "rule": "Extra keys not allowed in TypedDict (PEP 589)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven runtime bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven runtime bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 7,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven runtime bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 7,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven runtime bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 7,
+              "type": "TypeError"
+            }
+          ]
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        }
+      }
+    },
+    {
+      "filename": "typeddict-unpack-nested-extra.py",
+      "run": "2026-04-01_18-42-26",
+      "seed_issue": "https://github.com/microsoft/pyright/issues/10998",
+      "metrics": {
+        "loc": 33,
+        "num_functions": 1,
+        "type_imports": 3,
+        "type_density": 0.1818,
+        "internal_calls": 0
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "error",
+        "zuban": "error",
+        "ty": "ok"
+      },
+      "split_pattern": "3-1",
+      "tier_reached": 1,
+      "tier1_bugs": [
+        {
+          "line": 3,
+          "type": "TypeError",
+          "msg": "_TypedDictMeta.__new__() got an unexpected keyword argument 'extra_items'"
+        }
+      ],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "mypy",
+          "pep": 589,
+          "rule": "Extra keys not allowed in TypedDict (PEP 589)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 589,
+          "rule": "Extra keys not allowed in TypedDict (PEP 589)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 589,
+          "rule": "Accessing invalid key on TypedDict (PEP 589)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven runtime bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven runtime bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 3,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven runtime bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 3,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven runtime bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 3,
+              "type": "TypeError"
+            }
+          ]
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        }
+      }
+    },
+    {
+      "filename": "typevartuple-generic-class-nested-func.py",
+      "run": "2026-04-02_13-36-30",
+      "seed_issue": "https://github.com/zubanls/zuban/issues/197",
+      "metrics": {
+        "loc": 23,
+        "num_functions": 5,
+        "type_imports": 5,
+        "type_density": 0.4783,
+        "internal_calls": 0
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "error",
+        "zuban": "error",
+        "ty": "ok"
+      },
+      "split_pattern": "3-1",
+      "tier_reached": 1,
+      "tier1_bugs": [
+        {
+          "line": 5,
+          "type": "TypeError",
+          "msg": "Cannot inherit from Generic[...] multiple times."
+        }
+      ],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "Argument type must match parameter annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven runtime bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "pyrefly": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven runtime bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven runtime bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven runtime bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 5,
+              "type": "TypeError"
+            }
+          ]
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        }
+      }
+    },
+    {
+      "filename": "walrus_comprehension.py",
+      "run": "2026-03-25_13-30-00",
+      "seed_issue": "https://github.com/astral-sh/ty/issues/3077",
+      "metrics": {
+        "loc": 5,
+        "num_functions": 0,
+        "type_imports": 0,
+        "type_density": 0.0,
+        "internal_calls": 0
+      },
+      "statuses": {
+        "mypy": "ok",
+        "pyrefly": "error",
+        "zuban": "ok",
+        "ty": "error"
+      },
+      "split_pattern": "2-2",
+      "tier_reached": 3,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "mypy",
+          "pep": 572,
+          "rule": "Walrus operator scope",
+          "checker_behavior": "ok",
+          "correct_behavior": "ok",
+          "is_correct": true,
+          "confidence": 0.95
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Correctly recognizes walrus operator can reference prior variable per PEP 572",
+          "confidence": 0.95,
+          "tier": 3
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Wrongly reports uninitialized variable - PEP 572 allows referencing prior scope",
+          "confidence": 0.95,
+          "tier": 3
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Correctly recognizes walrus operator can reference prior variable per PEP 572",
+          "confidence": 0.95,
+          "tier": 3
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Wrongly reports unresolved reference - PEP 572 allows referencing prior scope",
+          "confidence": 0.95,
+          "tier": 3
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Correctly recognizes walrus operator can reference prior variable per PEP 572",
+          "confidence": 0.95,
+          "findings_hit": 1,
+          "findings_missed": 0
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Wrongly reports uninitialized variable - PEP 572 allows referencing prior scope",
+          "confidence": 0.95,
+          "findings_hit": 0,
+          "findings_missed": 1
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Correctly recognizes walrus operator can reference prior variable per PEP 572",
+          "confidence": 0.95,
+          "findings_hit": 1,
+          "findings_missed": 0
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Wrongly reports unresolved reference - PEP 572 allows referencing prior scope",
+          "confidence": 0.95,
+          "findings_hit": 0,
+          "findings_missed": 1
+        }
+      }
+    },
+    {
+      "filename": "typeddict_single_field.py",
+      "run": "2026-03-25_13-30-00",
+      "seed_issue": "https://github.com/astral-sh/ty/issues/3029",
+      "metrics": {
+        "loc": 5,
+        "num_functions": 1,
+        "type_imports": 1,
+        "type_density": 0.0,
+        "internal_calls": 0
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "error",
+        "zuban": "error",
+        "ty": "error"
+      },
+      "split_pattern": "0-4 (all error)",
+      "tier_reached": 3,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "ty",
+          "pep": 589,
+          "rule": "TypedDict key access",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.95
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Reveals Any for invalid key (acceptable per PEP 589)",
+          "confidence": 0.85,
+          "tier": 3
+        },
+        "pyrefly": {
+          "verdict": "CORRECT",
+          "reason": "Reveals Unknown for invalid key (correct per PEP 589)",
+          "confidence": 0.9,
+          "tier": 3
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Reveals Any for invalid key (acceptable per PEP 589)",
+          "confidence": 0.85,
+          "tier": 3
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Reveals str instead of Unknown/Any for invalid TypedDict key",
+          "confidence": 0.95,
+          "tier": 3
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Reveals Any for invalid key (acceptable per PEP 589)",
+          "confidence": 0.85,
+          "findings_hit": 1,
+          "findings_missed": 0
+        },
+        "pyrefly": {
+          "verdict": "CORRECT",
+          "reason": "Reveals Unknown for invalid key (correct per PEP 589)",
+          "confidence": 0.9,
+          "findings_hit": 1,
+          "findings_missed": 0
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Reveals Any for invalid key (acceptable per PEP 589)",
+          "confidence": 0.85,
+          "findings_hit": 1,
+          "findings_missed": 0
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Reveals str instead of Unknown/Any for invalid TypedDict key",
+          "confidence": 0.95,
+          "findings_hit": 0,
+          "findings_missed": 1
+        }
+      }
+    },
+    {
+      "filename": "literal-inference-divergence-refined.py",
+      "run": "2026-04-01_18-42-26",
+      "seed_issue": null,
+      "metrics": {
+        "loc": 9,
+        "num_functions": 1,
+        "type_imports": 1,
+        "type_density": 0.0,
+        "internal_calls": 0
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "error",
+        "zuban": "error",
+        "ty": "ok"
+      },
+      "split_pattern": "3-1",
+      "tier_reached": 3,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "mypy",
+          "pep": 484,
+          "rule": "Argument type must match parameter annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "Argument type must match parameter annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 586,
+          "rule": "str is not assignable to Literal[...] (PEP 586)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Matches 1 PEP rule(s) (PEPs [484])",
+          "confidence": 0.8,
+          "tier": 3
+        },
+        "pyrefly": {
+          "verdict": "CORRECT",
+          "reason": "Matches 1 PEP rule(s) (PEPs [586])",
+          "confidence": 0.8,
+          "tier": 3
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Matches 1 PEP rule(s) (PEPs [484])",
+          "confidence": 0.8,
+          "tier": 3
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        }
+      }
+    },
+    {
+      "filename": "list-concat-generic-self.py",
+      "run": "2026-04-01_18-42-26",
+      "seed_issue": "https://github.com/zubanls/zuban/issues/201",
+      "metrics": {
+        "loc": 15,
+        "num_functions": 2,
+        "type_imports": 4,
+        "type_density": 0.2667,
+        "internal_calls": 0
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "ok",
+        "zuban": "error",
+        "ty": "ok"
+      },
+      "split_pattern": "2-2",
+      "tier_reached": 0,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "mypy",
+          "pep": 484,
+          "rule": "[GENERIC001] `SpecializedContainer` is not a generic class but is subscripted with type arguments",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 484,
+          "rule": "[GENERIC001] `SpecializedContainer` is not a generic class but is subscripted with type arguments",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.85,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "[GENERIC001] `SpecializedContainer` is not a generic class but is subscripted with type arguments",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "ty",
+          "pep": 484,
+          "rule": "[GENERIC001] `SpecializedContainer` is not a generic class but is subscripted with type arguments",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.85,
+          "source": "source_analysis"
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Oracle matching failed but tier3 confirms checker is correct for 1 PEP rule(s) (PEPs [484])",
+          "confidence": 0.8,
+          "tier": 3,
+          "oracle_overridden": true,
+          "oracle_hit": 0,
+          "oracle_missed": 1
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "1 of 1 oracle finding(s) not reported by checker",
+          "confidence": 0.85,
+          "tier": 0,
+          "oracle_hit": 0,
+          "oracle_missed": 1,
+          "missed_findings": [
+            {
+              "line": 17,
+              "rule": "GENERIC001",
+              "msg": "`SpecializedContainer` is not a generic class but is subscripted with type arguments"
+            }
+          ]
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Oracle matching failed but tier3 confirms checker is correct for 1 PEP rule(s) (PEPs [484])",
+          "confidence": 0.8,
+          "tier": 3,
+          "oracle_overridden": true,
+          "oracle_hit": 0,
+          "oracle_missed": 1
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "1 of 1 oracle finding(s) not reported by checker",
+          "confidence": 0.85,
+          "tier": 0,
+          "oracle_hit": 0,
+          "oracle_missed": 1,
+          "missed_findings": [
+            {
+              "line": 17,
+              "rule": "GENERIC001",
+              "msg": "`SpecializedContainer` is not a generic class but is subscripted with type arguments"
+            }
+          ]
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "INCORRECT",
+          "reason": "1 of 1 oracle finding(s) not reported by checker",
+          "confidence": 0.85,
+          "findings_hit": 0,
+          "findings_missed": 1
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "1 of 1 oracle finding(s) not reported by checker",
+          "confidence": 0.85,
+          "findings_hit": 0,
+          "findings_missed": 1
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "1 of 1 oracle finding(s) not reported by checker",
+          "confidence": 0.85,
+          "findings_hit": 0,
+          "findings_missed": 1
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "1 of 1 oracle finding(s) not reported by checker",
+          "confidence": 0.85,
+          "findings_hit": 0,
+          "findings_missed": 1
+        }
+      }
+    },
+    {
+      "filename": "match-typeguard-generic-tuple.py",
+      "run": "2026-03-02_20-17-37",
+      "seed_issue": "https://github.com/python/mypy/issues/19599",
+      "metrics": {},
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "error",
+        "zuban": "ok",
+        "ty": "error"
+      },
+      "split_pattern": "3-1",
+      "tier_reached": 3,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "mypy",
+          "pep": 484,
+          "rule": "Non-Optional return type must return a value on all code paths (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 484,
+          "rule": "Non-Optional return type must return a value on all code paths (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "ty",
+          "pep": 484,
+          "rule": "Non-Optional return type must return a value on all code paths (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Follows PEP specifications (1 checks)",
+          "confidence": 0.75,
+          "tier": 3
+        },
+        "pyrefly": {
+          "verdict": "CORRECT",
+          "reason": "Follows PEP specifications (1 checks)",
+          "confidence": 0.75,
+          "tier": 3
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "Missed PEP-mandated error(s): Non-Optional return type must return a value on all code paths (PEP 484)",
+          "confidence": 0.7,
+          "tier": 3
+        },
+        "ty": {
+          "verdict": "CORRECT",
+          "reason": "Follows PEP specifications (1 checks)",
+          "confidence": 0.75,
+          "tier": 3
+        }
+      },
+      "oracle": null
+    },
+    {
+      "filename": "match-protocol-generic-type.py",
+      "run": "2026-03-02_20-17-37",
+      "seed_issue": "https://github.com/python/mypy/issues/18470",
+      "metrics": {},
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "error",
+        "zuban": "error",
+        "ty": "ok"
+      },
+      "split_pattern": "3-1",
+      "tier_reached": 3,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "mypy",
+          "pep": 484,
+          "rule": "Return value must match return type annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "Return value must match return type annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "Attribute access must resolve on the declared type (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "mypy",
+          "pep": 544,
+          "rule": "Protocol type parameters must use appropriate variance (PEP 544)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "zuban",
+          "pep": 544,
+          "rule": "Protocol type parameters must use appropriate variance (PEP 544)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Follows PEP specifications (2 checks)",
+          "confidence": 0.75,
+          "tier": 3
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Missed PEP-mandated error(s): Return value must match return type annotation (PEP 484); Protocol type parameters must use appropriate variance (PEP 544)",
+          "confidence": 0.7,
+          "tier": 3
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Follows PEP specifications (3 checks)",
+          "confidence": 0.75,
+          "tier": 3
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed PEP-mandated error(s): Return value must match return type annotation (PEP 484); Protocol type parameters must use appropriate variance (PEP 544)",
+          "confidence": 0.7,
+          "tier": 3
+        }
+      },
+      "oracle": null
+    },
+    {
+      "filename": "unsound-self-cast-divergence.py",
+      "run": "2026-03-27_22-49-26",
+      "seed_issue": null,
+      "metrics": {
+        "loc": 50,
+        "num_functions": 6,
+        "type_imports": 7,
+        "type_density": 0.02,
+        "internal_calls": 0
+      },
+      "statuses": {
+        "mypy": "ok",
+        "pyrefly": "error",
+        "zuban": "ok",
+        "ty": "error"
+      },
+      "split_pattern": "2-2",
+      "tier_reached": 4,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        }
+      }
+    },
+    {
+      "filename": "typeddict-total-inheritance-divergence.py",
+      "run": "2026-03-27_22-49-26",
+      "seed_issue": null,
+      "metrics": {
+        "loc": 62,
+        "num_functions": 2,
+        "type_imports": 8,
+        "type_density": 0.1129,
+        "internal_calls": 1
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "ok",
+        "zuban": "error",
+        "ty": "error"
+      },
+      "split_pattern": "3-1",
+      "tier_reached": 4,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        }
+      }
+    },
+    {
+      "filename": "typeguard-self-protocol-refined.py",
+      "run": "2026-02-15_15-56-33",
+      "seed_issue": null,
+      "metrics": {},
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "error",
+        "zuban": "error",
+        "ty": "ok"
+      },
+      "split_pattern": "3-1",
+      "tier_reached": 2,
+      "tier1_bugs": [],
+      "tier2_bugs": [
+        {
+          "line": 10,
+          "type": "TypeError",
+          "msg": "Validatable() -> TypeError: Protocols cannot be instantiated"
+        }
+      ],
+      "tier3_findings": [
+        {
+          "checker": "mypy",
+          "pep": 647,
+          "rule": "TypeGuard function must accept at least one positional argument (PEP 647)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 647,
+          "rule": "TypeGuard function must accept at least one positional argument (PEP 647)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "zuban",
+          "pep": 647,
+          "rule": "TypeGuard function must accept at least one positional argument (PEP 647)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "mypy",
+          "pep": 544,
+          "rule": "[PROTO001] `isinstance()` called with Protocol `User` which is not decorated with `@runtime_checkable`",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.95,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 544,
+          "rule": "[PROTO001] `isinstance()` called with Protocol `User` which is not decorated with `@runtime_checkable`",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.95,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "zuban",
+          "pep": 544,
+          "rule": "[PROTO001] `isinstance()` called with Protocol `User` which is not decorated with `@runtime_checkable`",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.95,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "ty",
+          "pep": 544,
+          "rule": "[PROTO001] `isinstance()` called with Protocol `User` which is not decorated with `@runtime_checkable`",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.95,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "mypy",
+          "pep": 544,
+          "rule": "[PROTO001] `isinstance()` called with Protocol `Product` which is not decorated with `@runtime_checkable`",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.95,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 544,
+          "rule": "[PROTO001] `isinstance()` called with Protocol `Product` which is not decorated with `@runtime_checkable`",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.95,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "zuban",
+          "pep": 544,
+          "rule": "[PROTO001] `isinstance()` called with Protocol `Product` which is not decorated with `@runtime_checkable`",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.95,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "ty",
+          "pep": 544,
+          "rule": "[PROTO001] `isinstance()` called with Protocol `Product` which is not decorated with `@runtime_checkable`",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.95,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "mypy",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `User` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `User` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "zuban",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `User` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "ty",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `User` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "mypy",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `User` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `User` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "zuban",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `User` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "ty",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `User` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "mypy",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `Product` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `Product` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "zuban",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `Product` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "ty",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `Product` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "mypy",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `Product` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `Product` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "zuban",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `Product` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "ty",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `Product` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "mypy",
+          "verdict": "UNCERTAIN",
+          "reason": "Reports error near TypeGuard narrowing site (is_valid -> Self)",
+          "confidence": 0.6,
+          "analysis_type": "narrowing_flow",
+          "line": 47,
+          "details": {
+            "guard_func": "is_valid",
+            "line": 47,
+            "guard_type": "TypeGuard",
+            "narrows_to": "Self",
+            "is_method": true
+          }
+        },
+        {
+          "checker": "zuban",
+          "verdict": "UNCERTAIN",
+          "reason": "Reports error near TypeGuard narrowing site (is_valid -> Self)",
+          "confidence": 0.6,
+          "analysis_type": "narrowing_flow",
+          "line": 47,
+          "details": {
+            "guard_func": "is_valid",
+            "line": 47,
+            "guard_type": "TypeGuard",
+            "narrows_to": "Self",
+            "is_method": true
+          }
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven bug(s)",
+          "confidence": 0.8,
+          "tier": 2
+        },
+        "pyrefly": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven bug(s)",
+          "confidence": 0.8,
+          "tier": 2
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven bug(s)",
+          "confidence": 0.8,
+          "tier": 2
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 10,
+              "type": "TypeError"
+            }
+          ]
+        }
+      },
+      "oracle": null
+    },
+    {
+      "filename": "typeis-variance-divergence-refined.py",
+      "run": "2026-02-18_23-27-53",
+      "seed_issue": null,
+      "metrics": {},
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "ok",
+        "zuban": "error",
+        "ty": "ok"
+      },
+      "split_pattern": "2-2",
+      "tier_reached": 2,
+      "tier1_bugs": [],
+      "tier2_bugs": [
+        {
+          "line": 14,
+          "type": "TypeError",
+          "msg": "MyContainer() -> TypeError: list() takes no keyword arguments"
+        },
+        {
+          "line": 16,
+          "type": "TypeError",
+          "msg": "decorated_no_args: MyContainer.contains_int() missing 1 required positional argument: 'item'"
+        },
+        {
+          "line": 21,
+          "type": "TypeError",
+          "msg": "decorated_no_args: MyContainer.contains_str() missing 1 required positional argument: 'item'"
+        },
+        {
+          "line": 16,
+          "type": "TypeError",
+          "msg": "classmethod_call: MyContainer.contains_int() missing 1 required positional argument: 'item'"
+        },
+        {
+          "line": 21,
+          "type": "TypeError",
+          "msg": "classmethod_call: MyContainer.contains_str() missing 1 required positional argument: 'item'"
+        }
+      ],
+      "tier3_findings": [
+        {
+          "checker": "mypy",
+          "verdict": "CORRECT",
+          "reason": "Correctly flags covariant TypeVar `T_co` used in invariant `list` (PEP 484)",
+          "confidence": 0.9,
+          "analysis_type": "variance_check",
+          "line": 14,
+          "details": {
+            "typevar": "T_co",
+            "base": "list",
+            "variance": "covariant"
+          }
+        },
+        {
+          "checker": "pyrefly",
+          "verdict": "INCORRECT",
+          "reason": "Failed to flag covariant TypeVar `T_co` in invariant `list` (PEP 484)",
+          "confidence": 0.85,
+          "analysis_type": "variance_check",
+          "line": 14,
+          "details": {
+            "typevar": "T_co",
+            "base": "list",
+            "variance": "covariant"
+          }
+        },
+        {
+          "checker": "zuban",
+          "verdict": "CORRECT",
+          "reason": "Correctly flags covariant TypeVar `T_co` used in invariant `list` (PEP 484)",
+          "confidence": 0.9,
+          "analysis_type": "variance_check",
+          "line": 14,
+          "details": {
+            "typevar": "T_co",
+            "base": "list",
+            "variance": "covariant"
+          }
+        },
+        {
+          "checker": "ty",
+          "verdict": "INCORRECT",
+          "reason": "Failed to flag covariant TypeVar `T_co` in invariant `list` (PEP 484)",
+          "confidence": 0.85,
+          "analysis_type": "variance_check",
+          "line": 14,
+          "details": {
+            "typevar": "T_co",
+            "base": "list",
+            "variance": "covariant"
+          }
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Caught 5 proven bug(s)",
+          "confidence": 0.8,
+          "tier": 2
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 5 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 14,
+              "type": "TypeError"
+            },
+            {
+              "line": 16,
+              "type": "TypeError"
+            },
+            {
+              "line": 21,
+              "type": "TypeError"
+            },
+            {
+              "line": 16,
+              "type": "TypeError"
+            },
+            {
+              "line": 21,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Caught 5 proven bug(s)",
+          "confidence": 0.8,
+          "tier": 2
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 5 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 14,
+              "type": "TypeError"
+            },
+            {
+              "line": 16,
+              "type": "TypeError"
+            },
+            {
+              "line": 21,
+              "type": "TypeError"
+            },
+            {
+              "line": 16,
+              "type": "TypeError"
+            },
+            {
+              "line": 21,
+              "type": "TypeError"
+            }
+          ]
+        }
+      },
+      "oracle": null
+    },
+    {
+      "filename": "typeis-decorated-method-refined.py",
+      "run": "2026-02-18_23-27-53",
+      "seed_issue": null,
+      "metrics": {},
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "error",
+        "zuban": "error",
+        "ty": "ok"
+      },
+      "split_pattern": "3-1",
+      "tier_reached": 2,
+      "tier1_bugs": [],
+      "tier2_bugs": [
+        {
+          "line": 17,
+          "type": "TypeError",
+          "msg": "Validator.is_list_of_ints(...) -> TypeError: Validator.is_list_of_ints() missing 1 required positional argument: 'x'"
+        },
+        {
+          "line": 17,
+          "type": "TypeError",
+          "msg": "decorated_no_args: Validator.is_list_of_ints() missing 1 required positional argument: 'x'"
+        }
+      ],
+      "tier3_findings": [
+        {
+          "checker": "mypy",
+          "pep": 484,
+          "rule": "Argument type must match parameter annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "mypy",
+          "pep": 484,
+          "rule": "Return value must match return type annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "Return value must match return type annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 647,
+          "rule": "TypeGuard function must accept at least one positional argument (PEP 647)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "mypy",
+          "pep": 742,
+          "rule": "TypeIs function must accept at least one positional argument (PEP 742)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "zuban",
+          "pep": 742,
+          "rule": "TypeIs function must accept at least one positional argument (PEP 742)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "mypy",
+          "pep": 742,
+          "rule": "[FORM001] `TypeIs` can only be used as a function return annotation",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 742,
+          "rule": "[FORM001] `TypeIs` can only be used as a function return annotation",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "zuban",
+          "pep": 742,
+          "rule": "[FORM001] `TypeIs` can only be used as a function return annotation",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "ty",
+          "pep": 742,
+          "rule": "[FORM001] `TypeIs` can only be used as a function return annotation",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "mypy",
+          "verdict": "UNCERTAIN",
+          "reason": "Reports error near TypeIs narrowing site (is_list_of_ints -> list[int])",
+          "confidence": 0.6,
+          "analysis_type": "narrowing_flow",
+          "line": 17,
+          "details": {
+            "guard_func": "is_list_of_ints",
+            "line": 17,
+            "guard_type": "TypeIs",
+            "narrows_to": "list[int]",
+            "is_method": true
+          }
+        },
+        {
+          "checker": "zuban",
+          "verdict": "UNCERTAIN",
+          "reason": "Reports error near TypeIs narrowing site (is_list_of_ints -> list[int])",
+          "confidence": 0.6,
+          "analysis_type": "narrowing_flow",
+          "line": 17,
+          "details": {
+            "guard_func": "is_list_of_ints",
+            "line": 17,
+            "guard_type": "TypeIs",
+            "narrows_to": "list[int]",
+            "is_method": true
+          }
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Caught 2 proven bug(s)",
+          "confidence": 0.8,
+          "tier": 2
+        },
+        "pyrefly": {
+          "verdict": "CORRECT",
+          "reason": "Caught 2 proven bug(s)",
+          "confidence": 0.8,
+          "tier": 2
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Caught 2 proven bug(s)",
+          "confidence": 0.8,
+          "tier": 2
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 2 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 17,
+              "type": "TypeError"
+            },
+            {
+              "line": 17,
+              "type": "TypeError"
+            }
+          ]
+        }
+      },
+      "oracle": null
+    },
+    {
+      "filename": "decorator-super-generic-args.py",
+      "run": "2026-02-20_13-08-02",
+      "seed_issue": "astral-sh/ty#2646",
+      "metrics": {},
+      "statuses": {
+        "mypy": "ok",
+        "pyrefly": "ok",
+        "zuban": "ok",
+        "ty": "error"
+      },
+      "split_pattern": "1-3",
+      "tier_reached": 2,
+      "tier1_bugs": [],
+      "tier2_bugs": [
+        {
+          "line": 20,
+          "type": "TypeError",
+          "msg": "Derived.greet(...) -> TypeError: Derived.greet() missing 1 required positional argument: 'name'"
+        },
+        {
+          "line": 20,
+          "type": "TypeError",
+          "msg": "override_via_base: Derived.greet() missing 1 required positional argument: 'name'"
+        },
+        {
+          "line": 20,
+          "type": "TypeError",
+          "msg": "override_direct: Derived.greet() missing 1 required positional argument: 'name'"
+        },
+        {
+          "line": 20,
+          "type": "TypeError",
+          "msg": "super_call: Base.greet() missing 1 required positional argument: 'name'"
+        },
+        {
+          "line": 20,
+          "type": "TypeError",
+          "msg": "decorated_no_args: Derived.greet() missing 1 required positional argument: 'name'"
+        }
+      ],
+      "tier3_findings": [
+        {
+          "checker": "ty",
+          "pep": 484,
+          "rule": "Attribute access must resolve on the declared type (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 5 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 5 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 5 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 5 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            }
+          ]
+        }
+      },
+      "oracle": null
+    },
+    {
+      "filename": "literal_narrowing.py",
+      "run": "2026-03-25_12-52-32",
+      "seed_issue": "https://github.com/python/mypy/issues/21090",
+      "metrics": {
+        "loc": 16,
+        "num_functions": 4,
+        "type_imports": 1,
+        "type_density": 0.0,
+        "internal_calls": 0
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "ok",
+        "zuban": "ok",
+        "ty": "error"
+      },
+      "split_pattern": "2-2",
+      "tier_reached": 3,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "pyrefly",
+          "pep": 634,
+          "rule": "Pattern matching narrowing",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.95
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "INCORRECT",
+          "reason": "Should narrow str to Literal after 'in' check per PEP 634",
+          "confidence": 0.95,
+          "tier": 3
+        },
+        "pyrefly": {
+          "verdict": "CORRECT",
+          "reason": "Correctly narrows to Literal['a', 'b']",
+          "confidence": 0.95,
+          "tier": 3
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Correctly narrows with optional types",
+          "confidence": 0.9,
+          "tier": 3
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Should narrow str to Literal after 'in' check",
+          "confidence": 0.95,
+          "tier": 3
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "INCORRECT",
+          "reason": "Should narrow str to Literal after 'in' check per PEP 634",
+          "confidence": 0.95,
+          "findings_hit": 0,
+          "findings_missed": 1
+        },
+        "pyrefly": {
+          "verdict": "CORRECT",
+          "reason": "Correctly narrows to Literal['a', 'b']",
+          "confidence": 0.95,
+          "findings_hit": 1,
+          "findings_missed": 0
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Correctly narrows with optional types",
+          "confidence": 0.9,
+          "findings_hit": 1,
+          "findings_missed": 0
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Should narrow str to Literal after 'in' check",
+          "confidence": 0.95,
+          "findings_hit": 0,
+          "findings_missed": 1
+        }
+      }
+    },
+    {
+      "filename": "typeddict-inheritance-total-divergence.py",
+      "run": "2026-01-27_15-05-49",
+      "seed_issue": null,
+      "metrics": {
+        "loc": 42,
+        "num_functions": 3,
+        "type_imports": 4,
+        "type_density": -0.0238,
+        "internal_calls": 0
+      },
+      "statuses": {
+        "mypy": "ok",
+        "pyrefly": "error",
+        "zuban": "error",
+        "ty": "ok"
+      },
+      "split_pattern": "2-2",
+      "tier_reached": 0,
+      "tier1_bugs": [
+        {
+          "line": 27,
+          "type": "KeyError",
+          "msg": "KeyError: 'api_key'"
+        }
+      ],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "Argument type must match parameter annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "mypy",
+          "pep": 589,
+          "rule": "[TDICT003] Unsafe access `cfg[\"api_key\"]` on NotRequired field of TypedDict `FinalSettings` \u2014 field may be absent at runtime (use `.get(\"api_key\")` or guard with `\"api_key\" in cfg`)",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 589,
+          "rule": "[TDICT003] Unsafe access `cfg[\"api_key\"]` on NotRequired field of TypedDict `FinalSettings` \u2014 field may be absent at runtime (use `.get(\"api_key\")` or guard with `\"api_key\" in cfg`)",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.5,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "zuban",
+          "pep": 589,
+          "rule": "[TDICT003] Unsafe access `cfg[\"api_key\"]` on NotRequired field of TypedDict `FinalSettings` \u2014 field may be absent at runtime (use `.get(\"api_key\")` or guard with `\"api_key\" in cfg`)",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.5,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "ty",
+          "pep": 589,
+          "rule": "[TDICT003] Unsafe access `cfg[\"api_key\"]` on NotRequired field of TypedDict `FinalSettings` \u2014 field may be absent at runtime (use `.get(\"api_key\")` or guard with `\"api_key\" in cfg`)",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven runtime bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 27,
+              "type": "KeyError"
+            }
+          ]
+        },
+        "pyrefly": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven runtime bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven runtime bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven runtime bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 27,
+              "type": "KeyError"
+            }
+          ]
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "INCORRECT",
+          "reason": "1 of 1 oracle finding(s) not reported by checker",
+          "confidence": 0.9,
+          "findings_hit": 0,
+          "findings_missed": 1
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "1 of 1 oracle finding(s) not reported by checker",
+          "confidence": 0.9,
+          "findings_hit": 0,
+          "findings_missed": 1
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "1 of 1 oracle finding(s) not reported by checker",
+          "confidence": 0.9,
+          "findings_hit": 0,
+          "findings_missed": 1
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "1 of 1 oracle finding(s) not reported by checker",
+          "confidence": 0.9,
+          "findings_hit": 0,
+          "findings_missed": 1
+        }
+      }
+    },
+    {
+      "filename": "asyncio-generic-protocol-callback.py",
+      "run": "2026-03-04_21-27-35",
+      "seed_issue": null,
+      "metrics": {
+        "loc": 35,
+        "num_functions": 8,
+        "type_imports": 6,
+        "type_density": 0.2286,
+        "internal_calls": 3
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "ok",
+        "zuban": "error",
+        "ty": "ok"
+      },
+      "split_pattern": "2-2",
+      "tier_reached": 0,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "Argument type must match parameter annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "mypy",
+          "pep": 544,
+          "rule": "[VARIANCE002] Invariant TypeVar `T` used in Protocol `TaskResultProcessor` only in parameter positions \u2014 should be declared contravariant",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 544,
+          "rule": "[VARIANCE002] Invariant TypeVar `T` used in Protocol `TaskResultProcessor` only in parameter positions \u2014 should be declared contravariant",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.85,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "zuban",
+          "pep": 544,
+          "rule": "[VARIANCE002] Invariant TypeVar `T` used in Protocol `TaskResultProcessor` only in parameter positions \u2014 should be declared contravariant",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "ty",
+          "pep": 544,
+          "rule": "[VARIANCE002] Invariant TypeVar `T` used in Protocol `TaskResultProcessor` only in parameter positions \u2014 should be declared contravariant",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.85,
+          "source": "source_analysis"
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "All 1 oracle finding(s) matched by checker diagnostics",
+          "confidence": 0.85,
+          "tier": 0,
+          "oracle_hit": 1,
+          "oracle_missed": 0,
+          "missed_findings": null
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "1 of 1 oracle finding(s) not reported by checker",
+          "confidence": 0.85,
+          "tier": 0,
+          "oracle_hit": 0,
+          "oracle_missed": 1,
+          "missed_findings": [
+            {
+              "line": 5,
+              "rule": "VARIANCE002",
+              "msg": "Invariant TypeVar `T` used in Protocol `TaskResultProcessor` only in parameter positions \u2014 should be declared contravariant"
+            }
+          ]
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "All 1 oracle finding(s) matched by checker diagnostics",
+          "confidence": 0.85,
+          "tier": 0,
+          "oracle_hit": 1,
+          "oracle_missed": 0,
+          "missed_findings": null
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "1 of 1 oracle finding(s) not reported by checker",
+          "confidence": 0.85,
+          "tier": 0,
+          "oracle_hit": 0,
+          "oracle_missed": 1,
+          "missed_findings": [
+            {
+              "line": 5,
+              "rule": "VARIANCE002",
+              "msg": "Invariant TypeVar `T` used in Protocol `TaskResultProcessor` only in parameter positions \u2014 should be declared contravariant"
+            }
+          ]
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "All 1 oracle finding(s) matched by checker diagnostics",
+          "confidence": 0.85,
+          "findings_hit": 1,
+          "findings_missed": 0
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "1 of 1 oracle finding(s) not reported by checker",
+          "confidence": 0.85,
+          "findings_hit": 0,
+          "findings_missed": 1
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "All 1 oracle finding(s) matched by checker diagnostics",
+          "confidence": 0.85,
+          "findings_hit": 1,
+          "findings_missed": 0
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "1 of 1 oracle finding(s) not reported by checker",
+          "confidence": 0.85,
+          "findings_hit": 0,
+          "findings_missed": 1
+        }
+      }
+    },
+    {
+      "filename": "typeguard-generic-list-newtype.py",
+      "run": "2026-03-02_20-17-37",
+      "seed_issue": "https://github.com/python/mypy/issues/18470",
+      "metrics": {},
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "error",
+        "zuban": "ok",
+        "ty": "ok"
+      },
+      "split_pattern": "2-2",
+      "tier_reached": 3,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "mypy",
+          "pep": 484,
+          "rule": "Assigned value must be compatible with the annotated variable type (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Follows PEP specifications (1 checks)",
+          "confidence": 0.75,
+          "tier": 3
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Missed PEP-mandated error(s): Assigned value must be compatible with the annotated variable type (PEP 484)",
+          "confidence": 0.7,
+          "tier": 3
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "Missed PEP-mandated error(s): Assigned value must be compatible with the annotated variable type (PEP 484)",
+          "confidence": 0.7,
+          "tier": 3
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed PEP-mandated error(s): Assigned value must be compatible with the annotated variable type (PEP 484)",
+          "confidence": 0.7,
+          "tier": 3
+        }
+      },
+      "oracle": null
+    }
+  ]
+}

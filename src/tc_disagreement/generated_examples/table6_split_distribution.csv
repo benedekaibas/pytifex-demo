@@ -1,0 +1,6 @@
+Pattern,Count,Percentage,Example Files
+0 error / 4 ok (consensus ok),1,2.0%,getattr-classvar-enum-divergence.py
+1 error / 3 ok,16,31.4%,"newtype-tuple-list-coercion-refined.py, match-generic-union-typeguard.py, newtype-typeguard-unreachable-refined.py (+13 more)"
+2 error / 2 ok,12,23.5%,"typeddict-readonly-generic-field.py, typeis-variance-divergence-refined.py, newtype-liskov-declaration-divergence.py (+9 more)"
+3 error / 1 ok,21,41.2%,"tuple-explicit-typevar-divergence.py, typeguard-self-protocol-refined.py, typeddict-readonly-mutation-refined.py (+18 more)"
+4 error / 0 ok (consensus error),1,2.0%,typeddict_single_field.py

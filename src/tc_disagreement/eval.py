@@ -374,7 +374,7 @@ def evaluate_results(
         model="gemini-2.5-flash",
         token=token,
         api_base=HttpUrl("https://generativelanguage.googleapis.com/v1beta"),
-        timeout=60.0,
+        timeout=320.0,
     )
 
     if results_path is None:
@@ -539,9 +539,9 @@ def main():
     parser = argparse.ArgumentParser(description="Evaluate type checker correctness")
     parser.add_argument(
         "--method",
-        choices=["multi_step", "consensus", "runtime", "all", "deterministic"],
+        choices=["multi_step", "consensus", "runtime", "all"],
         default="all",
-        help="Evaluation method to use (deterministic = AST + runtime, no LLM)",
+        help="Evaluation method to use",
     )
     parser.add_argument(
         "--verbose",
@@ -552,16 +552,7 @@ def main():
     args = parser.parse_args()
 
     try:
-        if args.method == "deterministic":
-            # Use the new deterministic evaluation (no LLM)
-            from deterministic_eval import evaluate_results_deterministic
-            results_path = get_latest_results_file()
-            if not results_path:
-                raise FileNotFoundError("No results.json found. Run generation first.")
-            evaluate_results_deterministic(results_path)
-        else:
-            # Use LLM-based evaluation
-            evaluate_results(method=args.method, verbose=args.verbose)
+        evaluate_results(method=args.method, verbose=args.verbose)
     except (ValueError, FileNotFoundError) as e:
         print(f"[ERROR] {e}")
         sys.exit(1)

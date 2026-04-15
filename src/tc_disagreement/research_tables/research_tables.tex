@@ -1,0 +1,187 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{amssymb}
+\usepackage{array}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue}
+
+\title{Type Checker Disagreement Analysis}
+\author{Pytifex Research}
+\date{\today}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\newpage
+
+\section{Code Metrics}
+\begin{table}[htbp]
+\centering
+\begin{tabular}{lrrrrr}
+\toprule
+File & LOC & Func. & Type Imports & Type Density & Interactions \\
+\midrule
+asyncio-paramspec-partial-callback.py & 32 & 5 & 5 & 0.062 & 1 \\
+newtype-typeguard-divergence-refined.py & 25 & 1 & 4 & -0.080 & 0 \\
+paramspec-concatenate-divergence.py & 51 & 7 & 6 & 0.098 & 2 \\
+dictionary-comprehension-typeddict-literal-di & 45 & 0 & 5 & 0.133 & 0 \\
+asyncio-generic-protocol-callback.py & 35 & 8 & 6 & 0.229 & 3 \\
+overload-factory-typeguard-callable.py & 57 & 8 & 7 & 0.281 & 0 \\
+overload-classmethod-paramspec.py & 56 & 9 & 6 & 0.250 & 0 \\
+self-cyclic-typevar-abstract.py & 49 & 11 & 5 & 0.204 & 0 \\
+literal\_narrowing.py & 16 & 4 & 1 & 0.000 & 0 \\
+walrus\_comprehension.py & 5 & 0 & 0 & 0.000 & 0 \\
+typeddict\_single\_field.py & 5 & 1 & 1 & 0.000 & 0 \\
+\bottomrule
+\end{tabular}
+\caption{Code Metrics for Type Checker Disagreement Examples}
+\label{tab:metrics}
+\end{table}
+
+\section{Type Related Runtime Error Caught (TRREC)}
+\begin{longtable}{p{5cm}rrrrr}
+\caption{TRREC - Checker Error Detection}\label{tab:trrec}\\
+\toprule
+File & Runtime & Mypy & Pyrefly & Ty & Zuban \\
+\midrule
+\endfirsthead
+\toprule
+File & Runtime & Mypy & Pyrefly & Ty & Zuban \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+asyncio-paramspec-partial-callback.py &  &  &  &  & \checkmark \\
+newtype-typeguard-divergence-refined.py &  &  &  & \checkmark &  \\
+paramspec-concatenate-divergence.py &  &  & \checkmark & \checkmark & \checkmark \\
+dictionary-comprehension-typeddict-literal-di &  &  &  & \checkmark & \checkmark \\
+asyncio-generic-protocol-callback.py &  & \checkmark &  &  & \checkmark \\
+overload-factory-typeguard-callable.py &  &  &  & \checkmark &  \\
+overload-classmethod-paramspec.py &  & \checkmark & \checkmark &  &  \\
+self-cyclic-typevar-abstract.py &  & \checkmark & \checkmark &  &  \\
+literal\_narrowing.py &  & \checkmark &  & \checkmark &  \\
+walrus\_comprehension.py &  &  & \checkmark & \checkmark &  \\
+typeddict\_single\_field.py &  & \checkmark & \checkmark & \checkmark & \checkmark \\
+\bottomrule
+\end{longtable}
+
+\textit{Summary:} 0 files cause runtime errors. Mypy detected errors in 5 files, Pyrefly in 5, Ty in 7, Zuban in 5.
+
+\section{Disagreement Analysis}
+\begin{longtable}{p{5cm}lc}
+\caption{Disagreement Analysis - Minority Checkers and Verdicts}\label{tab:disagreements}\\
+\toprule
+File & Minority Checkers & Verdict \\
+\midrule
+\endfirsthead
+\toprule
+File & Minority Checkers & Verdict \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+asyncio-paramspec-partial-callback.py & ZUBAN & ZUBAN: Uncertain \\
+newtype-typeguard-divergence-refined.py & TY & TY: Uncertain \\
+paramspec-concatenate-divergence.py & MYPY & MYPY: Uncertain \\
+dictionary-comprehension-typeddict-literal-di & MYPY, PYREFLY & MYPY: Uncertain; PYREFLY: Uncertain \\
+asyncio-generic-protocol-callback.py & PYREFLY, TY & PYREFLY: Incorrect; TY: Incorrect \\
+overload-factory-typeguard-callable.py & TY & TY: Incorrect \\
+overload-classmethod-paramspec.py & ZUBAN, TY & ZUBAN: Uncertain; TY: Uncertain \\
+self-cyclic-typevar-abstract.py & ZUBAN, TY & ZUBAN: Incorrect; TY: Incorrect \\
+literal\_narrowing.py & PYREFLY, ZUBAN & PYREFLY: Correct; ZUBAN: Correct \\
+walrus\_comprehension.py & MYPY, ZUBAN & MYPY: Correct; ZUBAN: Correct \\
+\bottomrule
+\end{longtable}
+
+\textit{Summary:} 10 out of 11 files (91\%) show disagreement among type checkers.
+
+\section{Minority vs Majority Correctness}
+\begin{longtable}{p{5cm}cc}
+\caption{Minority vs Majority Checker Correctness}\label{tab:minority}\\
+\toprule
+File & Minority (C/I/U) & Majority (C/I/U) \\
+\midrule
+\endfirsthead
+\toprule
+File & Minority (C/I/U) & Majority (C/I/U) \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+\multicolumn{3}{l}{\textit{Note: C=Correct, I=Incorrect, U=Uncertain}} \\
+asyncio-paramspec-partial-callback.py & 0/0/1 & 0/0/3 \\
+newtype-typeguard-divergence-refined.py & 0/0/1 & 0/0/3 \\
+paramspec-concatenate-divergence.py & 0/0/1 & 0/0/3 \\
+dictionary-comprehension-typeddict-literal-di & 0/0/2 & 0/2/0 \\
+asyncio-generic-protocol-callback.py & 0/2/0 & 2/0/0 \\
+overload-factory-typeguard-callable.py & 0/1/0 & 0/3/0 \\
+overload-classmethod-paramspec.py & 0/0/2 & 0/0/2 \\
+self-cyclic-typevar-abstract.py & 0/2/0 & 0/0/2 \\
+literal\_narrowing.py & 2/0/0 & 0/2/0 \\
+walrus\_comprehension.py & 2/0/0 & 0/2/0 \\
+\bottomrule
+\end{longtable}
+
+\section{Per-Checker Evaluation Summary}
+\begin{table}[htbp]
+\centering
+\begin{tabular}{lrrrrr}
+\toprule
+Checker & Correct & Incorrect & Uncertain & Total & Accuracy \\
+\midrule
+MYPY & 3 & 2 & 6 & 11 & 27\% \\
+PYREFLY & 2 & 3 & 6 & 11 & 18\% \\
+TY & 0 & 7 & 4 & 11 & 0\% \\
+ZUBAN & 4 & 3 & 4 & 11 & 36\% \\
+\bottomrule
+\end{tabular}
+\caption{Per-Checker Evaluation Verdicts}
+\label{tab:verdicts}
+\end{table}
+
+\section{PEP Compliance Analysis}
+\begin{longtable}{p{4cm}lc}
+\caption{PEP Compliance Analysis}\label{tab:pep}\\
+\toprule
+File & PEP & Correct? \\
+\midrule
+\endfirsthead
+\toprule
+File & PEP & Correct? \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+asyncio-paramspec-partial-callback.py & PEP 484 (ZUBAN) & \checkmark \\
+newtype-typeguard-divergence-refined.py & PEP 484 (TY) & \texttimes \\
+paramspec-concatenate-divergence.py & PEP 484 (ZUBAN) & \checkmark \\
+paramspec-concatenate-divergence.py & PEP 484 (TY) & \checkmark \\
+dictionary-comprehension-typeddict-liter & PEP 484 (TY) & \checkmark \\
+dictionary-comprehension-typeddict-liter & PEP 589 (ZUBAN) & \checkmark \\
+dictionary-comprehension-typeddict-liter & PEP 589 (ZUBAN) & \checkmark \\
+dictionary-comprehension-typeddict-liter & PEP 589 (ZUBAN) & \checkmark \\
+asyncio-generic-protocol-callback.py & PEP 484 (ZUBAN) & \checkmark \\
+asyncio-generic-protocol-callback.py & PEP 544 (MYPY) & \checkmark \\
+asyncio-generic-protocol-callback.py & PEP 544 (PYREFLY) & \texttimes \\
+asyncio-generic-protocol-callback.py & PEP 544 (ZUBAN) & \checkmark \\
+asyncio-generic-protocol-callback.py & PEP 544 (TY) & \texttimes \\
+overload-factory-typeguard-callable.py & PEP 484 (TY) & \checkmark \\
+overload-factory-typeguard-callable.py & PEP 484 (TY) & \checkmark \\
+overload-factory-typeguard-callable.py & PEP 647 (MYPY) & \texttimes \\
+overload-factory-typeguard-callable.py & PEP 647 (PYREFLY) & \texttimes \\
+overload-factory-typeguard-callable.py & PEP 647 (ZUBAN) & \texttimes \\
+overload-factory-typeguard-callable.py & PEP 647 (TY) & \texttimes \\
+overload-classmethod-paramspec.py & PEP 484 (MYPY) & \checkmark \\
+self-cyclic-typevar-abstract.py & PEP 484 (MYPY) & \texttimes \\
+self-cyclic-typevar-abstract.py & PEP 484 (PYREFLY) & \texttimes \\
+self-cyclic-typevar-abstract.py & PEP 484 (ZUBAN) & \texttimes \\
+self-cyclic-typevar-abstract.py & PEP 484 (TY) & \texttimes \\
+literal\_narrowing.py & PEP 634 (PYREFLY) & \checkmark \\
+walrus\_comprehension.py & PEP 572 (MYPY) & \checkmark \\
+typeddict\_single\_field.py & PEP 589 (TY) & \texttimes \\
+\bottomrule
+\end{longtable}
+
+\end{document}

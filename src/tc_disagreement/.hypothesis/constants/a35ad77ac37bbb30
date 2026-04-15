@@ -1,0 +1,4 @@
+# file: /home/benedek-kaibas/Documents/pytifex-demo/src/tc_disagreement/eval.py
+# hypothesis_version: 6.151.9
+
+[0.5, 60.0, 100, '-', '--method', '--verbose', '-v', '429', '500', '503', '=', 'ACCURACY:', 'CONFIDENCE:', 'CORRECT', 'Could not parse', 'DEBUG OUTPUT\n', 'ERROR', 'EXPLANATION:', 'GEMINI_API_KEY', 'INCORRECT', 'LIKELY_CORRECT:', 'N/A', 'No reason provided', 'PARTIAL', 'REASON:', 'RUNTIME_ERRORS:', 'SHOULD_BE_CAUGHT:', 'SUMMARY STATISTICS', 'TOOL:', 'UNCERTAIN', 'UNKNOWN', 'VERDICT:', 'YES', '__main__', '`', 'accuracy', 'all', 'analysis', 'checkers_used', 'confidence', 'consensus', 'correct', 'deterministic', 'evaluations', 'filename', 'filepath', 'gemini-2.5-flash', 'has_runtime_error', 'incorrect', 'method', 'multi_step', 'no errors found', 'no issues', 'outputs', 'r', 'reason', 'results', 'results.json', 'runtime', 'store_true', 'success', 'total', 'uncertain', 'verdict', 'w']

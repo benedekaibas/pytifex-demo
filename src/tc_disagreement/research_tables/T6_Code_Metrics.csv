@@ -1,0 +1,6 @@
+Metric,Mean,Median,Std Dev,Min,Max,N
+Lines of Code,34.16,32.00,15.97,4.00,93.00,147
+Functions,3.93,3.00,2.79,0.00,13.00,147
+Type Imports,4.62,5.00,2.00,0.00,11.00,147
+Type Density,0.15,0.16,0.18,-0.60,0.80,147
+Internal Calls,0.34,0.00,0.70,0.00,3.00,147

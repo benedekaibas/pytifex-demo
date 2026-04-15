@@ -1,0 +1,339 @@
+{
+  "timestamp": "merged_2026-03-25",
+  "checkers_used": [
+    "mypy",
+    "pyrefly",
+    "zuban",
+    "ty"
+  ],
+  "results": [
+    {
+      "filename": "asyncio-paramspec-partial-callback.py",
+      "filepath": "generated_examples/2026-03-04_21-27-35/source_files/asyncio-paramspec-partial-callback.py",
+      "metrics": {
+        "loc": 32,
+        "num_functions": 5,
+        "type_imports": 5,
+        "type_density": 0.0625,
+        "internal_calls": 1
+      },
+      "outputs": {
+        "mypy": "generated_examples/2026-03-04_21-27-35/source_files/asyncio-paramspec-partial-callback.py:32: note: Revealed type is \"Any\"\ngenerated_examples/2026-03-04_21-27-35/source_files/asyncio-paramspec-partial-callback.py:32: note: 'reveal_type' always outputs 'Any' in unchecked functions\ngenerated_examples/2026-03-04_21-27-35/source_files/asyncio-paramspec-partial-callback.py:41: note: Revealed type is \"Any\"\ngenerated_examples/2026-03-04_21-27-35/source_files/asyncio-paramspec-partial-callback.py:41: note: 'reveal_type' always outputs 'Any' in unchecked functions\nSuccess: no issues found in 1 source file",
+        "pyrefly": "INFO revealed type: partial[None] [reveal-type]\n  --> generated_examples/2026-03-04_21-27-35/source_files/asyncio-paramspec-partial-callback.py:32:16\n   |\n32 |     reveal_type(callback_with_extra) # Expected: Callable[[asyncio.Task[Any]], None]\n   |                ---------------------\n   |\n INFO revealed type: partial[None] [reveal-type]\n  --> generated_examples/2026-03-04_21-27-35/source_files/asyncio-paramspec-partial-callback.py:41:16\n   |\n41 |     reveal_type(problematic_callback) # Expected: Callable[[asyncio.Task[Any]], None] (if correctly inferred)\n   |                ----------------------\n   |\n\n[STDERR]\n INFO 0 errors",
+        "zuban": "generated_examples/2026-03-04_21-27-35/source_files/asyncio-paramspec-partial-callback.py:28: error: Argument 1 to \"add_done_callback\" of \"Future\" has incompatible type \"Callable[[Task[Any], str], None]\"; expected \"Callable[[Self], object]\"  [arg-type]\ngenerated_examples/2026-03-04_21-27-35/source_files/asyncio-paramspec-partial-callback.py:32: note: Revealed type is \"functools.partial[None]\"\ngenerated_examples/2026-03-04_21-27-35/source_files/asyncio-paramspec-partial-callback.py:41: note: Revealed type is \"functools.partial[None]\"\nFound 1 errors in 1 file (checked 1 source file)",
+        "ty": "info[revealed-type]: Revealed type\n  --> generated_examples/2026-03-04_21-27-35/source_files/asyncio-paramspec-partial-callback.py:32:17\n   |\n30 |     task2 = asyncio.create_task(my_long_running_task(\"b\", 2), name=\"task2\")\n31 |     callback_with_extra = partial(reporter.report_done, extra_msg=\"Handled by partial\")\n32 |     reveal_type(callback_with_extra) # Expected: Callable[[asyncio.Task[Any]], None]\n   |                 ^^^^^^^^^^^^^^^^^^^ `partial[Unknown]`\n33 |     task2.add_done_callback(callback_with_extra)\n   |\n\ninfo[revealed-type]: Revealed type\n  --> generated_examples/2026-03-04_21-27-35/source_files/asyncio-paramspec-partial-callback.py:41:17\n   |\n39 |     # Some checkers might get this wrong due to the complexity of partial and ParamSpec.\n40 |     problematic_callback = partial(reporter.report_error, error_detail=\"Partial error detail\")\n41 |     reveal_type(problematic_callback) # Expected: Callable[[asyncio.Task[Any]], None] (if correctly inferred)\n   |                 ^^^^^^^^^^^^^^^^^^^^ `partial[Unknown]`\n42 |     task3.add_done_callback(problematic_callback)\n   |\n\nFound 2 diagnostics"
+      },
+      "statuses": {
+        "mypy": "ok",
+        "pyrefly": "ok",
+        "zuban": "error",
+        "ty": "ok"
+      }
+    },
+    {
+      "filename": "newtype-typeguard-divergence-refined.py",
+      "filepath": "generated_examples/2026-03-04_21-27-35/source_files/newtype-typeguard-divergence-refined.py",
+      "metrics": {
+        "loc": 25,
+        "num_functions": 1,
+        "type_imports": 4,
+        "type_density": -0.08,
+        "internal_calls": 0
+      },
+      "outputs": {
+        "mypy": "generated_examples/2026-03-04_21-27-35/source_files/newtype-typeguard-divergence-refined.py:48: note: Revealed type is \"newtype-typeguard-divergence-refined.SensorReading | newtype-typeguard-divergence-refined.DeviceId | newtype-typeguard-divergence-refined.StatusCode | builtins.float | builtins.int\"\ngenerated_examples/2026-03-04_21-27-35/source_files/newtype-typeguard-divergence-refined.py:54: note: Revealed type is \"builtins.set[builtins.float | builtins.int]\"\nSuccess: no issues found in 1 source file",
+        "pyrefly": "INFO revealed type: DeviceId | SensorReading | StatusCode | float | int [reveal-type]\n  --> generated_examples/2026-03-04_21-27-35/source_files/newtype-typeguard-divergence-refined.py:48:20\n   |\n48 |         reveal_type(x) # EXPECTED DIVERGENCE:\n   |                    ---\n   |\n INFO revealed type: set[DeviceId | SensorReading | StatusCode | float | int] [reveal-type]\n  --> generated_examples/2026-03-04_21-27-35/source_files/newtype-typeguard-divergence-refined.py:54:16\n   |\n54 |     reveal_type(filtered_values_set) # EXPECTED DIVERGENCE:\n   |                ---------------------\n   |\n\n[STDERR]\n INFO 0 errors",
+        "zuban": "generated_examples/2026-03-04_21-27-35/source_files/newtype-typeguard-divergence-refined.py:48: note: Revealed type is \"generated_examples.2026-03-04_21-27-35.source_files.newtype-typeguard-divergence-refined.SensorReading | generated_examples.2026-03-04_21-27-35.source_files.newtype-typeguard-divergence-refined.DeviceId | generated_examples.2026-03-04_21-27-35.source_files.newtype-typeguard-divergence-refined.StatusCode | builtins.float | builtins.int\"\ngenerated_examples/2026-03-04_21-27-35/source_files/newtype-typeguard-divergence-refined.py:54: note: Revealed type is \"builtins.set[generated_examples.2026-03-04_21-27-35.source_files.newtype-typeguard-divergence-refined.SensorReading | generated_examples.2026-03-04_21-27-35.source_files.newtype-typeguard-divergence-refined.DeviceId | generated_examples.2026-03-04_21-27-35.source_files.newtype-typeguard-divergence-refined.StatusCode | builtins.float | builtins.int]\"\nSuccess: no issues found in 1 source file",
+        "ty": "error[invalid-newtype]: invalid base for `typing.NewType`\n --> generated_examples/2026-03-04_21-27-35/source_files/newtype-typeguard-divergence-refined.py:4:42\n  |\n2 | from typing_extensions import reveal_type\n3 |\n4 | SensorReading = NewType(\"SensorReading\", float)\n  |                                          ^^^^^ type `int | float`\n5 | DeviceId = NewType(\"DeviceId\", int)\n6 | StatusCode = NewType(\"StatusCode\", int)\n  |\ninfo: The base of a `NewType` must be a class type or another `NewType`.\ninfo: rule `invalid-newtype` is enabled by default\n\ninfo[revealed-type]: Revealed type\n  --> generated_examples/2026-03-04_21-27-35/source_files/newtype-typeguard-divergence-refined.py:48:21\n   |\n46 |     # expected point of divergence.\n47 |     filtered_values_set = {\n48 |         reveal_type(x) # EXPECTED DIVERGENCE:\n   |                     ^ `SensorReading | int | str | float`\n49 |                        # Mypy/Pyright might reveal: 'builtins.float | builtins.int'\n50 |                        # Others might reveal: 'Union[SensorReading, DeviceId, StatusCode, float, int]'\n   |\n\ninfo[revealed-type]: Revealed type\n  --> generated_examples/2026-03-04_21-27-35/source_files/newtype-typeguard-divergence-refined.py:54:17\n   |\n52 |         if is_numeric_and_newtype_like(x)\n53 |     }\n54 |     reveal_type(filtered_values_set) # EXPECTED DIVERGENCE:\n   |                 ^^^^^^^^^^^^^^^^^^^ `set[SensorReading | int | str | float | Unknown]`\n55 |                                      # Mypy/Pyright might reveal: 'set[builtins.float | builtins.int]'\n56 |                                      # Others might reveal: 'set[Union[SensorReading, DeviceId, StatusCode, float, int]]'\n   |\n\nFound 3 diagnostics"
+      },
+      "statuses": {
+        "mypy": "ok",
+        "pyrefly": "ok",
+        "zuban": "ok",
+        "ty": "error"
+      }
+    },
+    {
+      "filename": "paramspec-concatenate-divergence.py",
+      "filepath": "generated_examples/2026-03-04_21-27-35/source_files/paramspec-concatenate-divergence.py",
+      "metrics": {
+        "loc": 51,
+        "num_functions": 7,
+        "type_imports": 6,
+        "type_density": 0.098,
+        "internal_calls": 2
+      },
+      "outputs": {
+        "mypy": "generated_examples/2026-03-04_21-27-35/source_files/paramspec-concatenate-divergence.py:65: note: Revealed type is \"Any\"\ngenerated_examples/2026-03-04_21-27-35/source_files/paramspec-concatenate-divergence.py:65: note: 'reveal_type' always outputs 'Any' in unchecked functions\ngenerated_examples/2026-03-04_21-27-35/source_files/paramspec-concatenate-divergence.py:76: note: Revealed type is \"Any\"\ngenerated_examples/2026-03-04_21-27-35/source_files/paramspec-concatenate-divergence.py:76: note: 'reveal_type' always outputs 'Any' in unchecked functions\nSuccess: no issues found in 1 source file",
+        "pyrefly": "INFO revealed type: (Task[Any]) -> None [reveal-type]\n  --> generated_examples/2026-03-04_21-27-35/source_files/paramspec-concatenate-divergence.py:65:16\n   |\n65 |     reveal_type(wrapped_callback) # Expected: Callable[[asyncio.Task[Any]], None]\n   |                ------------------\n   |\nERROR Unexpected keyword argument `extra` in function `generic_callback_wrapper` [unexpected-keyword]\n  --> generated_examples/2026-03-04_21-27-35/source_files/paramspec-concatenate-divergence.py:75:77\n   |\n75 |     problematic_wrapped = generic_callback_wrapper(handler.handle_specific, extra=\"info\")\n   |                                                                             ^^^^^\n   |\n INFO revealed type: (Task[Any]) -> None [reveal-type]\n  --> generated_examples/2026-03-04_21-27-35/source_files/paramspec-concatenate-divergence.py:76:16\n   |\n76 |     reveal_type(problematic_wrapped) # Expected: Callable[[asyncio.Task[Any]], None]\n   |                ---------------------\n   |\n\n[STDERR]\n INFO 1 error",
+        "zuban": "generated_examples/2026-03-04_21-27-35/source_files/paramspec-concatenate-divergence.py:55: error: Argument 1 to \"add_done_callback\" of \"Future\" has incompatible type \"Callable[[Task[Any], KwArg(Any)], None]\"; expected \"Callable[[Self], object]\"  [arg-type]\ngenerated_examples/2026-03-04_21-27-35/source_files/paramspec-concatenate-divergence.py:59: error: Argument 1 to \"add_done_callback\" of \"Future\" has incompatible type \"Callable[[Task[int]], None]\"; expected \"Callable[[Self], object]\"  [arg-type]\ngenerated_examples/2026-03-04_21-27-35/source_files/paramspec-concatenate-divergence.py:65: note: Revealed type is \"def (_asyncio.Task[Any])\"\ngenerated_examples/2026-03-04_21-27-35/source_files/paramspec-concatenate-divergence.py:66: error: Argument 1 to \"add_done_callback\" of \"Future\" has incompatible type \"Callable[[Task[Any]], None]\"; expected \"Callable[[Self], object]\"  [arg-type]\ngenerated_examples/2026-03-04_21-27-35/source_files/paramspec-concatenate-divergence.py:75: error: Unexpected keyword argument \"extra\" for \"generic_callback_wrapper\"  [call-arg]\ngenerated_examples/2026-03-04_21-27-35/source_files/paramspec-concatenate-divergence.py:76: note: Revealed type is \"def (_asyncio.Task[Any])\"\ngenerated_examples/2026-03-04_21-27-35/source_files/paramspec-concatenate-divergence.py:77: error: Argument 1 to \"add_done_callback\" of \"Future\" has incompatible type \"Callable[[Task[Any]], None]\"; expected \"Callable[[Self], object]\"  [arg-type]\nFound 5 errors in 1 file (checked 1 source file)",
+        "ty": "error[unresolved-attribute]: Object of type `(...) -> R@generic_callback_wrapper` has no attribute `__name__`\n  --> generated_examples/2026-03-04_21-27-35/source_files/paramspec-concatenate-divergence.py:45:23\n   |\n43 |         except TypeError:\n44 |             # This fallback is for runtime behavior, not type checking.\n45 |             print(f\"[{handler.__name__}] Failed to call handler with provided args/kwargs for task {task.get_name()}\")\n   |                       ^^^^^^^^^^^^^^^^\n46 |     return wrapper_func\n   |\ninfo: rule `unresolved-attribute` is enabled by default\n\ninfo[revealed-type]: Revealed type\n  --> generated_examples/2026-03-04_21-27-35/source_files/paramspec-concatenate-divergence.py:65:17\n   |\n63 |     # 'status=\"finished\"' matches **kwargs. This should pass.\n64 |     wrapped_callback = generic_callback_wrapper(handler.handle_result, status=\"finished\")\n65 |     reveal_type(wrapped_callback) # Expected: Callable[[asyncio.Task[Any]], None]\n   |                 ^^^^^^^^^^^^^^^^ `(Task[Any], /) -> None`\n66 |     task3.add_done_callback(wrapped_callback)\n   |\n\ninfo[revealed-type]: Revealed type\n  --> generated_examples/2026-03-04_21-27-35/source_files/paramspec-concatenate-divergence.py:76:17\n   |\n74 |     # is a common source of divergence.\n75 |     problematic_wrapped = generic_callback_wrapper(handler.handle_specific, extra=\"info\")\n76 |     reveal_type(problematic_wrapped) # Expected: Callable[[asyncio.Task[Any]], None]\n   |                 ^^^^^^^^^^^^^^^^^^^ `(Task[Any], /) -> None`\n77 |     task4.add_done_callback(problematic_wrapped)\n   |\n\nFound 3 diagnostics"
+      },
+      "statuses": {
+        "mypy": "ok",
+        "pyrefly": "error",
+        "zuban": "error",
+        "ty": "error"
+      }
+    },
+    {
+      "filename": "dictionary-comprehension-typeddict-literal-divergence.py",
+      "filepath": "generated_examples/2026-03-04_21-27-35/source_files/dictionary-comprehension-typeddict-literal-divergence.py",
+      "metrics": {
+        "loc": 45,
+        "num_functions": 0,
+        "type_imports": 5,
+        "type_density": 0.1333,
+        "internal_calls": 0
+      },
+      "outputs": {
+        "mypy": "generated_examples/2026-03-04_21-27-35/source_files/dictionary-comprehension-typeddict-literal-divergence.py:41: note: Revealed type is \"builtins.dict[builtins.str, builtins.list[builtins.int | builtins.float]]\"\ngenerated_examples/2026-03-04_21-27-35/source_files/dictionary-comprehension-typeddict-literal-divergence.py:56: note: Revealed type is \"builtins.dict[builtins.str, builtins.dict[builtins.str, builtins.str]]\"\ngenerated_examples/2026-03-04_21-27-35/source_files/dictionary-comprehension-typeddict-literal-divergence.py:68: note: Revealed type is \"builtins.object\"\ngenerated_examples/2026-03-04_21-27-35/source_files/dictionary-comprehension-typeddict-literal-divergence.py:82: note: Revealed type is \"builtins.dict[builtins.str, builtins.dict[builtins.str, builtins.object]]\"\nSuccess: no issues found in 1 source file",
+        "pyrefly": "INFO revealed type: dict[str, list[float | int]] [reveal-type]\n  --> generated_examples/2026-03-04_21-27-35/source_files/dictionary-comprehension-typeddict-literal-divergence.py:41:16\n   |\n41 |     reveal_type(filtered_numeric_values)\n   |                -------------------------\n   |\n INFO revealed type: dict[str, dict[str, str]] [reveal-type]\n  --> generated_examples/2026-03-04_21-27-35/source_files/dictionary-comprehension-typeddict-literal-divergence.py:56:16\n   |\n56 |     reveal_type(processed_settings)\n   |                --------------------\n   |\n INFO revealed type: bool | object [reveal-type]\n  --> generated_examples/2026-03-04_21-27-35/source_files/dictionary-comprehension-typeddict-literal-divergence.py:68:33\n   |\n68 |             inner_k: reveal_type(v) # Reveal type of 'v' inside to see intermediate narrowing\n   |                                 ---\n   |\n INFO revealed type: dict[str, dict[str, bool | object]] [reveal-type]\n  --> generated_examples/2026-03-04_21-27-35/source_files/dictionary-comprehension-typeddict-literal-divergence.py:82:16\n   |\n82 |     reveal_type(selected_complex_flags)\n   |                ------------------------\n   |\n\n[STDERR]\n INFO 0 errors",
+        "zuban": "generated_examples/2026-03-04_21-27-35/source_files/dictionary-comprehension-typeddict-literal-divergence.py:28: error: Extra keys (\"version\", \"beta\", \"mode\") for TypedDict \"UserSettings\"  [typeddict-unknown-key]\ngenerated_examples/2026-03-04_21-27-35/source_files/dictionary-comprehension-typeddict-literal-divergence.py:28: error: Missing keys (\"theme\", \"notifications\", \"level\") for TypedDict \"UserSettings\"  [typeddict-item]\ngenerated_examples/2026-03-04_21-27-35/source_files/dictionary-comprehension-typeddict-literal-divergence.py:29: error: Extra keys (\"privilege\", \"active\", \"status\") for TypedDict \"UserSettings\"  [typeddict-unknown-key]\ngenerated_examples/2026-03-04_21-27-35/source_files/dictionary-comprehension-typeddict-literal-divergence.py:29: error: Missing keys (\"theme\", \"notifications\", \"level\") for TypedDict \"UserSettings\"  [typeddict-item]\ngenerated_examples/2026-03-04_21-27-35/source_files/dictionary-comprehension-typeddict-literal-divergence.py:41: note: Revealed type is \"builtins.dict[builtins.str, builtins.list[builtins.int | builtins.float]]\"\ngenerated_examples/2026-03-04_21-27-35/source_files/dictionary-comprehension-typeddict-literal-divergence.py:56: note: Revealed type is \"builtins.dict[builtins.str, builtins.dict[builtins.str, builtins.str]]\"\ngenerated_examples/2026-03-04_21-27-35/source_files/dictionary-comprehension-typeddict-literal-divergence.py:68: note: Revealed type is \"builtins.object\"\ngenerated_examples/2026-03-04_21-27-35/source_files/dictionary-comprehension-typeddict-literal-divergence.py:82: note: Revealed type is \"builtins.dict[builtins.str, builtins.dict[builtins.str, builtins.object]]\"\nFound 4 errors in 1 file (checked 1 source file)",
+        "ty": "error[invalid-assignment]: Object of type `dict[str, UserSettings | AppSettings | AdminSettings | dict[Unknown | str, Unknown | str | int] | dict[Unknown | str, Unknown | str | bool]]` is not assignable to `dict[str, UserSettings | AppSettings | AdminSettings]`\n  --> generated_examples/2026-03-04_21-27-35/source_files/dictionary-comprehension-typeddict-literal-divergence.py:26:14\n   |\n24 |   if __name__ == \"__main__\":\n25 |       # Annotate 'configs' with the precise type, leveraging TypedDicts\n26 |       configs: dict[str, ConfigType] = {\n   |  ______________---------------------___^\n   | |              |\n   | |              Declared type\n27 | |         \"user_settings\": {\"theme\": \"dark\", \"notifications\": True, \"level\": 10},\n28 | |         \"app_settings\": {\"version\": \"1.0\", \"beta\": False, \"mode\": \"prod\"},\n29 | |         \"admin_settings\": {\"privilege\": \"full\", \"active\": 1, \"status\": \"pending\"},\n30 | |     }\n   | |_____^ Incompatible value of type `dict[str, UserSettings | AppSettings | AdminSettings | dict[Unknown | str, Unknown | str | int] | dict[Unknown | str, Unknown | str | bool]]`\n31 |\n32 |       # Example 1: filter and transform dictionary values based on type\n   |\ninfo: rule `invalid-assignment` is enabled by default\n\ninfo[revealed-type]: Revealed type\n  --> generated_examples/2026-03-04_21-27-35/source_files/dictionary-comprehension-typeddict-literal-divergence.py:41:17\n   |\n39 |     }\n40 |     # Expected type for filtered_numeric_values: dict[str, list[Union[int, float]]]\n41 |     reveal_type(filtered_numeric_values)\n   |                 ^^^^^^^^^^^^^^^^^^^^^^^ `dict[str | Unknown, list[int | float | Unknown] | Unknown]`\n42 |\n43 |     # Example 2: comprehension that creates a dict of transformed values\n   |\n\ninfo[revealed-type]: Revealed type\n  --> generated_examples/2026-03-04_21-27-35/source_files/dictionary-comprehension-typeddict-literal-divergence.py:56:17\n   |\n54 |     }\n55 |     # Expected: dict[str, dict[str, str]] (all values become strings)\n56 |     reveal_type(processed_settings)\n   |                 ^^^^^^^^^^^^^^^^^^ `dict[str | Unknown, dict[str | Unknown, str | Unknown] | Unknown]`\n57 |\n58 |     # Example 3: A comprehension using type narrowing to select specific keys and types.\n   |\n\ninfo[revealed-type]: Revealed type\n  --> generated_examples/2026-03-04_21-27-35/source_files/dictionary-comprehension-typeddict-literal-divergence.py:68:34\n   |\n66 |     selected_complex_flags = {\n67 |         outer_k: {\n68 |             inner_k: reveal_type(v) # Reveal type of 'v' inside to see intermediate narrowing\n   |                                  ^ `object`\n69 |             for inner_k, v in outer_v.items()\n70 |             if isinstance(v, bool) or inner_k in [\"active\", \"status\"]\n   |\n\ninfo[revealed-type]: Revealed type\n  --> generated_examples/2026-03-04_21-27-35/source_files/dictionary-comprehension-typeddict-literal-divergence.py:82:17\n   |\n80 |     #   `dict[str, dict[str, Union[bool, int, str]]]`.\n81 |     # - The `reveal_type(v)` inside the comprehension will show how `v` is typed after the filter.\n82 |     reveal_type(selected_complex_flags)\n   |                 ^^^^^^^^^^^^^^^^^^^^^^ `dict[str | Unknown, dict[str | Unknown, object] | Unknown]`\n   |\n\nFound 5 diagnostics"
+      },
+      "statuses": {
+        "mypy": "ok",
+        "pyrefly": "ok",
+        "zuban": "error",
+        "ty": "error"
+      }
+    },
+    {
+      "filename": "asyncio-generic-protocol-callback.py",
+      "filepath": "generated_examples/2026-03-04_21-27-35/source_files/asyncio-generic-protocol-callback.py",
+      "metrics": {
+        "loc": 35,
+        "num_functions": 8,
+        "type_imports": 6,
+        "type_density": 0.2286,
+        "internal_calls": 3
+      },
+      "outputs": {
+        "mypy": "generated_examples/2026-03-04_21-27-35/source_files/asyncio-generic-protocol-callback.py:7: error: Invariant type variable \"T\" used in protocol where contravariant one is expected  [misc]\ngenerated_examples/2026-03-04_21-27-35/source_files/asyncio-generic-protocol-callback.py:46: note: Revealed type is \"Any\"\ngenerated_examples/2026-03-04_21-27-35/source_files/asyncio-generic-protocol-callback.py:46: note: 'reveal_type' always outputs 'Any' in unchecked functions\nFound 1 error in 1 file (checked 1 source file)",
+        "pyrefly": "INFO revealed type: BoundMethod[MyIntProcessor, (self: MyIntProcessor, task: Task[int], metadata: str = 'default') -> None] [reveal-type]\n  --> generated_examples/2026-03-04_21-27-35/source_files/asyncio-generic-protocol-callback.py:46:16\n   |\n46 |     reveal_type(int_processor.process_result) # Expected: Callable[[asyncio.Task[int], str], None]\n   |                ------------------------------\n   |\n\n[STDERR]\n INFO 0 errors",
+        "zuban": "generated_examples/2026-03-04_21-27-35/source_files/asyncio-generic-protocol-callback.py:7: error: Invariant type variable \"T\" used in protocol where Contravariant one is expected  [misc]\ngenerated_examples/2026-03-04_21-27-35/source_files/asyncio-generic-protocol-callback.py:36: error: Argument 1 to \"add_done_callback\" of \"Future\" has incompatible type \"Callable[[Task[int]], None]\"; expected \"Callable[[Self], object]\"  [arg-type]\ngenerated_examples/2026-03-04_21-27-35/source_files/asyncio-generic-protocol-callback.py:39: error: Argument 1 to \"add_done_callback\" of \"Future\" has incompatible type \"Callable[[Task[str]], None]\"; expected \"Callable[[Self], object]\"  [arg-type]\ngenerated_examples/2026-03-04_21-27-35/source_files/asyncio-generic-protocol-callback.py:46: note: Revealed type is \"def (task: _asyncio.Task[builtins.int], metadata: builtins.str =)\"\ngenerated_examples/2026-03-04_21-27-35/source_files/asyncio-generic-protocol-callback.py:47: error: Argument 1 to \"add_done_callback\" of \"Future\" has incompatible type \"Callable[[Task[int], str], None]\"; expected \"Callable[[Self], object]\"  [arg-type]\nFound 4 errors in 1 file (checked 1 source file)",
+        "ty": "info[revealed-type]: Revealed type\n  --> generated_examples/2026-03-04_21-27-35/source_files/asyncio-generic-protocol-callback.py:46:17\n   |\n44 |     # or general leniency for `add_done_callback`'s argument.\n45 |     task3 = asyncio.create_task(some_int_task(), name=\"int_task_direct\")\n46 |     reveal_type(int_processor.process_result) # Expected: Callable[[asyncio.Task[int], str], None]\n   |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `bound method MyIntProcessor.process_result(task: Task[int], metadata: str = Literal[\"default\"]) -> None`\n47 |     task3.add_done_callback(int_processor.process_result) # Should be error for mypy, might pass elsewhere.\n   |\n\nFound 1 diagnostic"
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "ok",
+        "zuban": "error",
+        "ty": "ok"
+      }
+    },
+    {
+      "filename": "overload-factory-typeguard-callable.py",
+      "filepath": "generated_examples/2026-03-04_21-27-35/source_files/overload-factory-typeguard-callable.py",
+      "metrics": {
+        "loc": 57,
+        "num_functions": 8,
+        "type_imports": 7,
+        "type_density": 0.2807,
+        "internal_calls": 0
+      },
+      "outputs": {
+        "mypy": "generated_examples/2026-03-04_21-27-35/source_files/overload-factory-typeguard-callable.py:45: note: Revealed type is \"def (Any) -> TypeGuard[overload-factory-typeguard-callable.SpecialWidget]\"\ngenerated_examples/2026-03-04_21-27-35/source_files/overload-factory-typeguard-callable.py:50: note: Revealed type is \"overload-factory-typeguard-callable.SpecialWidget\"\ngenerated_examples/2026-03-04_21-27-35/source_files/overload-factory-typeguard-callable.py:53: note: Revealed type is \"builtins.list[overload-factory-typeguard-callable.SpecialWidget]\"\ngenerated_examples/2026-03-04_21-27-35/source_files/overload-factory-typeguard-callable.py:59: note: Revealed type is \"overload-factory-typeguard-callable.Widget\"\ngenerated_examples/2026-03-04_21-27-35/source_files/overload-factory-typeguard-callable.py:63: note: Revealed type is \"overload-factory-typeguard-callable.SpecialWidget\"\ngenerated_examples/2026-03-04_21-27-35/source_files/overload-factory-typeguard-callable.py:67: note: Revealed type is \"def (Any) -> TypeGuard[overload-factory-typeguard-callable.SpecialWidget]\"\nSuccess: no issues found in 1 source file",
+        "pyrefly": "INFO revealed type: (Any) -> TypeGuard[SpecialWidget] [reveal-type]\n  --> generated_examples/2026-03-04_21-27-35/source_files/overload-factory-typeguard-callable.py:45:16\n   |\n45 |     reveal_type(is_special_abc) # Expected: Callable[[Any], TypeGuard[SpecialWidget]]\n   |                ----------------\n   |\n INFO revealed type: SpecialWidget [reveal-type]\n  --> generated_examples/2026-03-04_21-27-35/source_files/overload-factory-typeguard-callable.py:50:24\n   |\n50 |             reveal_type(w) # Expected: SpecialWidget (narrowed)\n   |                        ---\n   |\n INFO revealed type: list[SpecialWidget] [reveal-type]\n  --> generated_examples/2026-03-04_21-27-35/source_files/overload-factory-typeguard-callable.py:53:16\n   |\n53 |     reveal_type(special_widgets_list) # Expected: list[SpecialWidget]\n   |                ----------------------\n   |\n INFO revealed type: Widget [reveal-type]\n  --> generated_examples/2026-03-04_21-27-35/source_files/overload-factory-typeguard-callable.py:59:16\n   |\n59 |     reveal_type(widget1) # Expected: Widget\n   |                ---------\n   |\n INFO revealed type: SpecialWidget [reveal-type]\n  --> generated_examples/2026-03-04_21-27-35/source_files/overload-factory-typeguard-callable.py:63:16\n   |\n63 |     reveal_type(special_widget1) # Expected: SpecialWidget\n   |                -----------------\n   |\n INFO revealed type: (Any) -> TypeGuard[SpecialWidget] [reveal-type]\n  --> generated_examples/2026-03-04_21-27-35/source_files/overload-factory-typeguard-callable.py:67:16\n   |\n67 |     reveal_type(is_my_special) # Expected: Callable[[Any], TypeGuard[SpecialWidget]]\n   |                ---------------\n   |\n\n[STDERR]\n INFO 0 errors",
+        "zuban": "generated_examples/2026-03-04_21-27-35/source_files/overload-factory-typeguard-callable.py:45: note: Revealed type is \"def (Any) -> TypeGuard[generated_examples.2026-03-04_21-27-35.source_files.overload-factory-typeguard-callable.SpecialWidget]\"\ngenerated_examples/2026-03-04_21-27-35/source_files/overload-factory-typeguard-callable.py:50: note: Revealed type is \"generated_examples.2026-03-04_21-27-35.source_files.overload-factory-typeguard-callable.SpecialWidget\"\ngenerated_examples/2026-03-04_21-27-35/source_files/overload-factory-typeguard-callable.py:53: note: Revealed type is \"builtins.list[generated_examples.2026-03-04_21-27-35.source_files.overload-factory-typeguard-callable.SpecialWidget]\"\ngenerated_examples/2026-03-04_21-27-35/source_files/overload-factory-typeguard-callable.py:59: note: Revealed type is \"generated_examples.2026-03-04_21-27-35.source_files.overload-factory-typeguard-callable.Widget\"\ngenerated_examples/2026-03-04_21-27-35/source_files/overload-factory-typeguard-callable.py:63: note: Revealed type is \"generated_examples.2026-03-04_21-27-35.source_files.overload-factory-typeguard-callable.SpecialWidget\"\ngenerated_examples/2026-03-04_21-27-35/source_files/overload-factory-typeguard-callable.py:67: note: Revealed type is \"def (Any) -> TypeGuard[generated_examples.2026-03-04_21-27-35.source_files.overload-factory-typeguard-callable.SpecialWidget]\"\nSuccess: no issues found in 1 source file",
+        "ty": "info[revealed-type]: Revealed type\n  --> generated_examples/2026-03-04_21-27-35/source_files/overload-factory-typeguard-callable.py:45:17\n   |\n43 |     # Use the TypeGuard callable created by the factory\n44 |     is_special_abc = WidgetFactory.create(\"abc\", is_special_widget=True)\n45 |     reveal_type(is_special_abc) # Expected: Callable[[Any], TypeGuard[SpecialWidget]]\n   |                 ^^^^^^^^^^^^^^ `(Any, /) -> @Todo`\n46 |\n47 |     special_widgets_list: list[SpecialWidget] = []\n   |\n\ninfo[revealed-type]: Revealed type\n  --> generated_examples/2026-03-04_21-27-35/source_files/overload-factory-typeguard-callable.py:50:25\n   |\n48 |     for w in widgets:\n49 |         if is_special_abc(w):\n50 |             reveal_type(w) # Expected: SpecialWidget (narrowed)\n   |                         ^ `Widget`\n51 |             special_widgets_list.append(w)\n52 |             print(f\"Found special widget: {w.name} with code {w.code}\")\n   |\n\nerror[invalid-argument-type]: Argument to bound method `append` is incorrect\n  --> generated_examples/2026-03-04_21-27-35/source_files/overload-factory-typeguard-callable.py:51:41\n   |\n49 |         if is_special_abc(w):\n50 |             reveal_type(w) # Expected: SpecialWidget (narrowed)\n51 |             special_widgets_list.append(w)\n   |                                         ^ Expected `SpecialWidget`, found `Widget`\n52 |             print(f\"Found special widget: {w.name} with code {w.code}\")\n53 |     reveal_type(special_widgets_list) # Expected: list[SpecialWidget]\n   |\ninfo: Method defined here\n    --> stdlib/builtins.pyi:2816:9\n     |\n2814 |         \"\"\"Return a shallow copy of the list.\"\"\"\n2815 |\n2816 |     def append(self, object: _T, /) -> None:\n     |         ^^^^^^       ---------- Parameter declared here\n2817 |         \"\"\"Append object to the end of the list.\"\"\"\n     |\ninfo: rule `invalid-argument-type` is enabled by default\n\nerror[unresolved-attribute]: Object of type `Widget` has no attribute `code`\n  --> generated_examples/2026-03-04_21-27-35/source_files/overload-factory-typeguard-callable.py:52:63\n   |\n50 |             reveal_type(w) # Expected: SpecialWidget (narrowed)\n51 |             special_widgets_list.append(w)\n52 |             print(f\"Found special widget: {w.name} with code {w.code}\")\n   |                                                               ^^^^^^\n53 |     reveal_type(special_widgets_list) # Expected: list[SpecialWidget]\n   |\ninfo: rule `unresolved-attribute` is enabled by default\n\ninfo[revealed-type]: Revealed type\n  --> generated_examples/2026-03-04_21-27-35/source_files/overload-factory-typeguard-callable.py:53:17\n   |\n51 |             special_widgets_list.append(w)\n52 |             print(f\"Found special widget: {w.name} with code {w.code}\")\n53 |     reveal_type(special_widgets_list) # Expected: list[SpecialWidget]\n   |                 ^^^^^^^^^^^^^^^^^^^^ `list[SpecialWidget]`\n   |\n\ninfo[revealed-type]: Revealed type\n  --> generated_examples/2026-03-04_21-27-35/source_files/overload-factory-typeguard-callable.py:59:17\n   |\n57 |     # Test first overload\n58 |     widget1 = WidgetFactory.create(\"Basic\")\n59 |     reveal_type(widget1) # Expected: Widget\n   |                 ^^^^^^^ `Widget`\n60 |\n61 |     # Test second overload\n   |\n\ninfo[revealed-type]: Revealed type\n  --> generated_examples/2026-03-04_21-27-35/source_files/overload-factory-typeguard-callable.py:63:17\n   |\n61 |     # Test second overload\n62 |     special_widget1 = WidgetFactory.create(\"Advanced\", 123)\n63 |     reveal_type(special_widget1) # Expected: SpecialWidget\n   |                 ^^^^^^^^^^^^^^^ `SpecialWidget`\n64 |\n65 |     # Test third overload\n   |\n\ninfo[revealed-type]: Revealed type\n  --> generated_examples/2026-03-04_21-27-35/source_files/overload-factory-typeguard-callable.py:67:17\n   |\n65 |     # Test third overload\n66 |     is_my_special = WidgetFactory.create(\"my_\", is_special_widget=True)\n67 |     reveal_type(is_my_special) # Expected: Callable[[Any], TypeGuard[SpecialWidget]]\n   |                 ^^^^^^^^^^^^^ `(Any, /) -> @Todo`\n68 |\n69 |     widgets_to_process: list[Widget] = [\n   |\n\nFound 8 diagnostics"
+      },
+      "statuses": {
+        "mypy": "ok",
+        "pyrefly": "ok",
+        "zuban": "ok",
+        "ty": "error"
+      }
+    },
+    {
+      "filename": "overload-classmethod-paramspec.py",
+      "filepath": "generated_examples/2026-03-04_21-27-35/source_files/overload-classmethod-paramspec.py",
+      "metrics": {
+        "loc": 56,
+        "num_functions": 9,
+        "type_imports": 6,
+        "type_density": 0.25,
+        "internal_calls": 0
+      },
+      "outputs": {
+        "mypy": "generated_examples/2026-03-04_21-27-35/source_files/overload-classmethod-paramspec.py:28: error: Incompatible types in assignment (expression has type \"Any | None\", variable has type \"str\")  [assignment]\ngenerated_examples/2026-03-04_21-27-35/source_files/overload-classmethod-paramspec.py:56: note: Revealed type is \"def (arg1: builtins.int, arg2: builtins.float) -> builtins.float\"\ngenerated_examples/2026-03-04_21-27-35/source_files/overload-classmethod-paramspec.py:59: note: Revealed type is \"Any\"\ngenerated_examples/2026-03-04_21-27-35/source_files/overload-classmethod-paramspec.py:63: note: Revealed type is \"Any\"\ngenerated_examples/2026-03-04_21-27-35/source_files/overload-classmethod-paramspec.py:67: note: Revealed type is \"Any\"\nFound 1 error in 1 file (checked 1 source file)",
+        "pyrefly": "ERROR Cannot set item in `dict[str, (...) -> Any]` [unsupported-operation]\n  --> generated_examples/2026-03-04_21-27-35/source_files/overload-classmethod-paramspec.py:23:31\n   |\n23 |                 cls._registry[name] = func\n   |                               ^^^^\n   |\n  Argument `None` is not assignable to parameter `key` with type `str` in function `dict.__setitem__`\n INFO revealed type: (arg1: int, arg2: float) -> float [reveal-type]\n  --> generated_examples/2026-03-04_21-27-35/source_files/overload-classmethod-paramspec.py:56:16\n   |\n56 |     reveal_type(decorated_func) # Expected: Callable[[int, float], float]\n   |                ----------------\n   |\n INFO revealed type: Any [reveal-type]\n  --> generated_examples/2026-03-04_21-27-35/source_files/overload-classmethod-paramspec.py:59:16\n   |\n59 |     reveal_type(result1) # Expected: float\n   |                ---------\n   |\n INFO revealed type: Any [reveal-type]\n  --> generated_examples/2026-03-04_21-27-35/source_files/overload-classmethod-paramspec.py:63:16\n   |\n63 |     reveal_type(result2) # Expected: str\n   |                ---------\n   |\n INFO revealed type: Any [reveal-type]\n  --> generated_examples/2026-03-04_21-27-35/source_files/overload-classmethod-paramspec.py:67:16\n   |\n67 |     reveal_type(obj) # Expected: MyClass\n   |                -----\n   |\n\n[STDERR]\n INFO 1 error",
+        "zuban": "generated_examples/2026-03-04_21-27-35/source_files/overload-classmethod-paramspec.py:56: note: Revealed type is \"def (arg1: builtins.int, arg2: builtins.float) -> builtins.float\"\ngenerated_examples/2026-03-04_21-27-35/source_files/overload-classmethod-paramspec.py:59: note: Revealed type is \"Any\"\ngenerated_examples/2026-03-04_21-27-35/source_files/overload-classmethod-paramspec.py:63: note: Revealed type is \"Any\"\ngenerated_examples/2026-03-04_21-27-35/source_files/overload-classmethod-paramspec.py:67: note: Revealed type is \"Any\"\nSuccess: no issues found in 1 source file",
+        "ty": "info[revealed-type]: Revealed type\n  --> generated_examples/2026-03-04_21-27-35/source_files/overload-classmethod-paramspec.py:56:17\n   |\n54 |         return arg1 + arg2\n55 |\n56 |     reveal_type(decorated_func) # Expected: Callable[[int, float], float]\n   |                 ^^^^^^^^^^^^^^ `(...) -> Unknown`\n57 |\n58 |     result1 = Factory.create(\"my_simple_func\", 10, 20.5)\n   |\n\ninfo[revealed-type]: Revealed type\n  --> generated_examples/2026-03-04_21-27-35/source_files/overload-classmethod-paramspec.py:59:17\n   |\n58 |     result1 = Factory.create(\"my_simple_func\", 10, 20.5)\n59 |     reveal_type(result1) # Expected: float\n   |                 ^^^^^^^ `Any`\n60 |\n61 |     Factory.register(simple_function, name=\"simple_math\")\n   |\n\ninfo[revealed-type]: Revealed type\n  --> generated_examples/2026-03-04_21-27-35/source_files/overload-classmethod-paramspec.py:63:17\n   |\n61 |     Factory.register(simple_function, name=\"simple_math\")\n62 |     result2 = Factory.create(\"simple_math\", 5, \"test\")\n63 |     reveal_type(result2) # Expected: str\n   |                 ^^^^^^^ `Any`\n64 |\n65 |     Factory.register(MyClass) # Registers MyClass constructor\n   |\n\ninfo[revealed-type]: Revealed type\n  --> generated_examples/2026-03-04_21-27-35/source_files/overload-classmethod-paramspec.py:67:17\n   |\n65 |     Factory.register(MyClass) # Registers MyClass constructor\n66 |     obj = Factory.create(\"MyClass\", 100)\n67 |     reveal_type(obj) # Expected: MyClass\n   |                 ^^^ `Any`\n68 |     print(obj.greet())\n   |\n\nFound 4 diagnostics"
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "error",
+        "zuban": "ok",
+        "ty": "ok"
+      }
+    },
+    {
+      "filename": "self-cyclic-typevar-abstract.py",
+      "filepath": "generated_examples/2026-03-04_21-27-35/source_files/self-cyclic-typevar-abstract.py",
+      "metrics": {
+        "loc": 49,
+        "num_functions": 11,
+        "type_imports": 5,
+        "type_density": 0.2041,
+        "internal_calls": 0
+      },
+      "outputs": {
+        "mypy": "generated_examples/2026-03-04_21-27-35/source_files/self-cyclic-typevar-abstract.py:12: error: Cannot resolve name \"Container\" (possible cyclic definition)  [misc]\ngenerated_examples/2026-03-04_21-27-35/source_files/self-cyclic-typevar-abstract.py:12: error: TypeVar \"bound\" must be a type  [misc]\ngenerated_examples/2026-03-04_21-27-35/source_files/self-cyclic-typevar-abstract.py:12: error: TypeVar \"default\" must be a type  [misc]\ngenerated_examples/2026-03-04_21-27-35/source_files/self-cyclic-typevar-abstract.py:13: error: Cannot resolve name \"Item\" (possible cyclic definition)  [misc]\ngenerated_examples/2026-03-04_21-27-35/source_files/self-cyclic-typevar-abstract.py:13: error: TypeVar \"bound\" must be a type  [misc]\ngenerated_examples/2026-03-04_21-27-35/source_files/self-cyclic-typevar-abstract.py:13: error: TypeVar \"default\" must be a type  [misc]\ngenerated_examples/2026-03-04_21-27-35/source_files/self-cyclic-typevar-abstract.py:29: error: Cannot resolve name \"MyContainer\" (possible cyclic definition)  [misc]\ngenerated_examples/2026-03-04_21-27-35/source_files/self-cyclic-typevar-abstract.py:62: note: Revealed type is \"self-cyclic-typevar-abstract.MyItem\"\ngenerated_examples/2026-03-04_21-27-35/source_files/self-cyclic-typevar-abstract.py:65: note: Revealed type is \"self-cyclic-typevar-abstract.MyContainer\"\ngenerated_examples/2026-03-04_21-27-35/source_files/self-cyclic-typevar-abstract.py:68: note: Revealed type is \"self-cyclic-typevar-abstract.MyContainer\"\nFound 7 errors in 1 file (checked 1 source file)",
+        "pyrefly": "ERROR Expected a type variable, got `Unknown` [invalid-type-var]\n  --> generated_examples/2026-03-04_21-27-35/source_files/self-cyclic-typevar-abstract.py:22:7\n   |\n22 | class Item(ABC, Generic[ContainerT]):\n   |       ^^^^\n   |\n INFO revealed type: MyItem [reveal-type]\n  --> generated_examples/2026-03-04_21-27-35/source_files/self-cyclic-typevar-abstract.py:62:16\n   |\n62 |     reveal_type(retrieved_item) # Expected: MyItem\n   |                ----------------\n   |\n INFO revealed type: MyContainer [reveal-type]\n  --> generated_examples/2026-03-04_21-27-35/source_files/self-cyclic-typevar-abstract.py:65:16\n   |\n65 |     reveal_type(parent_from_item) # Expected: MyContainer\n   |                ------------------\n   |\n INFO revealed type: MyContainer [reveal-type]\n  --> generated_examples/2026-03-04_21-27-35/source_files/self-cyclic-typevar-abstract.py:68:16\n   |\n68 |     reveal_type(container_from_item) # Expected: MyContainer\n   |                ---------------------\n   |\n\n[STDERR]\n INFO 1 error",
+        "zuban": "generated_examples/2026-03-04_21-27-35/source_files/self-cyclic-typevar-abstract.py:62: note: Revealed type is \"generated_examples.2026-03-04_21-27-35.source_files.self-cyclic-typevar-abstract.MyItem\"\ngenerated_examples/2026-03-04_21-27-35/source_files/self-cyclic-typevar-abstract.py:65: note: Revealed type is \"generated_examples.2026-03-04_21-27-35.source_files.self-cyclic-typevar-abstract.MyContainer\"\ngenerated_examples/2026-03-04_21-27-35/source_files/self-cyclic-typevar-abstract.py:68: note: Revealed type is \"generated_examples.2026-03-04_21-27-35.source_files.self-cyclic-typevar-abstract.MyContainer\"\nSuccess: no issues found in 1 source file",
+        "ty": "info[revealed-type]: Revealed type\n  --> generated_examples/2026-03-04_21-27-35/source_files/self-cyclic-typevar-abstract.py:62:17\n   |\n61 |     retrieved_item = my_container.get_first_item()\n62 |     reveal_type(retrieved_item) # Expected: MyItem\n   |                 ^^^^^^^^^^^^^^ `MyItem`\n63 |\n64 |     parent_from_item = retrieved_item.get_parent_container()\n   |\n\ninfo[revealed-type]: Revealed type\n  --> generated_examples/2026-03-04_21-27-35/source_files/self-cyclic-typevar-abstract.py:65:17\n   |\n64 |     parent_from_item = retrieved_item.get_parent_container()\n65 |     reveal_type(parent_from_item) # Expected: MyContainer\n   |                 ^^^^^^^^^^^^^^^^ `MyContainer`\n66 |\n67 |     container_from_item = item1.to_container()\n   |\n\ninfo[revealed-type]: Revealed type\n  --> generated_examples/2026-03-04_21-27-35/source_files/self-cyclic-typevar-abstract.py:68:17\n   |\n67 |     container_from_item = item1.to_container()\n68 |     reveal_type(container_from_item) # Expected: MyContainer\n   |                 ^^^^^^^^^^^^^^^^^^^ `MyContainer`\n   |\n\nFound 3 diagnostics"
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "error",
+        "zuban": "ok",
+        "ty": "ok"
+      }
+    },
+    {
+      "filename": "literal_narrowing.py",
+      "filepath": "generated_examples/2026-03-25_12-52-32/source_files/literal_narrowing.py",
+      "metrics": {
+        "loc": 16,
+        "num_functions": 4,
+        "type_imports": 1,
+        "type_density": 0.0,
+        "internal_calls": 0
+      },
+      "outputs": {
+        "mypy": "literal_narrowing.py:10: note: Revealed type is \"builtins.str\"\nliteral_narrowing.py:11: error: Argument 1 to \"bar\" has incompatible type \"str\"; expected \"Literal['a', 'b']\"  [arg-type]\nliteral_narrowing.py:18: note: Revealed type is \"builtins.str\"\nliteral_narrowing.py:19: error: Argument 1 to \"bar\" has incompatible type \"str\"; expected \"Literal['a', 'b']\"  [arg-type]\nliteral_narrowing.py:26: note: Revealed type is \"builtins.str\"\nliteral_narrowing.py:27: error: Argument 1 to \"bar\" has incompatible type \"str\"; expected \"Literal['a', 'b']\"  [arg-type]\nFound 3 errors in 1 source file",
+        "pyrefly": " INFO revealed type: Literal['a', 'b'] [reveal-type]\n  --> literal_narrowing.py:10:20\n   |\n10 |         reveal_type(foo)  # Revealed type is \"str\" (expected \"Literal['a', 'b']\")\n   |                    -----\n   |\n INFO revealed type: Literal['a', 'b'] [reveal-type]\n  --> literal_narrowing.py:18:16\n   |\n18 |         reveal_type(foo)  # Revealed type is \"str\" (expected \"Literal['a', 'b']\")\n   |                -----\n   |\n INFO revealed type: Literal['a', 'b'] [reveal-type]\n  --> literal_narrowing.py:26:16\n   |\n26 |         reveal_type(foo)  # Revealed type is \"str\" (expected \"Literal['a', 'b']\")\n   |                -----\n   |\n[STDERR]\n INFO 0 errors",
+        "zuban": "literal_narrowing.py:10: note: Revealed type is \"Literal['a']? | Literal['b']?\"\nliteral_narrowing.py:18: note: Revealed type is \"Literal['a']? | Literal['b']?\"\nliteral_narrowing.py:26: note: Revealed type is \"Literal['a']? | Literal['b']?\"\nSuccess: no issues found in 1 source file",
+        "ty": "info[revealed-type]: Revealed type\n  --> literal_narrowing.py:10:21\n   |\n 8 | def positive_in(foo: str):\n 9 |     if foo in (\"a\", \"b\"):\n10 |         reveal_type(foo)  # Revealed type is \"str\" (expected \"Literal['a', 'b']\")\n   |                     ^^^ `str`\n11 |         bar(foo)  # error: Argument 1 to \"bar\" has incompatible type \"str\"; expected \"Literal['a', 'b']\"  [arg-type]\n   |\ninfo: rule `invalid-argument-type` is enabled by default\n\ninfo[revealed-type]: Revealed type\n  --> literal_narrowing.py:18:17\n   |\n16 |     if foo not in (\"a\", \"b\"):\n17 |         return\n18 |         reveal_type(foo)  # Revealed type is \"str\" (expected \"Literal['a', 'b']\")\n   |                 ^^^ `str`\n19 |         bar(foo)  # error: [arg-type]\n   |\ninfo: rule `invalid-argument-type` is enabled by default\n\ninfo[revealed-type]: Revealed type\n  --> literal_narrowing.py:26:17\n   |\n24 |     if foo not in (\"a\", \"b\"):\n25 |         raise ValueError(f\"unexpected value: {foo}\")\n26 |         reveal_type(foo)  # Revealed type is \"str\" (expected \"Literal['a', 'b']\")\n   |                 ^^^ `str`\n27 |         bar(foo)  # error: [arg-type]\n   |\ninfo: rule `invalid-argument-type` is enabled by default\n\nFound 6 diagnostics"
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "ok",
+        "zuban": "ok",
+        "ty": "error"
+      },
+      "seed_issue": "https://github.com/python/mypy/issues/21090"
+    },
+    {
+      "filename": "walrus_comprehension.py",
+      "filepath": "generated_examples/2026-03-25_12-52-32/source_files/walrus_comprehension.py",
+      "metrics": {
+        "loc": 5,
+        "num_functions": 0,
+        "type_imports": 0,
+        "type_density": 0.0,
+        "internal_calls": 0
+      },
+      "outputs": {
+        "mypy": "Success: no issues found in 1 source file",
+        "pyrefly": "ERROR `cumsum` is uninitialized [unbound-name]\n  --> walrus_comprehension.py:3:17\n   |\n 3 | cs = [cumsum := cumsum + x for x in lengths]\n   |                 ^^^^^^\n   |\n INFO 1 error",
+        "zuban": "Success: no issues found in 1 source file",
+        "ty": "error[unresolved-reference]: Name `cumsum` used when not defined\n  --> walrus_comprehension.py:3:17\n   |\n 1 | lengths = list(range(5))\n 2 | cumsum = 0\n 3 | cs = [cumsum := cumsum + x for x in lengths]\n   |                 ^^^^^^\n   |\ninfo: rule `unresolved-reference` is enabled by default\n\nFound 1 diagnostic"
+      },
+      "statuses": {
+        "mypy": "ok",
+        "pyrefly": "error",
+        "zuban": "ok",
+        "ty": "error"
+      },
+      "seed_issue": "https://github.com/astral-sh/ty/issues/3077"
+    },
+    {
+      "filename": "typeddict_single_field.py",
+      "filepath": "generated_examples/2026-03-25_12-52-32/source_files/typeddict_single_field.py",
+      "metrics": {
+        "loc": 5,
+        "num_functions": 1,
+        "type_imports": 1,
+        "type_density": 0.0,
+        "internal_calls": 0
+      },
+      "outputs": {
+        "mypy": "typeddict_single_field.py:7: note: Revealed type is \"Any\"\ntypeddict_single_field.py:7: error: TypedDict \"Foo\" has no key \"anything\"  [typeddict-item]\nFound 1 error in 1 source file",
+        "pyrefly": "ERROR `reveal_type` must be imported from `typing` for runtime usage [unknown-name]\n  --> typeddict_single_field.py:7:5\n   |\n 7 |         reveal_type(td[\"anything\"])\n   |         ^^^^^^^^^^^\n   |\n INFO revealed type: Unknown [reveal-type]\n  --> typeddict_single_field.py:7:16\n   |\n 7 |         reveal_type(td[\"anything\"])\n   |                    ----------------\n   |\nERROR TypedDict `Foo` does not have key `anything` [bad-typed-dict-key]\n  --> typeddict_single_field.py:7:20\n   |\n 7 |         reveal_type(td[\"anything\"])\n   |\n INFO 2 errors",
+        "zuban": "typeddict_single_field.py:7: error: TypedDict \"Foo\" has no key \"anything\"  [typeddict-item]\ntypeddict_single_field.py:7: note: Revealed type is \"Any\"\nFound 1 errors in 1 source file",
+        "ty": "warning[undefined-reveal]: `reveal_type` used without importing it\n  --> typeddict_single_field.py:7:5\n   |\n 6 | def _(td: Foo, key: str) -> None:\n 7 |         reveal_type(td[\"anything\"])\n   |         ^^^^^^^^^^^\n   |\ninfo: rule `undefined-reveal` is enabled by default\n\ninfo[revealed-type]: Revealed type\n  --> typeddict_single_field.py:7:17\n   |\n 6 | def _(td: Foo, key: str) -> None:\n 7 |         reveal_type(td[\"anything\"])\n   |                     ^^^^^^^^^^^^^^ `str`\n   |\nerror[invalid-key]: Unknown key \"anything\" for TypedDict `Foo`\n  --> typeddict_single_field.py:7:17\n   |\n 6 | def _(td: Foo, key: str) -> None:\n 7 |         reveal_type(td[\"anything\"])\n   |             -- ^^^^^^^^^^ Unknown key\n   |\ninfo: rule `invalid-key` is enabled by default\n\nFound 3 diagnostics"
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "error",
+        "zuban": "error",
+        "ty": "error"
+      },
+      "seed_issue": "https://github.com/astral-sh/ty/issues/3029"
+    },
+    {
+      "filename": "literal_narrowing.py",
+      "filepath": "generated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py",
+      "seed_issue": "https://github.com/python/mypy/issues/21090",
+      "metrics": {
+        "loc": 16,
+        "num_functions": 4,
+        "type_imports": 1,
+        "type_density": 0.0,
+        "internal_calls": 0
+      },
+      "outputs": {
+        "mypy": "generated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:10: note: Revealed type is \"builtins.str\"\ngenerated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:11: error: Argument 1 to \"bar\" has incompatible type \"str\"; expected \"Literal['a', 'b']\"  [arg-type]\ngenerated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:18: note: Revealed type is \"builtins.str\"\ngenerated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:19: error: Argument 1 to \"bar\" has incompatible type \"str\"; expected \"Literal['a', 'b']\"  [arg-type]\ngenerated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:26: note: Revealed type is \"builtins.str\"\ngenerated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:27: error: Argument 1 to \"bar\" has incompatible type \"str\"; expected \"Literal['a', 'b']\"  [arg-type]\nFound 3 errors in 1 file (checked 1 source file)\n",
+        "pyrefly": " INFO revealed type: Literal['a', 'b'] [reveal-type]\n  --> generated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:10:20\n   |\n10 |         reveal_type(foo)  # Revealed type is \"str\" (expected \"Literal['a', 'b']\")\n   |                    -----\n   |\n INFO revealed type: Literal['a', 'b'] [reveal-type]\n  --> generated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:18:16\n   |\n18 |     reveal_type(foo)  # Revealed type is \"str\" (expected \"Literal['a', 'b']\")\n   |                -----\n   |\n INFO revealed type: Literal['a', 'b'] [reveal-type]\n  --> generated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:26:16\n   |\n26 |     reveal_type(foo)  # Revealed type is \"str\" (expected \"Literal['a', 'b']\")\n   |                -----\n   |\n INFO 0 errors\n",
+        "zuban": "generated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:10: note: Revealed type is \"Literal['a']? | Literal['b']?\"\ngenerated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:18: note: Revealed type is \"Literal['a']? | Literal['b']?\"\ngenerated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:26: note: Revealed type is \"Literal['a']? | Literal['b']?\"\nSuccess: no issues found in 1 source file\n",
+        "ty": "info[revealed-type]: Revealed type\n  --> generated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:10:21\n   |\n 8 | def positive_in(foo: str):\n 9 |     if foo in (\"a\", \"b\"):\n10 |         reveal_type(foo)  # Revealed type is \"str\" (expected \"Literal['a', 'b']\")\n   |                     ^^^ `str`\n11 |         bar(foo)  # error: Argument 1 to \"bar\" has incompatible type \"str\"; expected \"Literal['a', 'b']\"  [arg-type]\n   |\n\nerror[invalid-argument-type]: Argument to function `bar` is incorrect\n  --> generated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:11:13\n   |\n 9 |     if foo in (\"a\", \"b\"):\n10 |         reveal_type(foo)  # Revealed type is \"str\" (expected \"Literal['a', 'b']\")\n11 |         bar(foo)  # error: Argument 1 to \"bar\" has incompatible type \"str\"; expected \"Literal['a', 'b']\"  [arg-type]\n   |             ^^^ Expected `Literal[\"a\", \"b\"]`, found `str`\n   |\ninfo: Function defined here\n --> generated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:4:5\n  |\n4 | def bar(p: Literal[\"a\", \"b\"]) -> None: ...\n  |     ^^^ -------------------- Parameter declared here\n  |\ninfo: rule `invalid-argument-type` is enabled by default\n\ninfo[revealed-type]: Revealed type\n  --> generated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:18:17\n   |\n16 |     if foo not in (\"a\", \"b\"):\n17 |         return\n18 |     reveal_type(foo)  # Revealed type is \"str\" (expected \"Literal['a', 'b']\")\n   |                 ^^^ `str`\n19 |     bar(foo)  # error: [arg-type]\n   |\n\nerror[invalid-argument-type]: Argument to function `bar` is incorrect\n  --> generated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:19:9\n   |\n17 |         return\n18 |     reveal_type(foo)  # Revealed type is \"str\" (expected \"Literal['a', 'b']\")\n19 |     bar(foo)  # error: [arg-type]\n   |         ^^^ Expected `Literal[\"a\", \"b\"]`, found `str`\n   |\ninfo: Function defined here\n --> generated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:4:5\n  |\n4 | def bar(p: Literal[\"a\", \"b\"]) -> None: ...\n  |     ^^^ -------------------- Parameter declared here\n  |\ninfo: rule `invalid-argument-type` is enabled by default\n\ninfo[revealed-type]: Revealed type\n  --> generated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:26:17\n   |\n24 |     if foo not in (\"a\", \"b\"):\n25 |         raise ValueError(f\"unexpected value: {foo}\")\n26 |     reveal_type(foo)  # Revealed type is \"str\" (expected \"Literal['a', 'b']\")\n   |                 ^^^ `str`\n27 |     bar(foo)  # error: [arg-type]\n   |\n\nerror[invalid-argument-type]: Argument to function `bar` is incorrect\n  --> generated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:27:9\n   |\n25 |         raise ValueError(f\"unexpected value: {foo}\")\n26 |     reveal_type(foo)  # Revealed type is \"str\" (expected \"Literal['a', 'b']\")\n27 |     bar(foo)  # error: [arg-type]\n   |         ^^^ Expected `Literal[\"a\", \"b\"]`, found `str`\n   |\ninfo: Function defined here\n --> generated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:4:5\n  |\n4 | def bar(p: Literal[\"a\", \"b\"]) -> None: ...\n  |     ^^^ -------------------- Parameter declared here\n  |\ninfo: rule `invalid-argument-type` is enabled by default\n\nFound 6 diagnostics\n"
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "ok",
+        "zuban": "ok",
+        "ty": "error"
+      }
+    },
+    {
+      "filename": "walrus_comprehension.py",
+      "filepath": "generated_examples/2026-03-25_13-30-00/source_files/walrus_comprehension.py",
+      "seed_issue": "https://github.com/astral-sh/ty/issues/3077",
+      "metrics": {
+        "loc": 5,
+        "num_functions": 0,
+        "type_imports": 0,
+        "type_density": 0.0,
+        "internal_calls": 0
+      },
+      "outputs": {
+        "mypy": "Success: no issues found in 1 source file\n",
+        "pyrefly": "ERROR `cumsum` is uninitialized [unbound-name]\n --> generated_examples/2026-03-25_13-30-00/source_files/walrus_comprehension.py:3:17\n  |\n3 | cs = [cumsum := cumsum + x for x in lengths]\n  |                 ^^^^^^\n  |\n INFO 1 error\n",
+        "zuban": "Success: no issues found in 1 source file\n",
+        "ty": "error[unresolved-reference]: Name `cumsum` used when not defined\n --> generated_examples/2026-03-25_13-30-00/source_files/walrus_comprehension.py:3:17\n  |\n1 | lengths = list(range(5))\n2 | cumsum = 0\n3 | cs = [cumsum := cumsum + x for x in lengths]\n  |                 ^^^^^^\n4 | print(cs)\n5 | print(cumsum)\n  |\ninfo: rule `unresolved-reference` is enabled by default\n\nFound 1 diagnostic\n"
+      },
+      "statuses": {
+        "mypy": "ok",
+        "pyrefly": "error",
+        "zuban": "ok",
+        "ty": "error"
+      }
+    },
+    {
+      "filename": "typeddict_single_field.py",
+      "filepath": "generated_examples/2026-03-25_13-30-00/source_files/typeddict_single_field.py",
+      "seed_issue": "https://github.com/astral-sh/ty/issues/3029",
+      "metrics": {
+        "loc": 5,
+        "num_functions": 1,
+        "type_imports": 1,
+        "type_density": 0.0,
+        "internal_calls": 0
+      },
+      "outputs": {
+        "mypy": "generated_examples/2026-03-25_13-30-00/source_files/typeddict_single_field.py:7: note: Revealed type is \"Any\"\ngenerated_examples/2026-03-25_13-30-00/source_files/typeddict_single_field.py:7: error: TypedDict \"Foo\" has no key \"anything\"  [typeddict-item]\nFound 1 error in 1 file (checked 1 source file)\n",
+        "pyrefly": "ERROR `reveal_type` must be imported from `typing` for runtime usage [unknown-name]\n --> generated_examples/2026-03-25_13-30-00/source_files/typeddict_single_field.py:7:5\n  |\n7 |     reveal_type(td[\"anything\"])\n  |     ^^^^^^^^^^^\n  |\n INFO revealed type: Unknown [reveal-type]\n --> generated_examples/2026-03-25_13-30-00/source_files/typeddict_single_field.py:7:16\n  |\n7 |     reveal_type(td[\"anything\"])\n  |                ----------------\n  |\nERROR TypedDict `Foo` does not have key `anything` [bad-typed-dict-key]\n --> generated_examples/2026-03-25_13-30-00/source_files/typeddict_single_field.py:7:20\n  |\n7 |     reveal_type(td[\"anything\"])\n  |                    ^^^^^^^^^^\n  |\n INFO 2 errors\n",
+        "zuban": "generated_examples/2026-03-25_13-30-00/source_files/typeddict_single_field.py:7: error: TypedDict \"Foo\" has no key \"anything\"  [typeddict-item]\ngenerated_examples/2026-03-25_13-30-00/source_files/typeddict_single_field.py:7: note: Revealed type is \"Any\"\nFound 1 errors in 1 file (checked 1 source file)\n",
+        "ty": "warning[undefined-reveal]: `reveal_type` used without importing it\n --> generated_examples/2026-03-25_13-30-00/source_files/typeddict_single_field.py:7:5\n  |\n6 | def _(td: Foo, key: str) -> None:\n7 |     reveal_type(td[\"anything\"])\n  |     ^^^^^^^^^^^\n  |\ninfo: This is allowed for debugging convenience but will fail at runtime\ninfo: rule `undefined-reveal` is enabled by default\n\ninfo[revealed-type]: Revealed type\n --> generated_examples/2026-03-25_13-30-00/source_files/typeddict_single_field.py:7:17\n  |\n6 | def _(td: Foo, key: str) -> None:\n7 |     reveal_type(td[\"anything\"])\n  |                 ^^^^^^^^^^^^^^ `str`\n  |\n\nerror[invalid-key]: Unknown key \"anything\" for TypedDict `Foo`\n --> generated_examples/2026-03-25_13-30-00/source_files/typeddict_single_field.py:7:17\n  |\n6 | def _(td: Foo, key: str) -> None:\n7 |     reveal_type(td[\"anything\"])\n  |                 -- ^^^^^^^^^^ Unknown key \"anything\"\n  |                 |\n  |                 TypedDict `Foo`\n  |\ninfo: rule `invalid-key` is enabled by default\n\nFound 3 diagnostics\n"
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "error",
+        "zuban": "error",
+        "ty": "error"
+      }
+    }
+  ]
+}

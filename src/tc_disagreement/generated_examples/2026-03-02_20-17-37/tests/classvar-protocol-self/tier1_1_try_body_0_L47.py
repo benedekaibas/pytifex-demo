@@ -1,0 +1,1 @@
+        loader.get_setting('non_existent_setting')

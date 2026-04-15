@@ -1,0 +1,9 @@
+Strategy,Total Generated,Disagreements,Success Rate (%)
+GitHub Seeds,139,88,63.3
+Pattern-Only,34,20,58.8
+
+Seed Source Repo,Files Seeded,,
+python/mypy,15,,
+sh/ty,13,,
+microsoft/pyright,10,,
+zubanls/zuban,9,,

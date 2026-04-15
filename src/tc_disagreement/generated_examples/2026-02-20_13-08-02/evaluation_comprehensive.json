@@ -1,0 +1,1763 @@
+{
+  "method": "comprehensive_tiered",
+  "tier_distribution": {
+    "1": 5,
+    "2": 6,
+    "3": 0,
+    "4": 1
+  },
+  "summary": {
+    "mypy": {
+      "correct": 3,
+      "incorrect": 8,
+      "uncertain": 1
+    },
+    "pyrefly": {
+      "correct": 4,
+      "incorrect": 7,
+      "uncertain": 1
+    },
+    "zuban": {
+      "correct": 3,
+      "incorrect": 8,
+      "uncertain": 1
+    },
+    "ty": {
+      "correct": 0,
+      "incorrect": 11,
+      "uncertain": 1
+    }
+  },
+  "results": [
+    {
+      "filename": "decorator-super-generic-args.py",
+      "tier_reached": 2,
+      "tier1_bugs": [],
+      "tier2_bugs": [
+        {
+          "line": 20,
+          "type": "TypeError",
+          "msg": "Derived.greet(...) -> TypeError: Derived.greet() missing 1 required positional argument: 'name'"
+        },
+        {
+          "line": 20,
+          "type": "TypeError",
+          "msg": "override_via_base: Derived.greet() missing 1 required positional argument: 'name'"
+        },
+        {
+          "line": 20,
+          "type": "TypeError",
+          "msg": "override_direct: Derived.greet() missing 1 required positional argument: 'name'"
+        },
+        {
+          "line": 20,
+          "type": "TypeError",
+          "msg": "super_call: Base.greet() missing 1 required positional argument: 'name'"
+        },
+        {
+          "line": 20,
+          "type": "TypeError",
+          "msg": "decorated_no_args: Derived.greet() missing 1 required positional argument: 'name'"
+        }
+      ],
+      "tier3_findings": [
+        {
+          "checker": "ty",
+          "pep": 484,
+          "rule": "Attribute access must resolve on the declared type (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 5 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 5 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 5 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 5 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "filename": "decorator-super-modified-signature.py",
+      "tier_reached": 1,
+      "tier1_bugs": [
+        {
+          "line": 11,
+          "type": "TypeError",
+          "msg": "Derived.process_data() missing 1 required positional argument: 'data'"
+        }
+      ],
+      "tier2_bugs": [
+        {
+          "line": 20,
+          "type": "TypeError",
+          "msg": "Derived.process_data(...) -> TypeError: Derived.process_data() missing 2 required positional arguments: 'context' and 'data'"
+        },
+        {
+          "line": 20,
+          "type": "TypeError",
+          "msg": "override_via_base: inject_context.<locals>.wrapper() missing 1 required positional argument: 'context'"
+        },
+        {
+          "line": 20,
+          "type": "TypeError",
+          "msg": "override_direct: inject_context.<locals>.wrapper() missing 1 required positional argument: 'context'"
+        },
+        {
+          "line": 20,
+          "type": "TypeError",
+          "msg": "super_call: Base.process_data() missing 1 required positional argument: 'data'"
+        },
+        {
+          "line": 20,
+          "type": "TypeError",
+          "msg": "decorated_no_args: inject_context.<locals>.wrapper() missing 1 required positional argument: 'context'"
+        }
+      ],
+      "tier3_findings": [
+        {
+          "checker": "mypy",
+          "pep": 484,
+          "rule": "Argument type must match parameter annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "Argument type must match parameter annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 586,
+          "rule": "Literal[...] is assignable to str (PEP 586)",
+          "checker_behavior": "error",
+          "correct_behavior": "ok",
+          "is_correct": false,
+          "confidence": 0.85
+        },
+        {
+          "checker": "mypy",
+          "pep": 484,
+          "rule": "[LSP001] `Derived.process_data` requires 2 params but base `Base.process_data` requires 1 \u2014 incompatible override (LSP)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 484,
+          "rule": "[LSP001] `Derived.process_data` requires 2 params but base `Base.process_data` requires 1 \u2014 incompatible override (LSP)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "[LSP001] `Derived.process_data` requires 2 params but base `Base.process_data` requires 1 \u2014 incompatible override (LSP)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "ty",
+          "pep": 484,
+          "rule": "[LSP001] `Derived.process_data` requires 2 params but base `Base.process_data` requires 1 \u2014 incompatible override (LSP)",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Caught 6 proven bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "pyrefly": {
+          "verdict": "CORRECT",
+          "reason": "Caught 6 proven bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Caught 6 proven bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 6 proven bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 11,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "filename": "newtype-liskov-declaration-divergence.py",
+      "tier_reached": 2,
+      "tier1_bugs": [],
+      "tier2_bugs": [
+        {
+          "line": 18,
+          "type": "TypeError",
+          "msg": "override_via_base: CategorizedInventory.add_item() missing 2 required positional arguments: 'key_or_category' and 'count'"
+        },
+        {
+          "line": 18,
+          "type": "TypeError",
+          "msg": "override_direct: CategorizedInventory.add_item() missing 2 required positional arguments: 'key_or_category' and 'count'"
+        },
+        {
+          "line": 18,
+          "type": "TypeError",
+          "msg": "super_call: Inventory.add_item() missing 2 required positional arguments: 'product_id' and 'count'"
+        }
+      ],
+      "tier3_findings": [
+        {
+          "checker": "ty",
+          "pep": 484,
+          "rule": "Method override must be compatible (PEP 484 LSP)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 3 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 18,
+              "type": "TypeError"
+            },
+            {
+              "line": 18,
+              "type": "TypeError"
+            },
+            {
+              "line": 18,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "pyrefly": {
+          "verdict": "CORRECT",
+          "reason": "Caught 3 proven bug(s)",
+          "confidence": 0.8,
+          "tier": 2
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 3 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 18,
+              "type": "TypeError"
+            },
+            {
+              "line": 18,
+              "type": "TypeError"
+            },
+            {
+              "line": 18,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 3 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 18,
+              "type": "TypeError"
+            },
+            {
+              "line": 18,
+              "type": "TypeError"
+            },
+            {
+              "line": 18,
+              "type": "TypeError"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "filename": "inherited-unsound-helper-refined.py",
+      "tier_reached": 1,
+      "tier1_bugs": [
+        {
+          "line": 68,
+          "type": "AttributeError",
+          "msg": "'BasicFactory' object has no attribute '_prefix'"
+        }
+      ],
+      "tier2_bugs": [
+        {
+          "line": 6,
+          "type": "TypeError",
+          "msg": "AbstractFactory() -> TypeError: Can't instantiate abstract class AbstractFactory without an implementation for abstract methods 'create', 'register_type'"
+        },
+        {
+          "line": 8,
+          "type": "TypeError",
+          "msg": "decorated_callable: Can't instantiate abstract class AbstractFactory without an implementation for abstract methods 'create', 'register_type'"
+        },
+        {
+          "line": 8,
+          "type": "TypeError",
+          "msg": "decorated_no_args: Can't instantiate abstract class AbstractFactory without an implementation for abstract methods 'create', 'register_type'"
+        },
+        {
+          "line": 12,
+          "type": "TypeError",
+          "msg": "decorated_callable: Can't instantiate abstract class AbstractFactory without an implementation for abstract methods 'create', 'register_type'"
+        },
+        {
+          "line": 12,
+          "type": "TypeError",
+          "msg": "decorated_no_args: Can't instantiate abstract class AbstractFactory without an implementation for abstract methods 'create', 'register_type'"
+        }
+      ],
+      "tier3_findings": [
+        {
+          "checker": "mypy",
+          "pep": 484,
+          "rule": "Return value must match return type annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "Return value must match return type annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "mypy",
+          "pep": 484,
+          "rule": "[LSP002] `BasicFactory.register_type` parameter `value` has type `str` but base `AbstractFactory.register_type` has `T` \u2014 incompatible override",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 484,
+          "rule": "[LSP002] `BasicFactory.register_type` parameter `value` has type `str` but base `AbstractFactory.register_type` has `T` \u2014 incompatible override",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "[LSP002] `BasicFactory.register_type` parameter `value` has type `str` but base `AbstractFactory.register_type` has `T` \u2014 incompatible override",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "ty",
+          "pep": 484,
+          "rule": "[LSP002] `BasicFactory.register_type` parameter `value` has type `str` but base `AbstractFactory.register_type` has `T` \u2014 incompatible override",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.85,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "mypy",
+          "pep": 3119,
+          "rule": "[ABC001] Class `ExtendedFactory` doesn't implement abstract method(s) `create`, `register_type` from AbstractFactory, AbstractFactory",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 3119,
+          "rule": "[ABC001] Class `ExtendedFactory` doesn't implement abstract method(s) `create`, `register_type` from AbstractFactory, AbstractFactory",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.5,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "zuban",
+          "pep": 3119,
+          "rule": "[ABC001] Class `ExtendedFactory` doesn't implement abstract method(s) `create`, `register_type` from AbstractFactory, AbstractFactory",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "ty",
+          "pep": 3119,
+          "rule": "[ABC001] Class `ExtendedFactory` doesn't implement abstract method(s) `create`, `register_type` from AbstractFactory, AbstractFactory",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "INCORRECT",
+          "reason": "Caught 2 but missed 4 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 68,
+              "type": "AttributeError"
+            },
+            {
+              "line": 6,
+              "type": "TypeError"
+            },
+            {
+              "line": 12,
+              "type": "TypeError"
+            },
+            {
+              "line": 12,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 6 proven bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 68,
+              "type": "AttributeError"
+            },
+            {
+              "line": 6,
+              "type": "TypeError"
+            },
+            {
+              "line": 8,
+              "type": "TypeError"
+            },
+            {
+              "line": 8,
+              "type": "TypeError"
+            },
+            {
+              "line": 12,
+              "type": "TypeError"
+            },
+            {
+              "line": 12,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "Caught 2 but missed 4 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 68,
+              "type": "AttributeError"
+            },
+            {
+              "line": 6,
+              "type": "TypeError"
+            },
+            {
+              "line": 12,
+              "type": "TypeError"
+            },
+            {
+              "line": 12,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 6 proven bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 68,
+              "type": "AttributeError"
+            },
+            {
+              "line": 6,
+              "type": "TypeError"
+            },
+            {
+              "line": 8,
+              "type": "TypeError"
+            },
+            {
+              "line": 8,
+              "type": "TypeError"
+            },
+            {
+              "line": 12,
+              "type": "TypeError"
+            },
+            {
+              "line": 12,
+              "type": "TypeError"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "filename": "mixed-tuple-unpacking-newtype.py",
+      "tier_reached": 2,
+      "tier1_bugs": [],
+      "tier2_bugs": [
+        {
+          "line": 7,
+          "type": "ValueError",
+          "msg": "empty_tuple: not enough values to unpack (expected at least 2, got 0)"
+        },
+        {
+          "line": 7,
+          "type": "ValueError",
+          "msg": "single_element_tuple: not enough values to unpack (expected at least 2, got 1)"
+        },
+        {
+          "line": 7,
+          "type": "ValueError",
+          "msg": "none_in_tuple: not enough values to unpack (expected at least 2, got 1)"
+        }
+      ],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 3 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 7,
+              "type": "ValueError"
+            },
+            {
+              "line": 7,
+              "type": "ValueError"
+            },
+            {
+              "line": 7,
+              "type": "ValueError"
+            }
+          ]
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 3 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 7,
+              "type": "ValueError"
+            },
+            {
+              "line": 7,
+              "type": "ValueError"
+            },
+            {
+              "line": 7,
+              "type": "ValueError"
+            }
+          ]
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 3 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 7,
+              "type": "ValueError"
+            },
+            {
+              "line": 7,
+              "type": "ValueError"
+            },
+            {
+              "line": 7,
+              "type": "ValueError"
+            }
+          ]
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 3 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 7,
+              "type": "ValueError"
+            },
+            {
+              "line": 7,
+              "type": "ValueError"
+            },
+            {
+              "line": 7,
+              "type": "ValueError"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "filename": "typevartuple-unpacking-precision-refined.py",
+      "tier_reached": 1,
+      "tier1_bugs": [
+        {
+          "line": 11,
+          "type": "TypeError",
+          "msg": "Value after * must be an iterable, not typing.ParamSpec"
+        }
+      ],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "mypy",
+          "pep": 612,
+          "rule": "ParamSpec must be used correctly (PEP 612)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "zuban",
+          "pep": 612,
+          "rule": "ParamSpec must be used correctly (PEP 612)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "mypy",
+          "pep": 646,
+          "rule": "Unpack must be used with TypeVarTuple (PEP 646)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "zuban",
+          "pep": 646,
+          "rule": "Unpack must be used with TypeVarTuple (PEP 646)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "pyrefly": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 11,
+              "type": "TypeError"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "filename": "dataclass-transform-param-spec-return.py",
+      "tier_reached": 1,
+      "tier1_bugs": [
+        {
+          "line": 19,
+          "type": "TypeError",
+          "msg": "object.__init__() takes exactly one argument (the instance to initialize)"
+        }
+      ],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "Argument type must match parameter annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "mypy",
+          "pep": 484,
+          "rule": "Return value must match return type annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "Return value must match return type annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "pyrefly": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 19,
+              "type": "TypeError"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "filename": "dataclass-transform-protocol-default-methods.py",
+      "tier_reached": 2,
+      "tier1_bugs": [],
+      "tier2_bugs": [
+        {
+          "line": 7,
+          "type": "TypeError",
+          "msg": "BaseConfig() -> TypeError: Protocols cannot be instantiated"
+        },
+        {
+          "line": 38,
+          "type": "TypeError",
+          "msg": "override_via_base: AppConfig.__init__() missing 2 required positional arguments: 'name' and 'version'"
+        },
+        {
+          "line": 38,
+          "type": "TypeError",
+          "msg": "override_direct: AppConfig.__init__() missing 2 required positional arguments: 'name' and 'version'"
+        },
+        {
+          "line": 38,
+          "type": "TypeError",
+          "msg": "isinstance_check: AppConfig.__init__() missing 2 required positional arguments: 'name' and 'version'"
+        },
+        {
+          "line": 38,
+          "type": "TypeError",
+          "msg": "super_call: AppConfig.__init__() missing 2 required positional arguments: 'name' and 'version'"
+        },
+        {
+          "line": 7,
+          "type": "TypeError",
+          "msg": "protocol_check: AppConfig.__init__() missing 2 required positional arguments: 'name' and 'version'"
+        }
+      ],
+      "tier3_findings": [
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "Argument type must match parameter annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "mypy",
+          "pep": 484,
+          "rule": "Return value must match return type annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "Return value must match return type annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "mypy",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `AppConfig` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.5,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `AppConfig` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.5,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "zuban",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `AppConfig` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.5,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "ty",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `AppConfig` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "INCORRECT",
+          "reason": "Caught 4 but missed 2 proven bug(s)",
+          "confidence": 0.75,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Caught 4 but missed 2 proven bug(s)",
+          "confidence": 0.75,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "Caught 4 but missed 2 proven bug(s)",
+          "confidence": 0.75,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 6 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 38,
+              "type": "TypeError"
+            },
+            {
+              "line": 38,
+              "type": "TypeError"
+            },
+            {
+              "line": 38,
+              "type": "TypeError"
+            },
+            {
+              "line": 38,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "filename": "dataclass-transform-classmethod-super.py",
+      "tier_reached": 4,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        }
+      }
+    },
+    {
+      "filename": "protocol-default-mixed-dataclass-transform.py",
+      "tier_reached": 2,
+      "tier1_bugs": [],
+      "tier2_bugs": [
+        {
+          "line": 6,
+          "type": "TypeError",
+          "msg": "BaseProcessor() -> TypeError: Protocols cannot be instantiated"
+        },
+        {
+          "line": 47,
+          "type": "TypeError",
+          "msg": "override_via_base: AnotherProcessor.__init__() missing 2 required positional arguments: 'data_source' and 'config_param'"
+        },
+        {
+          "line": 47,
+          "type": "TypeError",
+          "msg": "override_direct: AnotherProcessor.__init__() missing 2 required positional arguments: 'data_source' and 'config_param'"
+        },
+        {
+          "line": 47,
+          "type": "TypeError",
+          "msg": "isinstance_check: AnotherProcessor.__init__() missing 2 required positional arguments: 'data_source' and 'config_param'"
+        },
+        {
+          "line": 47,
+          "type": "TypeError",
+          "msg": "super_call: AnotherProcessor.__init__() missing 2 required positional arguments: 'data_source' and 'config_param'"
+        },
+        {
+          "line": 40,
+          "type": "TypeError",
+          "msg": "protocol_method_callable: MyDataProcessor.data_source is not callable"
+        }
+      ],
+      "tier3_findings": [
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "Argument type must match parameter annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "mypy",
+          "pep": 484,
+          "rule": "Return value must match return type annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "Return value must match return type annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "mypy",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `MyDataProcessor` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.5,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `MyDataProcessor` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.5,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "zuban",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `MyDataProcessor` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.5,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "ty",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `MyDataProcessor` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "mypy",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `AnotherProcessor` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.5,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `AnotherProcessor` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.5,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "zuban",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `AnotherProcessor` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.5,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "ty",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `AnotherProcessor` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 6 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 6,
+              "type": "TypeError"
+            },
+            {
+              "line": 47,
+              "type": "TypeError"
+            },
+            {
+              "line": 47,
+              "type": "TypeError"
+            },
+            {
+              "line": 47,
+              "type": "TypeError"
+            },
+            {
+              "line": 47,
+              "type": "TypeError"
+            },
+            {
+              "line": 40,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 6 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 6,
+              "type": "TypeError"
+            },
+            {
+              "line": 47,
+              "type": "TypeError"
+            },
+            {
+              "line": 47,
+              "type": "TypeError"
+            },
+            {
+              "line": 47,
+              "type": "TypeError"
+            },
+            {
+              "line": 47,
+              "type": "TypeError"
+            },
+            {
+              "line": 40,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "Caught 1 but missed 5 proven bug(s)",
+          "confidence": 0.75,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 6,
+              "type": "TypeError"
+            },
+            {
+              "line": 47,
+              "type": "TypeError"
+            },
+            {
+              "line": 47,
+              "type": "TypeError"
+            },
+            {
+              "line": 47,
+              "type": "TypeError"
+            },
+            {
+              "line": 47,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 6 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 6,
+              "type": "TypeError"
+            },
+            {
+              "line": 47,
+              "type": "TypeError"
+            },
+            {
+              "line": 47,
+              "type": "TypeError"
+            },
+            {
+              "line": 47,
+              "type": "TypeError"
+            },
+            {
+              "line": 47,
+              "type": "TypeError"
+            },
+            {
+              "line": 40,
+              "type": "TypeError"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "filename": "isinstance-protocol-divergence.py",
+      "tier_reached": 1,
+      "tier1_bugs": [
+        {
+          "line": 13,
+          "type": "TypeError",
+          "msg": "Instance and class checks can only be used with @runtime_checkable protocols"
+        }
+      ],
+      "tier2_bugs": [
+        {
+          "line": 7,
+          "type": "TypeError",
+          "msg": "all_instances_of(...) -> TypeError: Instance and class checks can only be used with @runtime_checkable protocols"
+        },
+        {
+          "line": 20,
+          "type": "TypeError",
+          "msg": "Barkable() -> TypeError: Protocols cannot be instantiated"
+        },
+        {
+          "line": 32,
+          "type": "TypeError",
+          "msg": "process_animals(...) -> TypeError: Instance and class checks can only be used with @runtime_checkable protocols"
+        },
+        {
+          "line": 7,
+          "type": "TypeError",
+          "msg": "typeguard_empty_list: all_instances_of() missing 1 required positional argument: 'cls'"
+        },
+        {
+          "line": 7,
+          "type": "TypeError",
+          "msg": "typeguard_none: all_instances_of() missing 1 required positional argument: 'cls'"
+        },
+        {
+          "line": 7,
+          "type": "TypeError",
+          "msg": "typeguard_ints: all_instances_of() missing 1 required positional argument: 'cls'"
+        },
+        {
+          "line": 7,
+          "type": "TypeError",
+          "msg": "typeguard_strings: all_instances_of() missing 1 required positional argument: 'cls'"
+        },
+        {
+          "line": 7,
+          "type": "TypeError",
+          "msg": "typeguard_mixed: all_instances_of() missing 1 required positional argument: 'cls'"
+        },
+        {
+          "line": 7,
+          "type": "TypeError",
+          "msg": "typeguard_bools: all_instances_of() missing 1 required positional argument: 'cls'"
+        }
+      ],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "INCORRECT",
+          "reason": "Caught 2 but missed 8 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 10 proven bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 13,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 32,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 10 proven bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 13,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 32,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 10 proven bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 13,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 20,
+              "type": "TypeError"
+            },
+            {
+              "line": 32,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            },
+            {
+              "line": 7,
+              "type": "TypeError"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "filename": "typeguard-list-narrowing-refined.py",
+      "tier_reached": 2,
+      "tier1_bugs": [],
+      "tier2_bugs": [
+        {
+          "line": 8,
+          "type": "TypeError",
+          "msg": "typeguard_none: 'NoneType' object is not iterable"
+        }
+      ],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 8,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 8,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 8,
+              "type": "TypeError"
+            }
+          ]
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 8,
+              "type": "TypeError"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

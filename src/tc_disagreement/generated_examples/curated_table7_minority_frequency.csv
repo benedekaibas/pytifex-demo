@@ -1,0 +1,5 @@
+Checker,Times in Minority,Minority as Error,Minority as OK,Correct When Minority,Incorrect When Minority,Uncertain When Minority
+mypy,1,1,0,0,1,0
+pyrefly,1,0,1,0,0,1
+zuban,1,0,1,0,1,0
+ty,10,0,10,0,9,1

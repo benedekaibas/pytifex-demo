@@ -1,0 +1,4 @@
+# file: /home/benedek-kaibas/Documents/pytifex-demo/src/tc_disagreement/patterns.py
+# hypothesis_version: 6.151.9
+
+['PEP 484', 'PEP 544', 'PEP 570', 'PEP 586', 'PEP 589', 'PEP 591', 'PEP 612', 'PEP 647', 'PEP 655', 'PEP 673', 'PEP 742', 'bounded-typevars', 'callable', 'final-override', 'generics', 'inheritance', 'newtype-containers', 'newtypes', 'overload-literals', 'overloads', 'param-spec-decorator', 'protocol-defaults', 'protocols', 'self-generic', 'type-narrowing', 'typed-dict', 'typed-dict-total', 'typeguard-narrowing']

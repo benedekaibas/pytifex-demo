@@ -1,0 +1,83 @@
+{
+  "timestamp": "2026-03-25_13-30-00",
+  "checkers_used": [
+    "mypy",
+    "pyrefly",
+    "zuban",
+    "ty"
+  ],
+  "results": [
+    {
+      "filename": "literal_narrowing.py",
+      "filepath": "generated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py",
+      "seed_issue": "https://github.com/python/mypy/issues/21090",
+      "metrics": {
+        "loc": 16,
+        "num_functions": 4,
+        "type_imports": 1,
+        "type_density": 0.0,
+        "internal_calls": 0
+      },
+      "outputs": {
+        "mypy": "generated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:10: note: Revealed type is \"builtins.str\"\ngenerated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:11: error: Argument 1 to \"bar\" has incompatible type \"str\"; expected \"Literal['a', 'b']\"  [arg-type]\ngenerated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:18: note: Revealed type is \"builtins.str\"\ngenerated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:19: error: Argument 1 to \"bar\" has incompatible type \"str\"; expected \"Literal['a', 'b']\"  [arg-type]\ngenerated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:26: note: Revealed type is \"builtins.str\"\ngenerated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:27: error: Argument 1 to \"bar\" has incompatible type \"str\"; expected \"Literal['a', 'b']\"  [arg-type]\nFound 3 errors in 1 file (checked 1 source file)\n",
+        "pyrefly": " INFO revealed type: Literal['a', 'b'] [reveal-type]\n  --> generated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:10:20\n   |\n10 |         reveal_type(foo)  # Revealed type is \"str\" (expected \"Literal['a', 'b']\")\n   |                    -----\n   |\n INFO revealed type: Literal['a', 'b'] [reveal-type]\n  --> generated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:18:16\n   |\n18 |     reveal_type(foo)  # Revealed type is \"str\" (expected \"Literal['a', 'b']\")\n   |                -----\n   |\n INFO revealed type: Literal['a', 'b'] [reveal-type]\n  --> generated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:26:16\n   |\n26 |     reveal_type(foo)  # Revealed type is \"str\" (expected \"Literal['a', 'b']\")\n   |                -----\n   |\n INFO 0 errors\n",
+        "zuban": "generated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:10: note: Revealed type is \"Literal['a']? | Literal['b']?\"\ngenerated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:18: note: Revealed type is \"Literal['a']? | Literal['b']?\"\ngenerated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:26: note: Revealed type is \"Literal['a']? | Literal['b']?\"\nSuccess: no issues found in 1 source file\n",
+        "ty": "info[revealed-type]: Revealed type\n  --> generated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:10:21\n   |\n 8 | def positive_in(foo: str):\n 9 |     if foo in (\"a\", \"b\"):\n10 |         reveal_type(foo)  # Revealed type is \"str\" (expected \"Literal['a', 'b']\")\n   |                     ^^^ `str`\n11 |         bar(foo)  # error: Argument 1 to \"bar\" has incompatible type \"str\"; expected \"Literal['a', 'b']\"  [arg-type]\n   |\n\nerror[invalid-argument-type]: Argument to function `bar` is incorrect\n  --> generated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:11:13\n   |\n 9 |     if foo in (\"a\", \"b\"):\n10 |         reveal_type(foo)  # Revealed type is \"str\" (expected \"Literal['a', 'b']\")\n11 |         bar(foo)  # error: Argument 1 to \"bar\" has incompatible type \"str\"; expected \"Literal['a', 'b']\"  [arg-type]\n   |             ^^^ Expected `Literal[\"a\", \"b\"]`, found `str`\n   |\ninfo: Function defined here\n --> generated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:4:5\n  |\n4 | def bar(p: Literal[\"a\", \"b\"]) -> None: ...\n  |     ^^^ -------------------- Parameter declared here\n  |\ninfo: rule `invalid-argument-type` is enabled by default\n\ninfo[revealed-type]: Revealed type\n  --> generated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:18:17\n   |\n16 |     if foo not in (\"a\", \"b\"):\n17 |         return\n18 |     reveal_type(foo)  # Revealed type is \"str\" (expected \"Literal['a', 'b']\")\n   |                 ^^^ `str`\n19 |     bar(foo)  # error: [arg-type]\n   |\n\nerror[invalid-argument-type]: Argument to function `bar` is incorrect\n  --> generated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:19:9\n   |\n17 |         return\n18 |     reveal_type(foo)  # Revealed type is \"str\" (expected \"Literal['a', 'b']\")\n19 |     bar(foo)  # error: [arg-type]\n   |         ^^^ Expected `Literal[\"a\", \"b\"]`, found `str`\n   |\ninfo: Function defined here\n --> generated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:4:5\n  |\n4 | def bar(p: Literal[\"a\", \"b\"]) -> None: ...\n  |     ^^^ -------------------- Parameter declared here\n  |\ninfo: rule `invalid-argument-type` is enabled by default\n\ninfo[revealed-type]: Revealed type\n  --> generated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:26:17\n   |\n24 |     if foo not in (\"a\", \"b\"):\n25 |         raise ValueError(f\"unexpected value: {foo}\")\n26 |     reveal_type(foo)  # Revealed type is \"str\" (expected \"Literal['a', 'b']\")\n   |                 ^^^ `str`\n27 |     bar(foo)  # error: [arg-type]\n   |\n\nerror[invalid-argument-type]: Argument to function `bar` is incorrect\n  --> generated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:27:9\n   |\n25 |         raise ValueError(f\"unexpected value: {foo}\")\n26 |     reveal_type(foo)  # Revealed type is \"str\" (expected \"Literal['a', 'b']\")\n27 |     bar(foo)  # error: [arg-type]\n   |         ^^^ Expected `Literal[\"a\", \"b\"]`, found `str`\n   |\ninfo: Function defined here\n --> generated_examples/2026-03-25_13-30-00/source_files/literal_narrowing.py:4:5\n  |\n4 | def bar(p: Literal[\"a\", \"b\"]) -> None: ...\n  |     ^^^ -------------------- Parameter declared here\n  |\ninfo: rule `invalid-argument-type` is enabled by default\n\nFound 6 diagnostics\n"
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "ok",
+        "zuban": "ok",
+        "ty": "error"
+      }
+    },
+    {
+      "filename": "walrus_comprehension.py",
+      "filepath": "generated_examples/2026-03-25_13-30-00/source_files/walrus_comprehension.py",
+      "seed_issue": "https://github.com/astral-sh/ty/issues/3077",
+      "metrics": {
+        "loc": 5,
+        "num_functions": 0,
+        "type_imports": 0,
+        "type_density": 0.0,
+        "internal_calls": 0
+      },
+      "outputs": {
+        "mypy": "Success: no issues found in 1 source file\n",
+        "pyrefly": "ERROR `cumsum` is uninitialized [unbound-name]\n --> generated_examples/2026-03-25_13-30-00/source_files/walrus_comprehension.py:3:17\n  |\n3 | cs = [cumsum := cumsum + x for x in lengths]\n  |                 ^^^^^^\n  |\n INFO 1 error\n",
+        "zuban": "Success: no issues found in 1 source file\n",
+        "ty": "error[unresolved-reference]: Name `cumsum` used when not defined\n --> generated_examples/2026-03-25_13-30-00/source_files/walrus_comprehension.py:3:17\n  |\n1 | lengths = list(range(5))\n2 | cumsum = 0\n3 | cs = [cumsum := cumsum + x for x in lengths]\n  |                 ^^^^^^\n4 | print(cs)\n5 | print(cumsum)\n  |\ninfo: rule `unresolved-reference` is enabled by default\n\nFound 1 diagnostic\n"
+      },
+      "statuses": {
+        "mypy": "ok",
+        "pyrefly": "error",
+        "zuban": "ok",
+        "ty": "error"
+      }
+    },
+    {
+      "filename": "typeddict_single_field.py",
+      "filepath": "generated_examples/2026-03-25_13-30-00/source_files/typeddict_single_field.py",
+      "seed_issue": "https://github.com/astral-sh/ty/issues/3029",
+      "metrics": {
+        "loc": 5,
+        "num_functions": 1,
+        "type_imports": 1,
+        "type_density": 0.0,
+        "internal_calls": 0
+      },
+      "outputs": {
+        "mypy": "generated_examples/2026-03-25_13-30-00/source_files/typeddict_single_field.py:7: note: Revealed type is \"Any\"\ngenerated_examples/2026-03-25_13-30-00/source_files/typeddict_single_field.py:7: error: TypedDict \"Foo\" has no key \"anything\"  [typeddict-item]\nFound 1 error in 1 file (checked 1 source file)\n",
+        "pyrefly": "ERROR `reveal_type` must be imported from `typing` for runtime usage [unknown-name]\n --> generated_examples/2026-03-25_13-30-00/source_files/typeddict_single_field.py:7:5\n  |\n7 |     reveal_type(td[\"anything\"])\n  |     ^^^^^^^^^^^\n  |\n INFO revealed type: Unknown [reveal-type]\n --> generated_examples/2026-03-25_13-30-00/source_files/typeddict_single_field.py:7:16\n  |\n7 |     reveal_type(td[\"anything\"])\n  |                ----------------\n  |\nERROR TypedDict `Foo` does not have key `anything` [bad-typed-dict-key]\n --> generated_examples/2026-03-25_13-30-00/source_files/typeddict_single_field.py:7:20\n  |\n7 |     reveal_type(td[\"anything\"])\n  |                    ^^^^^^^^^^\n  |\n INFO 2 errors\n",
+        "zuban": "generated_examples/2026-03-25_13-30-00/source_files/typeddict_single_field.py:7: error: TypedDict \"Foo\" has no key \"anything\"  [typeddict-item]\ngenerated_examples/2026-03-25_13-30-00/source_files/typeddict_single_field.py:7: note: Revealed type is \"Any\"\nFound 1 errors in 1 file (checked 1 source file)\n",
+        "ty": "warning[undefined-reveal]: `reveal_type` used without importing it\n --> generated_examples/2026-03-25_13-30-00/source_files/typeddict_single_field.py:7:5\n  |\n6 | def _(td: Foo, key: str) -> None:\n7 |     reveal_type(td[\"anything\"])\n  |     ^^^^^^^^^^^\n  |\ninfo: This is allowed for debugging convenience but will fail at runtime\ninfo: rule `undefined-reveal` is enabled by default\n\ninfo[revealed-type]: Revealed type\n --> generated_examples/2026-03-25_13-30-00/source_files/typeddict_single_field.py:7:17\n  |\n6 | def _(td: Foo, key: str) -> None:\n7 |     reveal_type(td[\"anything\"])\n  |                 ^^^^^^^^^^^^^^ `str`\n  |\n\nerror[invalid-key]: Unknown key \"anything\" for TypedDict `Foo`\n --> generated_examples/2026-03-25_13-30-00/source_files/typeddict_single_field.py:7:17\n  |\n6 | def _(td: Foo, key: str) -> None:\n7 |     reveal_type(td[\"anything\"])\n  |                 -- ^^^^^^^^^^ Unknown key \"anything\"\n  |                 |\n  |                 TypedDict `Foo`\n  |\ninfo: rule `invalid-key` is enabled by default\n\nFound 3 diagnostics\n"
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "error",
+        "zuban": "error",
+        "ty": "error"
+      }
+    }
+  ]
+}

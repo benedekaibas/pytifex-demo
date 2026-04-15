@@ -1,0 +1,4 @@
+# file: /home/benedek-kaibas/Documents/pytifex-demo/src/tc_disagreement/pipeline.py
+# hypothesis_version: 6.151.9
+
+[320.0, 100, '%Y-%m-%d_%H-%M-%S', '(\\w+/\\w+)#(\\d+)', '0 error', '=', 'GEMINI_API_KEY', 'Timeout', '```python\\n(.*?)```', 'checkers_used', 'code', 'disagreements_found', 'error', 'filename', 'filepath', 'gemini-2.5-flash', 'id', 'metadata', 'model_used', 'no output', 'ok', 'original', 'outputs', 'results', 'results.json', 'seed_issue', 'source_files', 'statuses', 'success_rate', 'timestamp', 'total_generated', 'utf-8', 'w']

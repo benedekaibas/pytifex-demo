@@ -1,0 +1,1091 @@
+{
+  "method": "comprehensive_tiered",
+  "tier_distribution": {
+    "0": 1,
+    "1": 0,
+    "2": 0,
+    "3": 6,
+    "4": 3
+  },
+  "summary": {
+    "mypy": {
+      "correct": 3,
+      "incorrect": 1,
+      "uncertain": 6
+    },
+    "pyrefly": {
+      "correct": 1,
+      "incorrect": 2,
+      "uncertain": 7
+    },
+    "zuban": {
+      "correct": 3,
+      "incorrect": 0,
+      "uncertain": 7
+    },
+    "ty": {
+      "correct": 4,
+      "incorrect": 1,
+      "uncertain": 5
+    }
+  },
+  "oracle_verdicts": [
+    {
+      "filename": "newtype-protocol-divergence-refined.py",
+      "metrics": {
+        "loc": 30,
+        "num_functions": 5,
+        "type_imports": 4,
+        "type_density": 0.0667,
+        "internal_calls": 0
+      },
+      "tier_reached": 4,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        }
+      }
+    },
+    {
+      "filename": "kwargs-splat-protocol.py",
+      "metrics": {
+        "loc": 31,
+        "num_functions": 7,
+        "type_imports": 7,
+        "type_density": 0.2258,
+        "internal_calls": 1
+      },
+      "tier_reached": 4,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Reported errors on violation-free source",
+          "confidence": 0.8,
+          "tier": 0
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        }
+      }
+    },
+    {
+      "filename": "paramspec-union-return-type.py",
+      "metrics": {
+        "loc": 32,
+        "num_functions": 4,
+        "type_imports": 6,
+        "type_density": 0.2188,
+        "internal_calls": 0
+      },
+      "tier_reached": 3,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "ty",
+          "pep": 484,
+          "rule": "Attribute access must resolve on the declared type (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "zuban",
+          "pep": 634,
+          "rule": "Unreachable code after exhaustive match (PEP 634)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Matches 1 PEP rule(s) (PEPs [634])",
+          "confidence": 0.8,
+          "tier": 3
+        },
+        "ty": {
+          "verdict": "CORRECT",
+          "reason": "Matches 1 PEP rule(s) (PEPs [484])",
+          "confidence": 0.8,
+          "tier": 3
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        }
+      }
+    },
+    {
+      "filename": "ternary-typeguard-generic-lambda.py",
+      "metrics": {
+        "loc": 38,
+        "num_functions": 6,
+        "type_imports": 6,
+        "type_density": 0.0526,
+        "internal_calls": 2
+      },
+      "tier_reached": 3,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "ty",
+          "pep": 484,
+          "rule": "Argument type must match parameter annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "mypy",
+          "pep": 484,
+          "rule": "Return value must match return type annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Matches 1 PEP rule(s) (PEPs [484])",
+          "confidence": 0.8,
+          "tier": 3
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "ty": {
+          "verdict": "CORRECT",
+          "reason": "Matches 1 PEP rule(s) (PEPs [484])",
+          "confidence": 0.8,
+          "tier": 3
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        }
+      }
+    },
+    {
+      "filename": "typeddict-inheritance-total-divergence.py",
+      "metrics": {
+        "loc": 42,
+        "num_functions": 3,
+        "type_imports": 4,
+        "type_density": -0.0238,
+        "internal_calls": 0
+      },
+      "tier_reached": 0,
+      "tier1_bugs": [
+        {
+          "line": 27,
+          "type": "KeyError",
+          "msg": "KeyError: 'api_key'"
+        }
+      ],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "Argument type must match parameter annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "mypy",
+          "pep": 589,
+          "rule": "[TDICT003] Unsafe access `cfg[\"api_key\"]` on NotRequired field of TypedDict `FinalSettings` \u2014 field may be absent at runtime (use `.get(\"api_key\")` or guard with `\"api_key\" in cfg`)",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 589,
+          "rule": "[TDICT003] Unsafe access `cfg[\"api_key\"]` on NotRequired field of TypedDict `FinalSettings` \u2014 field may be absent at runtime (use `.get(\"api_key\")` or guard with `\"api_key\" in cfg`)",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.5,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "zuban",
+          "pep": 589,
+          "rule": "[TDICT003] Unsafe access `cfg[\"api_key\"]` on NotRequired field of TypedDict `FinalSettings` \u2014 field may be absent at runtime (use `.get(\"api_key\")` or guard with `\"api_key\" in cfg`)",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.5,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "ty",
+          "pep": 589,
+          "rule": "[TDICT003] Unsafe access `cfg[\"api_key\"]` on NotRequired field of TypedDict `FinalSettings` \u2014 field may be absent at runtime (use `.get(\"api_key\")` or guard with `\"api_key\" in cfg`)",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven runtime bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 27,
+              "type": "KeyError"
+            }
+          ]
+        },
+        "pyrefly": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven runtime bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven runtime bug(s)",
+          "confidence": 0.9,
+          "tier": 1
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven runtime bug(s)",
+          "confidence": 0.95,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 27,
+              "type": "KeyError"
+            }
+          ]
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "INCORRECT",
+          "reason": "1 of 1 oracle finding(s) not reported by checker",
+          "confidence": 0.9,
+          "findings_hit": 0,
+          "findings_missed": 1
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "1 of 1 oracle finding(s) not reported by checker",
+          "confidence": 0.9,
+          "findings_hit": 0,
+          "findings_missed": 1
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "1 of 1 oracle finding(s) not reported by checker",
+          "confidence": 0.9,
+          "findings_hit": 0,
+          "findings_missed": 1
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "1 of 1 oracle finding(s) not reported by checker",
+          "confidence": 0.9,
+          "findings_hit": 0,
+          "findings_missed": 1
+        }
+      }
+    },
+    {
+      "filename": "paramspec-classmethod-decorator.py",
+      "metrics": {
+        "loc": 50,
+        "num_functions": 7,
+        "type_imports": 7,
+        "type_density": 0.08,
+        "internal_calls": 0
+      },
+      "tier_reached": 3,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "ty",
+          "pep": 484,
+          "rule": "Attribute access must resolve on the declared type (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "ty": {
+          "verdict": "CORRECT",
+          "reason": "Matches 1 PEP rule(s) (PEPs [484])",
+          "confidence": 0.8,
+          "tier": 3
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        }
+      }
+    },
+    {
+      "filename": "typeguard-typevar-bound-divergence.py",
+      "metrics": {
+        "loc": 46,
+        "num_functions": 6,
+        "type_imports": 6,
+        "type_density": 0.2174,
+        "internal_calls": 1
+      },
+      "tier_reached": 3,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "ty",
+          "pep": 484,
+          "rule": "Attribute access must resolve on the declared type (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "ty": {
+          "verdict": "CORRECT",
+          "reason": "Matches 1 PEP rule(s) (PEPs [484])",
+          "confidence": 0.8,
+          "tier": 3
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        }
+      }
+    },
+    {
+      "filename": "kwargs-splat-union-custom-mapping.py",
+      "metrics": {
+        "loc": 36,
+        "num_functions": 5,
+        "type_imports": 6,
+        "type_density": 0.1389,
+        "internal_calls": 1
+      },
+      "tier_reached": 4,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [],
+      "verdicts": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "pyrefly": {
+          "verdict": "INCORRECT",
+          "reason": "Reported errors on violation-free source",
+          "confidence": 0.8,
+          "tier": 0
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        }
+      }
+    },
+    {
+      "filename": "nested-paramspec-callable-return.py",
+      "metrics": {
+        "loc": 33,
+        "num_functions": 3,
+        "type_imports": 5,
+        "type_density": 0.0303,
+        "internal_calls": 0
+      },
+      "tier_reached": 3,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "mypy",
+          "pep": 484,
+          "rule": "Argument type must match parameter annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Matches 1 PEP rule(s) (PEPs [484])",
+          "confidence": 0.8,
+          "tier": 3
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        }
+      }
+    },
+    {
+      "filename": "ternary-literal-type-inference.py",
+      "metrics": {
+        "loc": 41,
+        "num_functions": 4,
+        "type_imports": 3,
+        "type_density": 0.0244,
+        "internal_calls": 2
+      },
+      "tier_reached": 3,
+      "tier1_bugs": [],
+      "tier2_bugs": [],
+      "tier3_findings": [
+        {
+          "checker": "mypy",
+          "pep": 484,
+          "rule": "Return value must match return type annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "Return value must match return type annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
+      "verdicts": {
+        "mypy": {
+          "verdict": "CORRECT",
+          "reason": "Matches 1 PEP rule(s) (PEPs [484])",
+          "confidence": 0.8,
+          "tier": 3
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Matches 1 PEP rule(s) (PEPs [484])",
+          "confidence": 0.8,
+          "tier": 3
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        }
+      },
+      "oracle": {
+        "mypy": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        },
+        "ty": {
+          "verdict": "UNCERTAIN",
+          "reason": "No oracle findings to evaluate against",
+          "confidence": 0.0,
+          "findings_hit": 0,
+          "findings_missed": 0
+        }
+      }
+    }
+  ],
+  "agent_verdicts": [
+    {
+      "verdict": "CORRECT",
+      "reason": "Mypy correctly infers the types and does not report any errors. The core of the problem description hinges on whether `Money` (a NewType based on `PriceItem`) is considered compatible with `PriceItem` when passed as an argument to a method expecting `PriceItem`. According to PEP 484, a `NewType` instance is considered a subtype of its base type. Therefore, an instance of `Money` can be passed to a parameter expecting `PriceItem` without a type error. Mypy's behavior aligns with this rule, treating `m2` (type `Money`) as a valid argument for the `other: PriceItem` parameter in the `PriceItem.__gt__` method. The `reveal_type` calls also correctly show `Money` for `m1` and `m2`, and `bool` for the comparison result, which is consistent.",
+      "pep_citation": "PEP 484 -- Type Hints, Section 'NewType': 'An instance of NewType is considered to be a subtype of its base type. This means that a value of a NewType can be used wherever its base type is expected.'",
+      "confidence": 1.0,
+      "filename": "newtype-protocol-divergence-refined.py",
+      "checker": "mypy"
+    },
+    {
+      "verdict": "CORRECT",
+      "reason": "According to PEP 484, a NewType is treated as a subtype of its base type. Therefore, an instance of 'Money' (NewType of 'PriceItem') can be safely passed to a method argument expecting 'PriceItem', as demonstrated by the '__gt__' method. The type checker correctly infers no errors.",
+      "pep_citation": "PEP 484, Section 'NewType'",
+      "confidence": 1.0,
+      "filename": "newtype-protocol-divergence-refined.py",
+      "checker": "pyrefly"
+    },
+    {
+      "verdict": "CORRECT",
+      "reason": "The `zuban` type checker correctly applies the subtyping rules for `NewType` as defined in PEP 484. A `NewType` (e.g., `Money`) is treated as a subtype of its base type (e.g., `PriceItem`). Therefore, an instance of `Money` can be passed as an argument where an instance of `PriceItem` is expected, such as in the `other: 'PriceItem'` parameter of the `__gt__` method. The type checker correctly infers the return type of the comparison as `bool` and reports no errors.",
+      "pep_citation": "PEP 484, section 'NewType'",
+      "confidence": 1.0,
+      "filename": "newtype-protocol-divergence-refined.py",
+      "checker": "zuban"
+    },
+    {
+      "verdict": "CORRECT",
+      "reason": "The `ty` checker correctly allows a `NewType` instance (`Money`) to be passed as an argument where its base type (`PriceItem`) is expected in a method signature (`PriceItem.__gt__`). This aligns with PEP 484's rule that a `NewType` is treated as a subtype of its base type and can be used wherever the base type is expected.",
+      "pep_citation": "PEP 484 -- Type Hints, Section 'NewType': 'Type checkers should treat a NewType as a subtype of its base type. This means a value of NewType can be used wherever its base type is expected, but not the other way around (a value of the base type cannot be used where a NewType is expected).'",
+      "confidence": 1.0,
+      "filename": "newtype-protocol-divergence-refined.py",
+      "checker": "ty"
+    },
+    {
+      "verdict": "CORRECT",
+      "reason": "The user's problem statement and comments in the code indicate an expectation that `CustomKwargSource` and `MinimalKwargProtocol` would cause a runtime `TypeError` when used with the `**` operator because they do not explicitly define an `items()` method or inherit from `collections.abc.Mapping`.  However, this understanding of the `**` operator's runtime requirements is slightly inaccurate. The behavior of `**` (for both dictionary literals and function calls) is primarily governed by how `dict",
+      "pep_citation": null,
+      "confidence": 0.7,
+      "filename": "kwargs-splat-protocol.py",
+      "checker": "mypy"
+    },
+    {
+      "verdict": "INCORRECT",
+      "reason": "Zuban's behavior is **INCORRECT**.  **Reason**: The `**` operator in Python, whether used for dictionary unpacking (e.g., `{**obj}`) or for passing keyword arguments to a function (e.g., `func(**obj)`), requires the object `obj` to be a mapping (i.e., provide an `items()` method) or an iterable that yields key-value pairs. The `CustomKwargSource` class and the `MinimalKwargProtocol` both explicitly define `keys()` and `__getitem__` but *lack* an `items()` method or a `__iter__` method that yield",
+      "pep_citation": null,
+      "confidence": 0.7,
+      "filename": "kwargs-splat-protocol.py",
+      "checker": "zuban"
+    },
+    {
+      "verdict": "INCORRECT",
+      "reason": "The type checker `ty` exhibits incorrect behavior in two main aspects:\n\n1.  **Incorrect Type Inference for `Mapping`**: For `reveal_type({**source_mapping})`, where `source_mapping` is explicitly typed as `Mapping[str, int]`, `ty` reveals `dict[Unknown, Unknown]`. This is incorrect. According to the Python language specification and common type checker behavior, a `Mapping[str, int]` should correctly resolve to `dict[str, int]` when splatted, as `Mapping` types are fully compatible with `**` unpacking.\n\n2.  **Failure to Detect Runtime `TypeError`**: `ty` fails to report any type errors for `func_accepting_kwargs(**source_impl)` and `func_accepting_kwargs(**source_protocol)`. At runtime, the `**` operator (in a function call or dictionary literal) requires the operand to be a `Mapping` instance (or an object that implements `items()` or, as a fallback, `__iter__` yielding key-value pairs). `CustomKwargSource` does not implement `items()` or `__iter__` and is not a `Mapping`. Similarly, `MinimalKwargProtocol` only specifies `keys()` and `__getitem__`, which are insufficient for `**` unpacking. Therefore, these calls will result in a `TypeError` at runtime, which the type checker should flag.",
+      "pep_citation": "PEP 468 -- Additional unpacking generalizations, specifically the sentence: \"When `**expression` appears in a dict display or function call, `expression` must evaluate to a `Mapping` instance.\" This requirement is also stated in the official Python Language Reference (e.g., in the sections on dictionary displays and calls).",
+      "confidence": 1.0,
+      "filename": "kwargs-splat-protocol.py",
+      "checker": "ty"
+    },
+    {
+      "verdict": "CORRECT",
+      "reason": "Mypy correctly infers the type of `decorated_func` as `Union[Callable[[int, str], float], Callable[[int, str], Type[None]]]` and subsequently infers the type of `result` as `Union[float, Type[None]]`. This demonstrates proper resolution of `ParamSpec` within a generic `Callable` type that is part of a `Union` return type for a higher-order function (decorator). The `ParamSpec` `P` and `TypeVar` `R` are correctly bound to the `my_function`'s signature, and these types are then substituted into the `Union` of `Callable` types returned by the decorator.",
+      "pep_citation": "PEP 612 -- Parameter Specification Variables, specifically the section 'Using ParamSpec in a decorator', which states that 'ParamSpec can be used in decorators to preserve the signature of the decorated function. This is similar to the use of TypeVar with generic functions, where the type variables are inferred from the function being decorated.' Mypy's behavior adheres to this principle, correctly propagating the argument types captured by `P` and the return type captured by `R` through the `Union` of `Callable` types.",
+      "confidence": 0.5,
+      "filename": "paramspec-union-return-type.py",
+      "checker": "mypy"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "Agent call failed: Client error '429 Too Many Requests' for url 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent'\nFor more information check: https://developer.mozilla.org/en-US/",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "paramspec-union-return-type.py",
+      "checker": "pyrefly"
+    },
+    {
+      "verdict": "CORRECT",
+      "reason": "The `pyrefly` checker correctly identifies a `bad-argument-type` error. The function `is_special` is defined with a parameter `val: Union[T, BaseThing]`. In the `get_action_lambda` function, `x` has the type `Union[T, BaseThing, None]`. When `is_special(x)` is called, the argument `x` includes `None` as a possible type, which is not assignable to `val: Union[T, BaseThing]`. TypeGuard functions, like any other function, must be called with arguments that conform to their declared parameter types. The `TypeGuard` mechanism influences type narrowing *after* a successful call, but it does not alter the fundamental rules for validating the function call itself. The `reveal_type` outputs also indicate that `pyrefly` correctly infers the types for `action_lambda` and `lambda_result` once this initial error is acknowledged.",
+      "pep_citation": "PEP 647 \u2013 User-Defined Type Guards. While PEP 647 primarily focuses on how the return type of a `TypeGuard` function affects subsequent code, it implicitly relies on the standard type-checking rules for function calls. The argument to a `TypeGuard` function must still adhere to the function's parameter type annotation, just like any other function. The `TypeGuard` declaration does not exempt the function call from basic type compatibility rules. The type `Union[T, BaseThing, None]` is not assignable to `Union[T, BaseThing]` because of the `None` component.",
+      "confidence": 0.9,
+      "filename": "ternary-typeguard-generic-lambda.py",
+      "checker": "pyrefly"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "Agent call failed: Client error '429 Too Many Requests' for url 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent'\nFor more information check: https://developer.mozilla.org/en-US/",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "ternary-typeguard-generic-lambda.py",
+      "checker": "zuban"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "Agent call failed: Client error '429 Too Many Requests' for url 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent'\nFor more information check: https://developer.mozilla.org/en-US/",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "paramspec-classmethod-decorator.py",
+      "checker": "mypy"
+    },
+    {
+      "verdict": "CORRECT",
+      "reason": "The `pyrefly` type checker correctly infers the types of `proc1` as `BaseProcessor` and `proc2` as `MySpecialProcessor`. This demonstrates that the `class_method_logger` decorator, utilizing `ParamSpec` and `Concatenate`, successfully preserves the signature of the class method, including the `cls` argument and the ability for the `TypeVar` `T_Cls` to correctly specialize based on the calling class. The checker finds no errors, which is consistent with the type-safe usage of these features.",
+      "pep_citation": "PEP 612 \u2013 Parameter Specification Variables, specifically the sections 'Using ParamSpec with decorators' for general decorator usage with ParamSpec, and 'Concatenate' for prepending `cls: Type[T_Cls]` to the captured parameters. The correct inference of `T_Cls` (bound to `BaseProcessor`) for the return type of `create_named_instance` also aligns with PEP 484 \u2013 Type Hinting, section 'Type variables bound to `Type`' regarding the behavior of `TypeVar`s in class methods.",
+      "confidence": 1.0,
+      "filename": "paramspec-classmethod-decorator.py",
+      "checker": "pyrefly"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "Agent call failed: Client error '429 Too Many Requests' for url 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent'\nFor more information check: https://developer.mozilla.org/en-US/",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "paramspec-classmethod-decorator.py",
+      "checker": "zuban"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "Agent call failed: Client error '429 Too Many Requests' for url 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent'\nFor more information check: https://developer.mozilla.org/en-US/",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "typeguard-typevar-bound-divergence.py",
+      "checker": "mypy"
+    },
+    {
+      "verdict": "INCORRECT",
+      "reason": "Pyrefly's behavior is incorrect for two main reasons:\n\n1.  **Incorrect TypeVar Resolution/Refinement:** The `TypeGuard` `all_are_specific_vehicles` returns `TypeGuard[List[V]]`, where `V = TypeVar(\"V\", bound=Vehicle)`. The internal logic of the TypeGuard explicitly checks if all items are `Car` instances. Given that `Car` is a subtype of `Vehicle` (satisfying `V`'s bound) and the runtime check guarantees `List[Car]`, the most precise and sound type inference would be for `V` to resolve to `Car`, narrowing `vehicles` to `List[Car]`. Even if the type checker is conservative and cannot infer `Car`, it should at least resolve `V` to its bound, `Vehicle`, thus narrowing `vehicles` to `List[Vehicle]`. Pyrefly, however, resolves `vehicles` to `list[Unknown]`. This indicates a failure to properly apply the `TypeGuard`'s refinement and to respect the `TypeVar`'s bound. A TypeVar with a bound (e.g., `bound=Vehicle`) should not resolve to `Unknown` as `Unknown` is not a specified subtype of `Vehicle` and represents a complete loss of type information, which defeats the purpose of both TypeVars and TypeGuards.\n\n2.  **Unsound Attribute Access:** Following the `list[Unknown]` inference for `vehicles`, `item_in_list` would also be `Unknown`. Pyrefly then allows the call to `item_in_list.honk()` without any error. Allowing arbitrary attribute access on an `Unknown` type is generally considered an unsound practice in static type checking, as it can hide actual runtime errors. If the type could not be determined, a strict checker should either report an error for the access or provide a more precise type.",
+      "pep_citation": "PEP 647 (Type Guards), Section 'Type Guard refinement rules': 'When a TypeGuard function `func(arg)` returns `True`, type checkers can assume that `arg` has the type `T` (where `T` is the return type of the TypeGuard).' Pyrefly fails to refine `vehicles` to `List[V]` where `V` is meaningfully resolved.\n\nPEP 484 (Type Hinting), Section 'Type variables with an upper bound': 'A TypeVar can be given an upper bound using `bound=...`. This means that `T` (when substituted) must be a subtype of the bound.' Resolving `V` to `Unknown` does not respect its bound of `Vehicle` in a meaningful way, as `Unknown` is not defined as a subtype of `Vehicle` and discards the information about the bound.",
+      "confidence": 0.9,
+      "filename": "typeguard-typevar-bound-divergence.py",
+      "checker": "pyrefly"
+    },
+    {
+      "verdict": "INCORRECT",
+      "reason": "Zuban reports the revealed type as `builtins.list[Never]`. According to PEP 647, when a TypeGuard's internal logic (`all(isinstance(item, Car) for item in items)`) successfully narrows a list to `List[Car]`, and its return annotation is `TypeGuard[List[V]]` where `V` is `TypeVar(\"V\", bound=Vehicle)`, the type variable `V` should be inferred as `Car`. This inference is valid because `Car` is a subtype of `Vehicle`, satisfying `V`'s bound. Therefore, the variable `vehicles` should be narrowed to `List[Car]`. `List[Never]` is an incorrect inference, implying that the guarded block is unreachable or the type is uninhabitable, which is not the case for `all_cars_fleet`.",
+      "pep_citation": "PEP 647 -- TypeGuard, specifically the sections 'Type variables in TypeGuard' and 'Interaction with TypeVar bounds'. The latter states: 'When a type variable appears in the return type of a TypeGuard function, its value is determined by the *type that the guard narrows to*.'",
+      "confidence": 1.0,
+      "filename": "typeguard-typevar-bound-divergence.py",
+      "checker": "zuban"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "Agent call failed: Client error '429 Too Many Requests' for url 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent'\nFor more information check: https://developer.mozilla.org/en-US/",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "kwargs-splat-union-custom-mapping.py",
+      "checker": "mypy"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "Agent call failed: Client error '429 Too Many Requests' for url 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent'\nFor more information check: https://developer.mozilla.org/en-US/",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "kwargs-splat-union-custom-mapping.py",
+      "checker": "zuban"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "Agent call failed: Client error '429 Too Many Requests' for url 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent'\nFor more information check: https://developer.mozilla.org/en-US/",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "kwargs-splat-union-custom-mapping.py",
+      "checker": "ty"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "Agent call failed: Client error '429 Too Many Requests' for url 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent'\nFor more information check: https://developer.mozilla.org/en-US/",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "nested-paramspec-callable-return.py",
+      "checker": "pyrefly"
+    },
+    {
+      "verdict": "INCORRECT",
+      "reason": "Zuban reports several errors, the most critical of which are related to `ParamSpec`s being \"unbound\" and the subsequent failure to infer types correctly.  Let's analyze Zuban's errors:  1.  **`_pytifex_temp_3716177.py:18: error: ParamSpec \"P_OUTER\" is unbound [misc]`** 2.  **`_pytifex_temp_3716177.py:21: error: ParamSpec \"P_INNER\" is unbound [misc]`**     *   These errors occur where `P_OUTER.args`, `P_OUTER.kwargs`, `P_INNER.args`, and `P_INNER.kwargs` are used in the signatures of the nested `",
+      "pep_citation": null,
+      "confidence": 0.7,
+      "filename": "nested-paramspec-callable-return.py",
+      "checker": "zuban"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "Agent call failed: Client error '429 Too Many Requests' for url 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent'\nFor more information check: https://developer.mozilla.org/en-US/",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "nested-paramspec-callable-return.py",
+      "checker": "ty"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "Agent call failed: Client error '429 Too Many Requests' for url 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent'\nFor more information check: https://developer.mozilla.org/en-US/",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "ternary-literal-type-inference.py",
+      "checker": "pyrefly"
+    },
+    {
+      "verdict": "UNCERTAIN",
+      "reason": "Agent call failed: Client error '429 Too Many Requests' for url 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent'\nFor more information check: https://developer.mozilla.org/en-US/",
+      "pep_citation": null,
+      "confidence": 0.0,
+      "filename": "ternary-literal-type-inference.py",
+      "checker": "ty"
+    }
+  ]
+}

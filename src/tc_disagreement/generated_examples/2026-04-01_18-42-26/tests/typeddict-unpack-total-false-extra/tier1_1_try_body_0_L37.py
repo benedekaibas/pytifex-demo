@@ -1,0 +1,1 @@
+        apply_settings(timeout=10, debug=True, extra_val="foo")

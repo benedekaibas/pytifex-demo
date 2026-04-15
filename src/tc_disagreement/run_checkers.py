@@ -5,6 +5,8 @@ import sys
 import glob as glob_module
 
 from config import BASE_GEN_DIR, CHECKERS
+from rederive_statuses import checker_reports_error
+from code_metrics import compute_metrics, metrics_to_dict
 
 
 def get_latest_generation_dir() -> str:
@@ -72,11 +74,18 @@ def run_checkers(target_dir: str | None = None) -> str:
         filename = os.path.basename(filepath)
         print(f"Checking {filename}...")
 
-        file_result = {"filename": filename, "filepath": filepath, "outputs": {}}
+        with open(filepath, "r", encoding="utf-8") as src:
+            source_code = src.read()
+
+        file_result = {"filename": filename, "filepath": filepath, "metrics": metrics_to_dict(compute_metrics(source_code)), "outputs": {}}
 
         for tool_name, command in CHECKERS.items():
             output = run_tool(command, filepath)
             file_result["outputs"][tool_name] = output
+
+        file_result["statuses"] = {}
+        for tool_name, output in file_result["outputs"].items():
+            file_result["statuses"][tool_name] = "error" if checker_reports_error(output, tool_name) else "ok"
 
         all_results.append(file_result)
 

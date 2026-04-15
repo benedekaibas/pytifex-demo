@@ -1,0 +1,255 @@
+{
+  "timestamp": "2026-04-01T18:42:26.283695",
+  "model_used": "gemini-2.5-flash",
+  "total_generated": 15,
+  "disagreements_found": 10,
+  "success_rate": "66.7%",
+  "checkers_used": [
+    "mypy",
+    "pyrefly",
+    "zuban",
+    "ty"
+  ],
+  "results": [
+    {
+      "filename": "list-concat-generic-self.py",
+      "filepath": "generated_examples/2026-04-01_18-42-26/source_files/list-concat-generic-self.py",
+      "seed_issue": "https://github.com/zubanls/zuban/issues/201",
+      "metrics": {
+        "loc": 15,
+        "num_functions": 2,
+        "type_imports": 4,
+        "type_density": 0.2667,
+        "internal_calls": 0
+      },
+      "outputs": {
+        "mypy": "_pytifex_temp_672774.py:22: error: Unsupported operand types for + (\"list[BaseContainer[str]]\" and \"list[SpecializedContainer[str]]\")  [operator]\n_pytifex_temp_672774.py:23: note: Revealed type is \"builtins.list[_pytifex_temp_672774.BaseContainer[builtins.str]]\"\nFound 1 error in 1 file (checked 1 source file)",
+        "pyrefly": "INFO revealed type: list[BaseContainer[str]] [reveal-type]\n  --> _pytifex_temp_672774.py:23:16\n   |\n23 |     reveal_type(combined_list)\n   |                ---------------\n   |\n INFO 0 errors",
+        "zuban": "_pytifex_temp_672774.py:22: error: Unsupported operand types for + (\"list[BaseContainer[str]]\" and \"list[SpecializedContainer[str]]\")  [operator]\n_pytifex_temp_672774.py:23: note: Revealed type is \"builtins.list[_pytifex_temp_672774.BaseContainer[builtins.str]]\"\nFound 1 errors in 1 file (checked 1 source file)",
+        "ty": "info[revealed-type]: Revealed type\n  --> _pytifex_temp_672774.py:23:17\n   |\n21 |     # This tests variance for Generic types with list concatenation.\n22 |     combined_list: list[BaseContainer[str]] = base_list + specialized_list\n23 |     reveal_type(combined_list)\n   |                 ^^^^^^^^^^^^^ `list[BaseContainer[str]]`\n24 |\n25 |     handle_containers(combined_list)\n   |\n\nFound 1 diagnostic"
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "ok",
+        "zuban": "error",
+        "ty": "ok"
+      }
+    },
+    {
+      "filename": "list-concat-union-literal.py",
+      "filepath": "generated_examples/2026-04-01_18-42-26/source_files/list-concat-union-literal.py",
+      "seed_issue": "https://github.com/zubanls/zuban/issues/201",
+      "metrics": {
+        "loc": 10,
+        "num_functions": 1,
+        "type_imports": 3,
+        "type_density": 0.5,
+        "internal_calls": 0
+      },
+      "outputs": {
+        "mypy": "_pytifex_temp_672774.py:14: note: Revealed type is \"builtins.list[Literal['start'] | Literal['stop']]\"\nSuccess: no issues found in 1 source file",
+        "pyrefly": "ERROR `+` is not supported between `list[Literal['start']]` and `list[Literal['stop']]` [unsupported-operation]\n  --> _pytifex_temp_672774.py:13:66\n   |\n13 |     all_events: list[Union[Literal[\"start\"], Literal[\"stop\"]]] = starts + stops\n   |                                                                  ^^^^^^^^^^^^^^\n   |\n  No matching overload found for function `list.__add__` called with arguments: (list[Literal['stop']])\n  Possible overloads:\n  (value: list[Literal['start']], /) -> list[Literal['start']] [closest match]\n  (value: list[_S], /) -> list[Literal['start'] | _S]\n INFO revealed type: list[Literal['start', 'stop']] [reveal-type]\n  --> _pytifex_temp_672774.py:14:16\n   |\n14 |     reveal_type(all_events)\n   |                ------------\n   |\n INFO 1 error",
+        "zuban": "_pytifex_temp_672774.py:13: error: Unsupported operand types for + (\"list[Literal['start']]\" and \"list[Literal['stop']]\")  [operator]\n_pytifex_temp_672774.py:14: note: Revealed type is \"builtins.list[Literal['start'] | Literal['stop']]\"\nFound 1 errors in 1 file (checked 1 source file)",
+        "ty": "info[revealed-type]: Revealed type\n  --> _pytifex_temp_672774.py:14:17\n   |\n12 |     # Some checkers might be very strict on the exact Literal type during concatenation.\n13 |     all_events: list[Union[Literal[\"start\"], Literal[\"stop\"]]] = starts + stops\n14 |     reveal_type(all_events)\n   |                 ^^^^^^^^^^ `list[Literal[\"stop\", \"start\"]]`\n15 |\n16 |     process_events(all_events)\n   |\n\nFound 1 diagnostic"
+      },
+      "statuses": {
+        "mypy": "ok",
+        "pyrefly": "error",
+        "zuban": "error",
+        "ty": "ok"
+      }
+    },
+    {
+      "filename": "enum-constructor-literal-divergence.py",
+      "filepath": "generated_examples/2026-04-01_18-42-26/source_files/enum-constructor-literal-divergence.py",
+      "seed_issue": null,
+      "metrics": {
+        "loc": 33,
+        "num_functions": 3,
+        "type_imports": 5,
+        "type_density": 0.0606,
+        "internal_calls": 0
+      },
+      "outputs": {
+        "mypy": "_pytifex_temp_672774.py:52: error: Argument 1 to \"Status\" has incompatible type \"str\"; expected \"Literal['active', 'inactive', 'pending'] | Status\"  [arg-type]\n_pytifex_temp_672774.py:63: note: Revealed type is \"_pytifex_temp_672774.Status\"\nFound 1 error in 1 file (checked 1 source file)",
+        "pyrefly": "ERROR Argument `str` is not assignable to parameter `value` with type `Literal['active', 'inactive', 'pending'] | Status` in function `Status.__new__` [bad-argument-type]\n  --> _pytifex_temp_672774.py:52:33\n   |\n52 |         current_status = Status(user_status_str)\n   |                                 ^^^^^^^^^^^^^^^\n   |\n INFO revealed type: Status [reveal-type]\n  --> _pytifex_temp_672774.py:63:20\n   |\n63 |         reveal_type(user_status_str) # Should be narrowed to Status\n   |                    -----------------\n   |\n INFO 1 error",
+        "zuban": "_pytifex_temp_672774.py:63: note: Revealed type is \"_pytifex_temp_672774.Status\"\nSuccess: no issues found in 1 source file",
+        "ty": "info[revealed-type]: Revealed type\n  --> _pytifex_temp_672774.py:63:21\n   |\n61 |     # part of the `__new__` signature, so this section should pass for all.\n62 |     if is_valid_status_str(user_status_str):\n63 |         reveal_type(user_status_str) # Should be narrowed to Status\n   |                     ^^^^^^^^^^^^^^^ `str`\n64 |         # If TypeGuard works, this should be fine for all checkers\n65 |         # because 'user_status_str' is now 'Status' (Self).\n   |\n\nFound 1 diagnostic"
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "error",
+        "zuban": "ok",
+        "ty": "ok"
+      }
+    },
+    {
+      "filename": "literal-inference-divergence-refined.py",
+      "filepath": "generated_examples/2026-04-01_18-42-26/source_files/literal-inference-divergence-refined.py",
+      "seed_issue": null,
+      "metrics": {
+        "loc": 9,
+        "num_functions": 1,
+        "type_imports": 1,
+        "type_density": 0.0,
+        "internal_calls": 0
+      },
+      "outputs": {
+        "mypy": "_pytifex_temp_672774.py:29: error: Argument 1 to \"set_app_mode\" has incompatible type \"str\"; expected \"Literal['production', 'development', 'staging']\"  [arg-type]\nFound 1 error in 1 file (checked 1 source file)",
+        "pyrefly": "ERROR Argument `str` is not assignable to parameter `mode` with type `Literal['development', 'production', 'staging']` in function `set_app_mode` [bad-argument-type]\n  --> _pytifex_temp_672774.py:29:18\n   |\n29 |     set_app_mode(AppConfig.DEFAULT_MODE)\n   |                  ^^^^^^^^^^^^^^^^^^^^^^\n   |\n INFO 1 error",
+        "zuban": "_pytifex_temp_672774.py:29: error: Argument 1 to \"set_app_mode\" has incompatible type \"str\"; expected \"Literal['production', 'development', 'staging']\"  [arg-type]\nFound 1 error in 1 file (checked 1 source file)",
+        "ty": "All checks passed!"
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "error",
+        "zuban": "error",
+        "ty": "ok"
+      }
+    },
+    {
+      "filename": "typevar-literal-union-return-divergence.py",
+      "filepath": "generated_examples/2026-04-01_18-42-26/source_files/typevar-literal-union-return-divergence.py",
+      "seed_issue": null,
+      "metrics": {
+        "loc": 22,
+        "num_functions": 1,
+        "type_imports": 4,
+        "type_density": 0.0455,
+        "internal_calls": 0
+      },
+      "outputs": {
+        "mypy": "_pytifex_temp_672774.py:28: note: Revealed type is \"Literal['GET'] | Literal['FALLBACK']\"\n_pytifex_temp_672774.py:36: note: Revealed type is \"Literal['PUT'] | Literal['FALLBACK']\"\nSuccess: no issues found in 1 source file",
+        "pyrefly": "INFO revealed type: Literal['FALLBACK', 'GET'] [reveal-type]\n  --> _pytifex_temp_672774.py:28:16\n   |\n28 |     reveal_type(result_method) # Divergence point:\n   |                ---------------\n   |\n INFO revealed type: Literal['FALLBACK', 'PUT'] [reveal-type]\n  --> _pytifex_temp_672774.py:36:16\n   |\n36 |     reveal_type(result_other) # Expecting Literal['FALLBACK'] as the 'PUT' case explicitly returns it.\n   |                --------------\n   |\n INFO 0 errors",
+        "zuban": "_pytifex_temp_672774.py:16: error: Statement is unreachable  [unreachable]\n_pytifex_temp_672774.py:20: error: Statement is unreachable  [unreachable]\n_pytifex_temp_672774.py:28: note: Revealed type is \"Literal['GET'] | Literal['FALLBACK']\"\n_pytifex_temp_672774.py:36: note: Revealed type is \"Literal['PUT'] | Literal['FALLBACK']\"\nFound 2 errors in 1 file (checked 1 source file)",
+        "ty": "info[revealed-type]: Revealed type\n  --> _pytifex_temp_672774.py:28:17\n   |\n26 |     my_method: Literal['GET'] = 'GET'\n27 |     result_method = process_request_method(my_method)\n28 |     reveal_type(result_method) # Divergence point:\n   |                 ^^^^^^^^^^^^^ `Literal[\"GET\", \"FALLBACK\"]`\n29 |                                # Some checkers will infer Literal['GET'] due to control flow analysis.\n30 |                                # Others might conservatively infer Union[Literal['GET'], Literal['FALLBACK']]\n   |\n\ninfo[revealed-type]: Revealed type\n  --> _pytifex_temp_672774.py:36:17\n   |\n34 |     other_method: Literal['PUT'] = 'PUT'\n35 |     result_other = process_request_method(other_method)\n36 |     reveal_type(result_other) # Expecting Literal['FALLBACK'] as the 'PUT' case explicitly returns it.\n   |                 ^^^^^^^^^^^^ `Literal[\"PUT\", \"FALLBACK\"]`\n37 |                               # Less likely to diverge here.\n   |\n\nFound 2 diagnostics"
+      },
+      "statuses": {
+        "mypy": "ok",
+        "pyrefly": "ok",
+        "zuban": "error",
+        "ty": "ok"
+      }
+    },
+    {
+      "filename": "typeddict-unpack-total-false-extra.py",
+      "filepath": "generated_examples/2026-04-01_18-42-26/source_files/typeddict-unpack-total-false-extra.py",
+      "seed_issue": "https://github.com/microsoft/pyright/issues/10998",
+      "metrics": {
+        "loc": 20,
+        "num_functions": 1,
+        "type_imports": 3,
+        "type_density": 0.3,
+        "internal_calls": 0
+      },
+      "outputs": {
+        "mypy": "_pytifex_temp_672774.py:7: error: Unexpected keyword argument \"extra_items\" for \"__init_subclass__\" of \"TypedDict\"  [call-arg]\n_pytifex_temp_672774.py:9: error: Right hand side values are not supported in TypedDict  [misc]\n_pytifex_temp_672774.py:11: note: \"apply_settings\" defined here\n_pytifex_temp_672774.py:22: error: Unexpected keyword argument \"custom_flag\" for \"apply_settings\"  [call-arg]\n_pytifex_temp_672774.py:22: error: Unexpected keyword argument \"version\" for \"apply_settings\"  [call-arg]\n_pytifex_temp_672774.py:37: error: Unexpected keyword argument \"extra_val\" for \"apply_settings\"  [call-arg]\nFound 5 errors in 1 file (checked 1 source file)",
+        "pyrefly": "ERROR TypedDict members must be declared in the form `field: Annotation` with no assignment [bad-class-definition]\n --> _pytifex_temp_672774.py:9:5\n  |\n9 |     retries: int = 3 # Default value on field, not on type def\n  |     ^^^^^^^\n  |\nERROR Missing argument `retries` in function `apply_settings` [missing-argument]\n  --> _pytifex_temp_672774.py:37:23\n   |\n37 |         apply_settings(timeout=10, debug=True, extra_val=\"foo\")\n   |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n   |\n INFO 2 errors",
+        "zuban": "_pytifex_temp_672774.py:9: error: Right hand side values are not supported in TypedDict  [misc]\n_pytifex_temp_672774.py:37: error: Missing named argument \"retries\" for \"apply_settings\"  [call-arg]\nFound 2 errors in 1 file (checked 1 source file)",
+        "ty": "All checks passed!"
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "error",
+        "zuban": "error",
+        "ty": "ok"
+      }
+    },
+    {
+      "filename": "typeddict-unpack-notrequired-extra.py",
+      "filepath": "generated_examples/2026-04-01_18-42-26/source_files/typeddict-unpack-notrequired-extra.py",
+      "seed_issue": "https://github.com/microsoft/pyright/issues/10998",
+      "metrics": {
+        "loc": 39,
+        "num_functions": 1,
+        "type_imports": 4,
+        "type_density": 0.1538,
+        "internal_calls": 0
+      },
+      "outputs": {
+        "mypy": "_pytifex_temp_672774.py:7: error: Unexpected keyword argument \"extra_items\" for \"__init_subclass__\" of \"TypedDict\"  [call-arg]\n_pytifex_temp_672774.py:11: note: \"make_request\" defined here\n_pytifex_temp_672774.py:22: error: Unexpected keyword argument \"UserAgent\" for \"make_request\"  [call-arg]\n_pytifex_temp_672774.py:22: error: Unexpected keyword argument \"Accept\" for \"make_request\"  [call-arg]\n_pytifex_temp_672774.py:31: error: Unexpected keyword argument \"X_Custom_Header\" for \"make_request\"  [call-arg]\n_pytifex_temp_672774.py:41: error: Missing named argument \"Authorization\" for \"make_request\"  [call-arg]\n_pytifex_temp_672774.py:50: error: Missing named argument \"method\" for \"make_request\"  [call-arg]\nFound 6 errors in 1 file (checked 1 source file)",
+        "pyrefly": "ERROR Missing argument `Authorization` in function `make_request` [missing-argument]\n  --> _pytifex_temp_672774.py:41:21\n   |\n41 |         make_request(method=\"GET\", url=\"/api/data\")\n   |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n   |\nERROR Missing argument `method` in function `make_request` [missing-argument]\n  --> _pytifex_temp_672774.py:50:21\n   |\n50 |         make_request(url=\"/api/data\", Authorization=\"Bearer token\")\n   |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n   |\n INFO 2 errors",
+        "zuban": "_pytifex_temp_672774.py:41: error: Missing named argument \"Authorization\" for \"make_request\"  [call-arg]\n_pytifex_temp_672774.py:50: error: Missing named argument \"method\" for \"make_request\"  [call-arg]\nFound 2 errors in 1 file (checked 1 source file)",
+        "ty": "All checks passed!"
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "error",
+        "zuban": "error",
+        "ty": "ok"
+      }
+    },
+    {
+      "filename": "typeddict-unpack-nested-extra.py",
+      "filepath": "generated_examples/2026-04-01_18-42-26/source_files/typeddict-unpack-nested-extra.py",
+      "seed_issue": "https://github.com/microsoft/pyright/issues/10998",
+      "metrics": {
+        "loc": 33,
+        "num_functions": 1,
+        "type_imports": 3,
+        "type_density": 0.1818,
+        "internal_calls": 0
+      },
+      "outputs": {
+        "mypy": "_pytifex_temp_672774.py:3: error: Unexpected keyword argument \"extra_items\" for \"__init_subclass__\" of \"TypedDict\"  [call-arg]\n_pytifex_temp_672774.py:17: error: TypedDict \"ReportConfig\" has no key \"extra_config\"  [typeddict-item]\n_pytifex_temp_672774.py:30: error: Extra key \"last_modified\" for TypedDict \"MetadataDict\"  [typeddict-unknown-key]\n_pytifex_temp_672774.py:43: error: Extra keys (\"additional_info\", \"run_id\") for TypedDict \"MetadataDict\"  [typeddict-unknown-key]\nFound 4 errors in 1 file (checked 1 source file)",
+        "pyrefly": "ERROR TypedDict `ReportConfig` does not have key `extra_config` [bad-typed-dict-key]\n  --> _pytifex_temp_672774.py:17:41\n   |\n17 |         print(f\"  Extra Config: {kwargs['extra_config']}\") # This should ideally be allowed\n   |                                         ^^^^^^^^^^^^^^\n   |\n INFO 1 error",
+        "zuban": "_pytifex_temp_672774.py:17: error: TypedDict \"ReportConfig\" has no key \"extra_config\"  [typeddict-item]\nFound 1 error in 1 file (checked 1 source file)",
+        "ty": "All checks passed!"
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "error",
+        "zuban": "error",
+        "ty": "ok"
+      }
+    },
+    {
+      "filename": "type-is-self-generic-protocol.py",
+      "filepath": "generated_examples/2026-04-01_18-42-26/source_files/type-is-self-generic-protocol.py",
+      "seed_issue": "https://github.com/python/mypy/issues/20275",
+      "metrics": {
+        "loc": 21,
+        "num_functions": 3,
+        "type_imports": 5,
+        "type_density": 0.0,
+        "internal_calls": 0
+      },
+      "outputs": {
+        "mypy": "_pytifex_temp_672774.py:5: error: Invariant type variable \"T\" used in protocol where covariant one is expected  [misc]\n_pytifex_temp_672774.py:29: note: Revealed type is \"builtins.bool\"\nFound 1 error in 1 file (checked 1 source file)",
+        "pyrefly": "INFO revealed type: bool [reveal-type]\n  --> _pytifex_temp_672774.py:29:16\n   |\n29 |     reveal_type(item1 == item2)\n   |                ----------------\n   |\n INFO 0 errors",
+        "zuban": "_pytifex_temp_672774.py:5: error: Invariant type variable \"T\" used in protocol where Covariant one is expected  [misc]\n_pytifex_temp_672774.py:20: error: Statement is unreachable  [unreachable]\n_pytifex_temp_672774.py:29: note: Revealed type is \"builtins.bool\"\nFound 2 errors in 1 file (checked 1 source file)",
+        "ty": "info[revealed-type]: Revealed type\n  --> _pytifex_temp_672774.py:29:17\n   |\n27 |     item_diff_type = GenericData(123, 1) # Different T\n28 |\n29 |     reveal_type(item1 == item2)\n   |                 ^^^^^^^^^^^^^^ `bool`\n30 |     print(f\"item1 == item2: {item1 == item2}\")\n31 |     print(f\"item1 == item3: {item1 == item3}\")\n   |\n\nFound 1 diagnostic"
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "ok",
+        "zuban": "error",
+        "ty": "ok"
+      }
+    },
+    {
+      "filename": "type-is-self-slots-attribute.py",
+      "filepath": "generated_examples/2026-04-01_18-42-26/source_files/type-is-self-slots-attribute.py",
+      "seed_issue": "https://github.com/python/mypy/issues/20275",
+      "metrics": {
+        "loc": 21,
+        "num_functions": 2,
+        "type_imports": 1,
+        "type_density": 0.0,
+        "internal_calls": 0
+      },
+      "outputs": {
+        "mypy": "Success: no issues found in 1 source file",
+        "pyrefly": "INFO 0 errors",
+        "zuban": "_pytifex_temp_672774.py:19: error: Statement is unreachable  [unreachable]\nFound 1 error in 1 file (checked 1 source file)",
+        "ty": "All checks passed!"
+      },
+      "statuses": {
+        "mypy": "ok",
+        "pyrefly": "ok",
+        "zuban": "error",
+        "ty": "ok"
+      }
+    }
+  ]
+}

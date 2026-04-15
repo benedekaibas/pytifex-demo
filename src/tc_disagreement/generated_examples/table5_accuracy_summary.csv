@@ -1,0 +1,5 @@
+Checker,CORRECT,INCORRECT,UNCERTAIN,Total,Accuracy (%)
+mypy,21,16,14,51,56.8
+pyrefly,19,19,13,51,50.0
+zuban,24,19,8,51,55.8
+ty,12,29,10,51,29.3

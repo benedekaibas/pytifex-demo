@@ -2,87 +2,109 @@
   "method": "comprehensive_tiered",
   "tier_distribution": {
     "1": 2,
-    "2": 6,
-    "3": 2,
+    "2": 2,
+    "3": 6,
     "4": 0
   },
   "summary": {
     "mypy": {
-      "correct": 4,
-      "incorrect": 4,
-      "uncertain": 2
+      "correct": 2,
+      "incorrect": 3,
+      "uncertain": 5
     },
     "pyrefly": {
-      "correct": 0,
-      "incorrect": 5,
-      "uncertain": 5
+      "correct": 3,
+      "incorrect": 3,
+      "uncertain": 4
     },
     "zuban": {
-      "correct": 7,
+      "correct": 5,
       "incorrect": 3,
-      "uncertain": 0
+      "uncertain": 2
     },
     "ty": {
-      "correct": 0,
-      "incorrect": 5,
-      "uncertain": 5
+      "correct": 2,
+      "incorrect": 4,
+      "uncertain": 4
     }
   },
   "results": [
     {
       "filename": "newtype-tuple-list-coercion-refined.py",
-      "tier_reached": 2,
+      "tier_reached": 3,
       "tier1_bugs": [],
-      "tier2_bugs": [
+      "tier2_bugs": [],
+      "tier3_findings": [
         {
-          "line": 49,
-          "type": "TypeguardViolation",
-          "msg": "Mutation (str instead of list): TypeCheckError: str is not a list"
+          "checker": "ty",
+          "pep": 484,
+          "rule": "Argument type must match parameter annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "mypy",
+          "verdict": "UNCERTAIN",
+          "reason": "Allows TypeGuard narrowing to NewType `OrderItems` (debatable: PEP 647 doesn't explicitly forbid it)",
+          "confidence": 0.55,
+          "analysis_type": "nominal_boundary",
+          "line": 6,
+          "details": {
+            "function": "is_order_items_candidate",
+            "newtype": "OrderItems"
+          }
+        },
+        {
+          "checker": "pyrefly",
+          "verdict": "UNCERTAIN",
+          "reason": "Allows TypeGuard narrowing to NewType `OrderItems` (debatable: PEP 647 doesn't explicitly forbid it)",
+          "confidence": 0.55,
+          "analysis_type": "nominal_boundary",
+          "line": 6,
+          "details": {
+            "function": "is_order_items_candidate",
+            "newtype": "OrderItems"
+          }
+        },
+        {
+          "checker": "zuban",
+          "verdict": "UNCERTAIN",
+          "reason": "Allows TypeGuard narrowing to NewType `OrderItems` (debatable: PEP 647 doesn't explicitly forbid it)",
+          "confidence": 0.55,
+          "analysis_type": "nominal_boundary",
+          "line": 6,
+          "details": {
+            "function": "is_order_items_candidate",
+            "newtype": "OrderItems"
+          }
         }
       ],
-      "tier3_findings": [],
       "verdicts": {
         "mypy": {
-          "verdict": "INCORRECT",
-          "reason": "Missed 1 proven bug(s)",
-          "confidence": 0.85,
-          "tier": 2,
-          "missed_bugs": [
-            {
-              "line": 49,
-              "type": "TypeguardViolation"
-            }
-          ]
-        },
-        "pyrefly": {
-          "verdict": "INCORRECT",
-          "reason": "Missed 1 proven bug(s)",
-          "confidence": 0.85,
-          "tier": 2,
-          "missed_bugs": [
-            {
-              "line": 49,
-              "type": "TypeguardViolation"
-            }
-          ]
-        },
-        "zuban": {
-          "verdict": "INCORRECT",
-          "reason": "Missed 1 proven bug(s)",
-          "confidence": 0.85,
-          "tier": 2,
-          "missed_bugs": [
-            {
-              "line": 49,
-              "type": "TypeguardViolation"
-            }
-          ]
-        },
-        "ty": {
           "verdict": "UNCERTAIN",
           "reason": "No definitive evidence from any tier",
           "confidence": 0.5,
           "tier": 4
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "ty": {
+          "verdict": "CORRECT",
+          "reason": "Follows PEP specifications (1 checks)",
+          "confidence": 0.75,
+          "tier": 3
         }
       }
     },
@@ -96,42 +118,96 @@
           "msg": "'function' object is not subscriptable"
         }
       ],
-      "tier2_bugs": [],
-      "tier3_findings": [],
+      "tier2_bugs": [
+        {
+          "line": 11,
+          "type": "KeyError",
+          "msg": "process_empty_tuple_dict(...) -> KeyError: ()"
+        }
+      ],
+      "tier3_findings": [
+        {
+          "checker": "ty",
+          "pep": 484,
+          "rule": "Only generic classes can be subscripted (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "mypy",
+          "pep": 484,
+          "rule": "Type application is only supported for generic classes (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "Type application is only supported for generic classes (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
       "verdicts": {
         "mypy": {
-          "verdict": "CORRECT",
-          "reason": "Caught 1 proven bug(s)",
-          "confidence": 0.9,
-          "tier": 1
+          "verdict": "INCORRECT",
+          "reason": "Caught 1 but missed 1 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 11,
+              "type": "KeyError"
+            }
+          ]
         },
         "pyrefly": {
           "verdict": "INCORRECT",
-          "reason": "Missed 1 proven bug(s)",
+          "reason": "Missed 2 proven bug(s)",
           "confidence": 0.95,
           "tier": 1,
           "missed_bugs": [
             {
               "line": 76,
               "type": "TypeError"
+            },
+            {
+              "line": 11,
+              "type": "KeyError"
             }
           ]
         },
         "zuban": {
-          "verdict": "CORRECT",
-          "reason": "Caught 1 proven bug(s)",
-          "confidence": 0.9,
-          "tier": 1
+          "verdict": "INCORRECT",
+          "reason": "Caught 1 but missed 1 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 11,
+              "type": "KeyError"
+            }
+          ]
         },
         "ty": {
           "verdict": "INCORRECT",
-          "reason": "Missed 1 proven bug(s)",
+          "reason": "Missed 2 proven bug(s)",
           "confidence": 0.95,
           "tier": 1,
           "missed_bugs": [
             {
               "line": 76,
               "type": "TypeError"
+            },
+            {
+              "line": 11,
+              "type": "KeyError"
             }
           ]
         }
@@ -139,78 +215,53 @@
     },
     {
       "filename": "typeddict-readonly-generic-field.py",
-      "tier_reached": 2,
+      "tier_reached": 3,
       "tier1_bugs": [],
-      "tier2_bugs": [
+      "tier2_bugs": [],
+      "tier3_findings": [
         {
-          "line": 10,
-          "type": "TypeguardViolation",
-          "msg": "Mutation (int instead of str): TypeCheckError: int is not an instance of str"
+          "checker": "pyrefly",
+          "pep": 589,
+          "rule": "Accessing invalid key on TypedDict (PEP 589)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
         },
         {
-          "line": 14,
-          "type": "TypeguardViolation",
-          "msg": "Mutation (int instead of str): TypeCheckError: int is not an instance of str"
-        },
-        {
-          "line": 19,
-          "type": "TypeguardViolation",
-          "msg": "Mutation (int instead of str): TypeCheckError: int is not an instance of str"
+          "checker": "zuban",
+          "pep": 705,
+          "rule": "ReadOnly can only be used in TypedDict (PEP 705)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
         }
       ],
-      "tier3_findings": [],
       "verdicts": {
         "mypy": {
-          "verdict": "INCORRECT",
-          "reason": "Missed 3 proven bug(s)",
-          "confidence": 0.85,
-          "tier": 2,
-          "missed_bugs": [
-            {
-              "line": 10,
-              "type": "TypeguardViolation"
-            },
-            {
-              "line": 14,
-              "type": "TypeguardViolation"
-            },
-            {
-              "line": 19,
-              "type": "TypeguardViolation"
-            }
-          ]
-        },
-        "pyrefly": {
           "verdict": "UNCERTAIN",
           "reason": "No definitive evidence from any tier",
           "confidence": 0.5,
           "tier": 4
         },
+        "pyrefly": {
+          "verdict": "CORRECT",
+          "reason": "Follows PEP specifications (1 checks)",
+          "confidence": 0.75,
+          "tier": 3
+        },
         "zuban": {
           "verdict": "CORRECT",
-          "reason": "Caught 3 proven bug(s)",
-          "confidence": 0.8,
-          "tier": 2
+          "reason": "Follows PEP specifications (1 checks)",
+          "confidence": 0.75,
+          "tier": 3
         },
         "ty": {
-          "verdict": "INCORRECT",
-          "reason": "Missed 3 proven bug(s)",
-          "confidence": 0.85,
-          "tier": 2,
-          "missed_bugs": [
-            {
-              "line": 10,
-              "type": "TypeguardViolation"
-            },
-            {
-              "line": 14,
-              "type": "TypeguardViolation"
-            },
-            {
-              "line": 19,
-              "type": "TypeguardViolation"
-            }
-          ]
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
         }
       }
     },
@@ -263,67 +314,338 @@
       "tier1_bugs": [],
       "tier2_bugs": [
         {
-          "line": 21,
-          "type": "TypeguardViolation",
-          "msg": "Mutation (int instead of str): TypeCheckError: int is not an instance of str"
-        },
-        {
-          "line": 22,
-          "type": "TypeguardViolation",
-          "msg": "Mutation (str instead of bool): TypeCheckError: str is not an instance of bool"
-        },
-        {
-          "line": 36,
-          "type": "TypeguardViolation",
-          "msg": "Mutation (str instead of float): TypeCheckError: str is neither float or int"
-        },
-        {
-          "line": 37,
-          "type": "TypeguardViolation",
-          "msg": "Mutation (str instead of int): TypeCheckError: str is not an instance of int"
+          "line": 10,
+          "type": "TypeError",
+          "msg": "Validatable() -> TypeError: Protocols cannot be instantiated"
         }
       ],
-      "tier3_findings": [],
+      "tier3_findings": [
+        {
+          "checker": "mypy",
+          "pep": 647,
+          "rule": "TypeGuard function must accept at least one positional argument (PEP 647)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 647,
+          "rule": "TypeGuard function must accept at least one positional argument (PEP 647)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "zuban",
+          "pep": 647,
+          "rule": "TypeGuard function must accept at least one positional argument (PEP 647)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "mypy",
+          "pep": 544,
+          "rule": "[PROTO001] `isinstance()` called with Protocol `User` which is not decorated with `@runtime_checkable`",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.95,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 544,
+          "rule": "[PROTO001] `isinstance()` called with Protocol `User` which is not decorated with `@runtime_checkable`",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.95,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "zuban",
+          "pep": 544,
+          "rule": "[PROTO001] `isinstance()` called with Protocol `User` which is not decorated with `@runtime_checkable`",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.95,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "ty",
+          "pep": 544,
+          "rule": "[PROTO001] `isinstance()` called with Protocol `User` which is not decorated with `@runtime_checkable`",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.95,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "mypy",
+          "pep": 544,
+          "rule": "[PROTO001] `isinstance()` called with Protocol `Product` which is not decorated with `@runtime_checkable`",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.95,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 544,
+          "rule": "[PROTO001] `isinstance()` called with Protocol `Product` which is not decorated with `@runtime_checkable`",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.95,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "zuban",
+          "pep": 544,
+          "rule": "[PROTO001] `isinstance()` called with Protocol `Product` which is not decorated with `@runtime_checkable`",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.95,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "ty",
+          "pep": 544,
+          "rule": "[PROTO001] `isinstance()` called with Protocol `Product` which is not decorated with `@runtime_checkable`",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.95,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "mypy",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `User` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `User` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "zuban",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `User` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "ty",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `User` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "mypy",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `User` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `User` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "zuban",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `User` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "ty",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `User` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "mypy",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `Product` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `Product` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "zuban",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `Product` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "ty",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `Product` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "mypy",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `Product` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `Product` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "zuban",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `Product` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "error_wrong_location",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "ty",
+          "pep": 544,
+          "rule": "[PROTO003] Direct instantiation of Protocol class `Product` \u2014 Protocols cannot be instantiated (PEP 544)",
+          "checker_behavior": "ok",
+          "correct_behavior": "error",
+          "is_correct": false,
+          "confidence": 0.9,
+          "source": "source_analysis"
+        },
+        {
+          "checker": "mypy",
+          "verdict": "UNCERTAIN",
+          "reason": "Reports error near TypeGuard narrowing site (is_valid -> Self)",
+          "confidence": 0.6,
+          "analysis_type": "narrowing_flow",
+          "line": 47,
+          "details": {
+            "guard_func": "is_valid",
+            "line": 47,
+            "guard_type": "TypeGuard",
+            "narrows_to": "Self",
+            "is_method": true
+          }
+        },
+        {
+          "checker": "zuban",
+          "verdict": "UNCERTAIN",
+          "reason": "Reports error near TypeGuard narrowing site (is_valid -> Self)",
+          "confidence": 0.6,
+          "analysis_type": "narrowing_flow",
+          "line": 47,
+          "details": {
+            "guard_func": "is_valid",
+            "line": 47,
+            "guard_type": "TypeGuard",
+            "narrows_to": "Self",
+            "is_method": true
+          }
+        }
+      ],
       "verdicts": {
         "mypy": {
           "verdict": "CORRECT",
-          "reason": "Caught 4 proven bug(s)",
+          "reason": "Caught 1 proven bug(s)",
           "confidence": 0.8,
           "tier": 2
         },
         "pyrefly": {
-          "verdict": "UNCERTAIN",
-          "reason": "No definitive evidence from any tier",
-          "confidence": 0.5,
-          "tier": 4
+          "verdict": "CORRECT",
+          "reason": "Caught 1 proven bug(s)",
+          "confidence": 0.8,
+          "tier": 2
         },
         "zuban": {
           "verdict": "CORRECT",
-          "reason": "Caught 4 proven bug(s)",
+          "reason": "Caught 1 proven bug(s)",
           "confidence": 0.8,
           "tier": 2
         },
         "ty": {
           "verdict": "INCORRECT",
-          "reason": "Missed 4 proven bug(s)",
+          "reason": "Missed 1 proven bug(s)",
           "confidence": 0.85,
           "tier": 2,
           "missed_bugs": [
             {
-              "line": 21,
-              "type": "TypeguardViolation"
-            },
-            {
-              "line": 22,
-              "type": "TypeguardViolation"
-            },
-            {
-              "line": 36,
-              "type": "TypeguardViolation"
-            },
-            {
-              "line": 37,
-              "type": "TypeguardViolation"
+              "line": 10,
+              "type": "TypeError"
             }
           ]
         }
@@ -331,129 +653,189 @@
     },
     {
       "filename": "typeddict-readonly-mutation-refined.py",
-      "tier_reached": 2,
+      "tier_reached": 3,
       "tier1_bugs": [],
-      "tier2_bugs": [
+      "tier2_bugs": [],
+      "tier3_findings": [
         {
-          "line": 10,
-          "type": "TypeguardViolation",
-          "msg": "Mutation (int instead of str): TypeCheckError: int is not an instance of str"
+          "checker": "mypy",
+          "pep": 484,
+          "rule": "Argument type must match parameter annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
         },
         {
-          "line": 11,
-          "type": "TypeguardViolation",
-          "msg": "Mutation (str instead of list): TypeCheckError: str is not a list"
+          "checker": "zuban",
+          "pep": 484,
+          "rule": "Argument type must match parameter annotation (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "mypy",
+          "pep": 589,
+          "rule": "Overwriting TypedDict field while extending (PEP 589)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "zuban",
+          "pep": 589,
+          "rule": "Overwriting TypedDict field while extending (PEP 589)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 589,
+          "rule": "Accessing invalid key on TypedDict (PEP 589)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 705,
+          "rule": "ReadOnly field incompatible with mutable parent (PEP 705)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
         }
       ],
-      "tier3_findings": [],
       "verdicts": {
         "mypy": {
           "verdict": "CORRECT",
-          "reason": "Caught 2 proven bug(s)",
-          "confidence": 0.8,
-          "tier": 2
+          "reason": "Follows PEP specifications (2 checks)",
+          "confidence": 0.75,
+          "tier": 3
         },
         "pyrefly": {
+          "verdict": "CORRECT",
+          "reason": "Follows PEP specifications (2 checks)",
+          "confidence": 0.75,
+          "tier": 3
+        },
+        "zuban": {
+          "verdict": "CORRECT",
+          "reason": "Follows PEP specifications (2 checks)",
+          "confidence": 0.75,
+          "tier": 3
+        },
+        "ty": {
           "verdict": "UNCERTAIN",
           "reason": "No definitive evidence from any tier",
           "confidence": 0.5,
           "tier": 4
-        },
-        "zuban": {
-          "verdict": "CORRECT",
-          "reason": "Caught 2 proven bug(s)",
-          "confidence": 0.8,
-          "tier": 2
-        },
-        "ty": {
-          "verdict": "INCORRECT",
-          "reason": "Missed 2 proven bug(s)",
-          "confidence": 0.85,
-          "tier": 2,
-          "missed_bugs": [
-            {
-              "line": 10,
-              "type": "TypeguardViolation"
-            },
-            {
-              "line": 11,
-              "type": "TypeguardViolation"
-            }
-          ]
         }
       }
     },
     {
       "filename": "newtype-typeguard-unreachable-refined.py",
-      "tier_reached": 2,
+      "tier_reached": 3,
       "tier1_bugs": [],
-      "tier2_bugs": [
+      "tier2_bugs": [],
+      "tier3_findings": [
         {
-          "line": 39,
-          "type": "TypeguardViolation",
-          "msg": "Mutation (empty dict (missing required keys)): TypeCheckError: dict is not a tuple"
+          "checker": "ty",
+          "pep": 484,
+          "rule": "Assigned value must be compatible with declared type (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
         },
         {
-          "line": 54,
-          "type": "TypeguardViolation",
-          "msg": "Mutation (empty dict (missing required keys)): TypeCheckError: dict is not a tuple"
+          "checker": "ty",
+          "pep": 586,
+          "rule": "Literal parameters must be valid literal values (PEP 586)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "mypy",
+          "verdict": "UNCERTAIN",
+          "reason": "Allows TypeGuard narrowing to NewType `IntSequence` (debatable: PEP 647 doesn't explicitly forbid it)",
+          "confidence": 0.55,
+          "analysis_type": "nominal_boundary",
+          "line": 18,
+          "details": {
+            "function": "is_int_sequence",
+            "newtype": "IntSequence"
+          }
+        },
+        {
+          "checker": "pyrefly",
+          "verdict": "UNCERTAIN",
+          "reason": "Allows TypeGuard narrowing to NewType `IntSequence` (debatable: PEP 647 doesn't explicitly forbid it)",
+          "confidence": 0.55,
+          "analysis_type": "nominal_boundary",
+          "line": 18,
+          "details": {
+            "function": "is_int_sequence",
+            "newtype": "IntSequence"
+          }
+        },
+        {
+          "checker": "zuban",
+          "verdict": "UNCERTAIN",
+          "reason": "Allows TypeGuard narrowing to NewType `IntSequence` (debatable: PEP 647 doesn't explicitly forbid it)",
+          "confidence": 0.55,
+          "analysis_type": "nominal_boundary",
+          "line": 18,
+          "details": {
+            "function": "is_int_sequence",
+            "newtype": "IntSequence"
+          }
+        },
+        {
+          "checker": "ty",
+          "verdict": "CORRECT",
+          "reason": "Flags TypeGuard narrowing to NewType `IntSequence` (NewType is nominal, can't be structurally promoted)",
+          "confidence": 0.8,
+          "analysis_type": "nominal_boundary",
+          "line": 18,
+          "details": {
+            "function": "is_int_sequence",
+            "newtype": "IntSequence"
+          }
         }
       ],
-      "tier3_findings": [],
       "verdicts": {
         "mypy": {
-          "verdict": "INCORRECT",
-          "reason": "Missed 2 proven bug(s)",
-          "confidence": 0.85,
-          "tier": 2,
-          "missed_bugs": [
-            {
-              "line": 39,
-              "type": "TypeguardViolation"
-            },
-            {
-              "line": 54,
-              "type": "TypeguardViolation"
-            }
-          ]
-        },
-        "pyrefly": {
-          "verdict": "INCORRECT",
-          "reason": "Missed 2 proven bug(s)",
-          "confidence": 0.85,
-          "tier": 2,
-          "missed_bugs": [
-            {
-              "line": 39,
-              "type": "TypeguardViolation"
-            },
-            {
-              "line": 54,
-              "type": "TypeguardViolation"
-            }
-          ]
-        },
-        "zuban": {
-          "verdict": "INCORRECT",
-          "reason": "Missed 2 proven bug(s)",
-          "confidence": 0.85,
-          "tier": 2,
-          "missed_bugs": [
-            {
-              "line": 39,
-              "type": "TypeguardViolation"
-            },
-            {
-              "line": 54,
-              "type": "TypeguardViolation"
-            }
-          ]
-        },
-        "ty": {
           "verdict": "UNCERTAIN",
           "reason": "No definitive evidence from any tier",
           "confidence": 0.5,
           "tier": 4
+        },
+        "pyrefly": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "zuban": {
+          "verdict": "UNCERTAIN",
+          "reason": "No definitive evidence from any tier",
+          "confidence": 0.5,
+          "tier": 4
+        },
+        "ty": {
+          "verdict": "CORRECT",
+          "reason": "Follows PEP specifications (2 checks)",
+          "confidence": 0.75,
+          "tier": 3
         }
       }
     },
@@ -510,41 +892,118 @@
           "msg": "type() accepts 0 positional sub-patterns (1 given)"
         }
       ],
-      "tier2_bugs": [],
-      "tier3_findings": [],
+      "tier2_bugs": [
+        {
+          "line": 29,
+          "type": "AttributeError",
+          "msg": "StrBox.upper(...) -> AttributeError: 'int' object has no attribute 'upper'"
+        },
+        {
+          "line": 33,
+          "type": "TypeError",
+          "msg": "inspect_box_return(...) -> TypeError: type() accepts 0 positional sub-patterns (1 given)"
+        }
+      ],
+      "tier3_findings": [
+        {
+          "checker": "pyrefly",
+          "pep": 484,
+          "rule": "Attribute access must resolve on the declared type (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "zuban",
+          "pep": 634,
+          "rule": "Unreachable code after exhaustive match (PEP 634)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "mypy",
+          "pep": 634,
+          "rule": "Class must define __match_args__ for positional patterns (PEP 634)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "pyrefly",
+          "pep": 634,
+          "rule": "Class must define __match_args__ for positional patterns (PEP 634)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        },
+        {
+          "checker": "zuban",
+          "pep": 634,
+          "rule": "Class must define __match_args__ for positional patterns (PEP 634)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
       "verdicts": {
         "mypy": {
-          "verdict": "CORRECT",
-          "reason": "Caught 1 proven bug(s)",
-          "confidence": 0.9,
-          "tier": 1
+          "verdict": "INCORRECT",
+          "reason": "Caught 2 but missed 1 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 29,
+              "type": "AttributeError"
+            }
+          ]
         },
         "pyrefly": {
           "verdict": "INCORRECT",
-          "reason": "Missed 1 proven bug(s)",
+          "reason": "Caught 2 but missed 1 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 29,
+              "type": "AttributeError"
+            }
+          ]
+        },
+        "zuban": {
+          "verdict": "INCORRECT",
+          "reason": "Caught 2 but missed 1 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 1,
+          "missed_bugs": [
+            {
+              "line": 29,
+              "type": "AttributeError"
+            }
+          ]
+        },
+        "ty": {
+          "verdict": "INCORRECT",
+          "reason": "Missed 3 proven bug(s)",
           "confidence": 0.95,
           "tier": 1,
           "missed_bugs": [
             {
               "line": 67,
               "type": "TypeError"
-            }
-          ]
-        },
-        "zuban": {
-          "verdict": "CORRECT",
-          "reason": "Caught 1 proven bug(s)",
-          "confidence": 0.9,
-          "tier": 1
-        },
-        "ty": {
-          "verdict": "INCORRECT",
-          "reason": "Missed 1 proven bug(s)",
-          "confidence": 0.95,
-          "tier": 1,
-          "missed_bugs": [
+            },
             {
-              "line": 67,
+              "line": 29,
+              "type": "AttributeError"
+            },
+            {
+              "line": 33,
               "type": "TypeError"
             }
           ]
@@ -557,12 +1016,22 @@
       "tier1_bugs": [],
       "tier2_bugs": [
         {
-          "line": 13,
-          "type": "TypeguardViolation",
-          "msg": "Mutation (int instead of str): TypeCheckError: int is not an instance of str"
+          "line": 30,
+          "type": "TypeError",
+          "msg": "InventoryManager.add_item(...) -> TypeError: InventoryManager.add_item() missing 1 required positional argument: 'item_data'"
         }
       ],
-      "tier3_findings": [],
+      "tier3_findings": [
+        {
+          "checker": "ty",
+          "pep": 484,
+          "rule": "Attribute access must resolve on the declared type (PEP 484)",
+          "checker_behavior": "error",
+          "correct_behavior": "error",
+          "is_correct": true,
+          "confidence": 0.85
+        }
+      ],
       "verdicts": {
         "mypy": {
           "verdict": "INCORRECT",
@@ -571,8 +1040,8 @@
           "tier": 2,
           "missed_bugs": [
             {
-              "line": 13,
-              "type": "TypeguardViolation"
+              "line": 30,
+              "type": "TypeError"
             }
           ]
         },
@@ -583,8 +1052,8 @@
           "tier": 2,
           "missed_bugs": [
             {
-              "line": 13,
-              "type": "TypeguardViolation"
+              "line": 30,
+              "type": "TypeError"
             }
           ]
         },
@@ -595,16 +1064,22 @@
           "tier": 2,
           "missed_bugs": [
             {
-              "line": 13,
-              "type": "TypeguardViolation"
+              "line": 30,
+              "type": "TypeError"
             }
           ]
         },
         "ty": {
-          "verdict": "UNCERTAIN",
-          "reason": "No definitive evidence from any tier",
-          "confidence": 0.5,
-          "tier": 4
+          "verdict": "INCORRECT",
+          "reason": "Missed 1 proven bug(s)",
+          "confidence": 0.85,
+          "tier": 2,
+          "missed_bugs": [
+            {
+              "line": 30,
+              "type": "TypeError"
+            }
+          ]
         }
       }
     }

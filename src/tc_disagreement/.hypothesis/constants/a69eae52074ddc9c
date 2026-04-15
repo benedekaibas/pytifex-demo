@@ -1,0 +1,4 @@
+# file: /home/benedek-kaibas/Documents/pytifex-demo/src/tc_disagreement/agent.py
+# hypothesis_version: 6.151.9
+
+[120.0, 320.0, '--list-models', '--model', '/', '=', 'Content-Type', 'GEMINI_API_KEY', 'Google API Key', 'Timeout (seconds)', '__main__', 'api_base', 'application/json', 'candidates', 'content', 'contents', 'gemini-2.5-flash', 'gemini-2.5-pro', 'model', 'parts', 'store_true', 'text', 'timeout', 'token', 'x-goog-api-key']

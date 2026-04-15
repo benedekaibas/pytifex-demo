@@ -1,0 +1,1 @@
+            handler(task, *args_to_bind, **kwargs_to_bind)

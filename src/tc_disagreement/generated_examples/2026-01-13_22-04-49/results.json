@@ -23,7 +23,7 @@
       "statuses": {
         "mypy": "ok",
         "pyrefly": "ok",
-        "zuban": "error",
+        "zuban": "ok",
         "ty": "ok"
       }
     },
@@ -39,7 +39,7 @@
       "statuses": {
         "mypy": "ok",
         "pyrefly": "error",
-        "zuban": "error",
+        "zuban": "ok",
         "ty": "error"
       }
     },
@@ -55,7 +55,7 @@
       "statuses": {
         "mypy": "error",
         "pyrefly": "error",
-        "zuban": "error",
+        "zuban": "ok",
         "ty": "ok"
       }
     },
@@ -71,8 +71,8 @@
       "statuses": {
         "mypy": "ok",
         "pyrefly": "ok",
-        "zuban": "error",
-        "ty": "error"
+        "zuban": "ok",
+        "ty": "ok"
       }
     },
     {
@@ -87,7 +87,7 @@
       "statuses": {
         "mypy": "ok",
         "pyrefly": "ok",
-        "zuban": "error",
+        "zuban": "ok",
         "ty": "error"
       }
     },
@@ -103,7 +103,7 @@
       "statuses": {
         "mypy": "ok",
         "pyrefly": "ok",
-        "zuban": "error",
+        "zuban": "ok",
         "ty": "ok"
       }
     },
@@ -119,7 +119,7 @@
       "statuses": {
         "mypy": "ok",
         "pyrefly": "ok",
-        "zuban": "error",
+        "zuban": "ok",
         "ty": "error"
       }
     },
@@ -135,7 +135,7 @@
       "statuses": {
         "mypy": "error",
         "pyrefly": "error",
-        "zuban": "error",
+        "zuban": "ok",
         "ty": "ok"
       }
     },
@@ -151,8 +151,8 @@
       "statuses": {
         "mypy": "error",
         "pyrefly": "ok",
-        "zuban": "error",
-        "ty": "error"
+        "zuban": "ok",
+        "ty": "ok"
       }
     },
     {
@@ -167,7 +167,7 @@
       "statuses": {
         "mypy": "error",
         "pyrefly": "error",
-        "zuban": "error",
+        "zuban": "ok",
         "ty": "ok"
       }
     },
@@ -183,7 +183,7 @@
       "statuses": {
         "mypy": "ok",
         "pyrefly": "error",
-        "zuban": "error",
+        "zuban": "ok",
         "ty": "error"
       }
     }

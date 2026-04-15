@@ -1,0 +1,219 @@
+{
+  "timestamp": "2026-02-20T13:08:02.121373",
+  "model_used": "gemini-2.5-flash",
+  "total_generated": 16,
+  "disagreements_found": 12,
+  "success_rate": "75.0%",
+  "checkers_used": [
+    "mypy",
+    "pyrefly",
+    "zuban",
+    "ty"
+  ],
+  "results": [
+    {
+      "filename": "decorator-super-generic-args.py",
+      "filepath": "generated_examples/2026-02-20_13-08-02/source_files/decorator-super-generic-args.py",
+      "seed_issue": "astral-sh/ty#2646",
+      "outputs": {
+        "mypy": "Success: no issues found in 1 source file",
+        "pyrefly": "INFO 0 errors",
+        "zuban": "Success: no issues found in 1 source file",
+        "ty": "error[unresolved-attribute]: Object of type `(**P@trace_method) -> R@trace_method` has no attribute `__qualname__`\n  --> _pytifex_temp_2402891.py:10:26\n   |\n 8 |     \"\"\"A decorator that logs calls but preserves the signature.\"\"\"\n 9 |     def wrapper(*args: P.args, **kwargs: P.kwargs) -> R:\n10 |         print(f\"Calling {func.__qualname__} with args: {args}, kwargs: {kwargs}\")\n   |                          ^^^^^^^^^^^^^^^^^\n11 |         return func(*args, **kwargs)\n12 |     return wrapper\n   |\ninfo: rule `unresolved-attribute` is enabled by default\n\nFound 1 diagnostic"
+      },
+      "statuses": {
+        "mypy": "ok",
+        "pyrefly": "ok",
+        "zuban": "ok",
+        "ty": "error"
+      }
+    },
+    {
+      "filename": "decorator-super-modified-signature.py",
+      "filepath": "generated_examples/2026-02-20_13-08-02/source_files/decorator-super-modified-signature.py",
+      "seed_issue": "astral-sh/ty#2646",
+      "outputs": {
+        "mypy": "_pytifex_temp_2402891.py:8: error: All type parameters should be declared (\"_Self\" not declared)  [valid-type]\n_pytifex_temp_2402891.py:20: error: Signature of \"process_data\" incompatible with supertype \"Base\"  [override]\n_pytifex_temp_2402891.py:20: note:      Superclass:\n_pytifex_temp_2402891.py:20: note:          def process_data(self, data: int) -> str\n_pytifex_temp_2402891.py:20: note:      Subclass:\n_pytifex_temp_2402891.py:20: note:          def process_data(self, str, /, context: str, data: int) -> str\n_pytifex_temp_2402891.py:32: error: Missing positional argument \"data\" in call to \"process_data\" of \"Derived\"  [call-arg]\n_pytifex_temp_2402891.py:32: error: Argument 2 to \"process_data\" of \"Derived\" has incompatible type \"int\"; expected \"str\"  [arg-type]\nFound 4 errors in 1 file (checked 1 source file)",
+        "pyrefly": "ERROR Type parameter _Self is not included in the type parameter list [invalid-type-var]\n --> _pytifex_temp_2402891.py:8:55\n  |\n8 | def inject_context[**P, R](func: Callable[Concatenate[_Self, P], R]) -> Callable[Concatenate[_Self, str, P], R]:\n  |                                                       ^^^^^\n  |\nERROR Class member `Derived.process_data` overrides parent class `Base` in an inconsistent manner [bad-override]\n  --> _pytifex_temp_2402891.py:20:9\n   |\n20 |     def process_data(self, context: str, data: int) -> str:\n   |         ^^^^^^^^^^^^\n   |\n  `Derived.process_data` has type `BoundMethod[Derived, (Derived, str, context: str, data: int) -> str]`, which is not assignable to `BoundMethod[Derived, (self: Derived, data: int) -> str]`, the type of `Base.process_data`\nERROR Missing argument `data` in function `Derived.process_data` [missing-argument]\n  --> _pytifex_temp_2402891.py:32:25\n   |\n32 |     print(d.process_data(\"my-context\", 123))\n   |                         ^^^^^^^^^^^^^^^^^^^\n   |\nERROR Argument `Literal[123]` is not assignable to parameter `context` with type `str` in function `Derived.process_data` [bad-argument-type]\n  --> _pytifex_temp_2402891.py:32:40\n   |\n32 |     print(d.process_data(\"my-context\", 123))\n   |                                        ^^^\n   |\n INFO 4 errors",
+        "zuban": "_pytifex_temp_2402891.py:8: error: All type parameters should be declared (\"_Self\" not declared)  [misc]\n_pytifex_temp_2402891.py:20: error: Signature of \"process_data\" incompatible with supertype \"Base\"  [override]\n_pytifex_temp_2402891.py:20: note:      Superclass:\n_pytifex_temp_2402891.py:20: note:          def process_data(self, data: int) -> str\n_pytifex_temp_2402891.py:20: note:      Subclass:\n_pytifex_temp_2402891.py:20: note:          def process_data(self, str, /, context: str, data: int) -> str\n_pytifex_temp_2402891.py:32: error: Missing positional argument \"data\" in call to \"process_data\" of \"Derived\"  [call-arg]\n_pytifex_temp_2402891.py:32: error: Argument 2 to \"process_data\" of \"Derived\" has incompatible type \"int\"; expected \"str\"  [arg-type]\nFound 4 errors in 1 file (checked 1 source file)",
+        "ty": "All checks passed!"
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "error",
+        "zuban": "error",
+        "ty": "ok"
+      }
+    },
+    {
+      "filename": "newtype-liskov-declaration-divergence.py",
+      "filepath": "generated_examples/2026-02-20_13-08-02/source_files/newtype-liskov-declaration-divergence.py",
+      "seed_issue": null,
+      "outputs": {
+        "mypy": "Success: no issues found in 1 source file",
+        "pyrefly": "ERROR Class member `CategorizedInventory.add_item` overrides parent class `Inventory` in an inconsistent manner [bad-param-name-override]\n  --> _pytifex_temp_2402891.py:18:9\n   |\n18 |     def add_item(self, key_or_category: Union[ProductId, CategoryId], count: ItemCount) -> None:\n   |         ^^^^^^^^\n   |\n  Got parameter name `key_or_category`, expected `product_id`\nERROR Class member `CategorizedInventory.__setitem__` overrides parent class `Inventory` in an inconsistent manner [bad-param-name-override]\n  --> _pytifex_temp_2402891.py:35:9\n   |\n35 |     def __setitem__(self, key: Union[ProductId, CategoryId], value: ItemCount) -> None:\n   |         ^^^^^^^^^^^\n   |\n  Got parameter name `value`, expected `item`\n INFO 2 errors",
+        "zuban": "Success: no issues found in 1 source file",
+        "ty": "error[invalid-method-override]: Invalid override of method `add_item`\n  --> _pytifex_temp_2402891.py:18:9\n   |\n16 |     # Specifically, `__setitem__` on a UserDict.\n17 |\n18 |     def add_item(self, key_or_category: Union[ProductId, CategoryId], count: ItemCount) -> None:\n   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Definition is incompatible with `Inventory.add_item`\n19 |         # This method's parameter `key_or_category` is `Union[ProductId, CategoryId]`.\n20 |         # The call `self[key_or_category] = count` will invoke `CategorizedInventory.__setitem__`.\n   |\n  ::: _pytifex_temp_2402891.py:9:9\n   |\n 8 | class Inventory(UserDict[ProductId, ItemCount]):\n 9 |     def add_item(self, product_id: ProductId, count: ItemCount) -> None:\n   |         --------------------------------------------------------------- `Inventory.add_item` defined here\n10 |         # Fix: Explicitly cast the result of addition back to ItemCount\n11 |         self[product_id] = ItemCount(self.get(product_id, ItemCount(0)) + count)\n   |\ninfo: This violates the Liskov Substitution Principle\ninfo: rule `invalid-method-override` is enabled by default\n\nerror[invalid-method-override]: Invalid override of method `__setitem__`\n   --> _pytifex_temp_2402891.py:35:9\n    |\n 33 |     # Some might flag the *declaration* as an error, others might allow it.\n 34 |     # We ensure the `super()` call is \"safe\" to push the divergence to the *declaration* itself.\n 35 |     def __setitem__(self, key: Union[ProductId, CategoryId], value: ItemCount) -> None:\n    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Definition is incompatible with `UserDict.__setitem__`\n 36 |         # We need a runtime way to distinguish ProductId from CategoryId if we want\n 37 |         # to handle them differently before passing to super().__setitem__.\n    |\n   ::: stdlib/collections/__init__.pyi:116:9\n    |\n114 |     def __len__(self) -> int: ...\n115 |     def __getitem__(self, key: _KT) -> _VT: ...\n116 |     def __setitem__(self, key: _KT, item: _VT) -> None: ...\n    |         ---------------------------------------------- `UserDict.__setitem__` defined here\n117 |     def __delitem__(self, key: _KT) -> None: ...\n118 |     def __iter__(self) -> Iterator[_KT]: ...\n    |\ninfo: This violates the Liskov Substitution Principle\ninfo: rule `invalid-method-override` is enabled by default\n\nFound 2 diagnostics"
+      },
+      "statuses": {
+        "mypy": "ok",
+        "pyrefly": "error",
+        "zuban": "ok",
+        "ty": "error"
+      }
+    },
+    {
+      "filename": "inherited-unsound-helper-refined.py",
+      "filepath": "generated_examples/2026-02-20_13-08-02/source_files/inherited-unsound-helper-refined.py",
+      "seed_issue": null,
+      "outputs": {
+        "mypy": "_pytifex_temp_2402891.py:22: error: \"BasicFactory\" expects no type arguments, but 1 given  [type-arg]\n_pytifex_temp_2402891.py:28: error: Incompatible return value type (got \"BasicFactory\", expected \"Self\")  [return-value]\nFound 2 errors in 1 file (checked 1 source file)",
+        "pyrefly": "ERROR Expected 0 type arguments for `BasicFactory`, got 1 [bad-specialization]\n  --> _pytifex_temp_2402891.py:22:46\n   |\n22 |     def _get_base_factory_instance(self) -> 'BasicFactory[str]':\n   |                                              ^^^^^^^^^^^^^^^^^\n   |\n INFO 1 error",
+        "zuban": "_pytifex_temp_2402891.py:22: error: \"BasicFactory\" expects no type arguments, but 1 given  [type-arg]\n_pytifex_temp_2402891.py:28: error: Incompatible return value type (got \"BasicFactory\", expected \"Self\")  [return-value]\nFound 2 errors in 1 file (checked 1 source file)",
+        "ty": "All checks passed!"
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "error",
+        "zuban": "error",
+        "ty": "ok"
+      }
+    },
+    {
+      "filename": "mixed-tuple-unpacking-newtype.py",
+      "filepath": "generated_examples/2026-02-20_13-08-02/source_files/mixed-tuple-unpacking-newtype.py",
+      "seed_issue": "astral-sh/ty#947",
+      "outputs": {
+        "mypy": "_pytifex_temp_2402891.py:19: error: If x = b'abc' then f\"{x}\" or \"{}\".format(x) produces \"b'abc'\", not \"abc\". If this is desired behavior, use f\"{x!r}\" or \"{!r}\".format(x). Otherwise, decode the bytes  [str-bytes-safe]\nFound 1 error in 1 file (checked 1 source file)",
+        "pyrefly": "INFO 0 errors",
+        "zuban": "Success: no issues found in 1 source file",
+        "ty": "All checks passed!"
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "ok",
+        "zuban": "ok",
+        "ty": "ok"
+      }
+    },
+    {
+      "filename": "typevartuple-unpacking-precision-refined.py",
+      "filepath": "generated_examples/2026-02-20_13-08-02/source_files/typevartuple-unpacking-precision-refined.py",
+      "seed_issue": null,
+      "outputs": {
+        "mypy": "_pytifex_temp_2402891.py:11: error: Invalid location for ParamSpec \"Ts_in\"  [valid-type]\n_pytifex_temp_2402891.py:11: note: You can use ParamSpec as the first argument to Callable, e.g., \"Callable[Ts_in, int]\"\n_pytifex_temp_2402891.py:11: error: Unpack is only valid in a variadic position  [valid-type]\n_pytifex_temp_2402891.py:17: error: Invalid location for ParamSpec \"Ts\"  [valid-type]\n_pytifex_temp_2402891.py:17: note: You can use ParamSpec as the first argument to Callable, e.g., \"Callable[Ts, int]\"\n_pytifex_temp_2402891.py:25: note: Revealed type is \"builtins.str\"\n_pytifex_temp_2402891.py:26: note: Revealed type is \"builtins.list[Any]\"\n_pytifex_temp_2402891.py:27: note: Revealed type is \"builtins.bool\"\n_pytifex_temp_2402891.py:38: note: Revealed type is \"builtins.list[Any]\"\nFound 3 errors in 1 file (checked 1 source file)",
+        "pyrefly": "ERROR Expected a tuple or `TypeVarTuple`, got `Ts_in` [bad-unpacking]\n  --> _pytifex_temp_2402891.py:11:49\n   |\n11 | def get_middle_items[**Ts_in](items: Tuple[Any, *Ts_in, Any]) -> List[Union[*Ts_in]]:\n   |                                                 ^^^^^^\n   |\nERROR Unpacked argument cannot be used for type parameter _T [bad-unpacking]\n  --> _pytifex_temp_2402891.py:11:66\n   |\n11 | def get_middle_items[**Ts_in](items: Tuple[Any, *Ts_in, Any]) -> List[Union[*Ts_in]]:\n   |                                                                  ^^^^^^^^^^^^^^^^^^^\n   |\nERROR Expected a tuple or `TypeVarTuple`, got `Ts` [bad-unpacking]\n  --> _pytifex_temp_2402891.py:17:52\n   |\n17 | def process_flexible_message[**Ts](msg: Tuple[str, *Ts, bool]):\n   |                                                    ^^^\n   |\n INFO revealed type: Unknown [reveal-type]\n  --> _pytifex_temp_2402891.py:25:16\n   |\n25 |     reveal_type(start_tag)    # Expected: str\n   |                -----------\n   |\n INFO revealed type: list[Unknown] [reveal-type]\n  --> _pytifex_temp_2402891.py:26:16\n   |\n26 |     reveal_type(middle)       # Original target, likely list[object] for many checkers\n   |                --------\n   |\n INFO revealed type: Unknown [reveal-type]\n  --> _pytifex_temp_2402891.py:27:16\n   |\n27 |     reveal_type(is_complete)  # Expected: bool\n   |                -------------\n   |\n INFO revealed type: list[Unknown] [reveal-type]\n  --> _pytifex_temp_2402891.py:38:16\n   |\n38 |     reveal_type(precise_middle) # EXPECTED DIVERGENCE:\n   |                ----------------\n   |\n INFO 3 errors",
+        "zuban": "_pytifex_temp_2402891.py:11: error: Invalid location for ParamSpec \"Ts_in\"  [valid-type]\n_pytifex_temp_2402891.py:11: note: You can use ParamSpec as the first argument to Callable, e.g., \"Callable[P, int]\"\n_pytifex_temp_2402891.py:11: error: \"Any\" cannot be unpacked (must be tuple or TypeVarTuple)  [misc]\n_pytifex_temp_2402891.py:11: error: Invalid location for ParamSpec \"Ts_in\"  [valid-type]\n_pytifex_temp_2402891.py:11: note: You can use ParamSpec as the first argument to Callable, e.g., \"Callable[P, int]\"\n_pytifex_temp_2402891.py:11: error: Unpack is only valid in a variadic position  [misc]\n_pytifex_temp_2402891.py:17: error: Invalid location for ParamSpec \"Ts\"  [valid-type]\n_pytifex_temp_2402891.py:17: note: You can use ParamSpec as the first argument to Callable, e.g., \"Callable[P, int]\"\n_pytifex_temp_2402891.py:17: error: \"Any\" cannot be unpacked (must be tuple or TypeVarTuple)  [misc]\n_pytifex_temp_2402891.py:25: note: Revealed type is \"builtins.str\"\n_pytifex_temp_2402891.py:26: note: Revealed type is \"builtins.list[Any]\"\n_pytifex_temp_2402891.py:27: note: Revealed type is \"builtins.bool\"\n_pytifex_temp_2402891.py:38: note: Revealed type is \"builtins.list[Any]\"\nFound 6 errors in 1 file (checked 1 source file)",
+        "ty": "info[revealed-type]: Revealed type\n  --> _pytifex_temp_2402891.py:25:17\n   |\n23 |     # The original reveal_type(middle) might still yield list[object] for some checkers,\n24 |     # as observed in the initial test, indicating conservative inference for direct unpacking.\n25 |     reveal_type(start_tag)    # Expected: str\n   |                 ^^^^^^^^^ `@Todo`\n26 |     reveal_type(middle)       # Original target, likely list[object] for many checkers\n27 |     reveal_type(is_complete)  # Expected: bool\n   |\n\ninfo[revealed-type]: Revealed type\n  --> _pytifex_temp_2402891.py:26:17\n   |\n24 |     # as observed in the initial test, indicating conservative inference for direct unpacking.\n25 |     reveal_type(start_tag)    # Expected: str\n26 |     reveal_type(middle)       # Original target, likely list[object] for many checkers\n   |                 ^^^^^^ `list[@Todo]`\n27 |     reveal_type(is_complete)  # Expected: bool\n   |\n\ninfo[revealed-type]: Revealed type\n  --> _pytifex_temp_2402891.py:27:17\n   |\n25 |     reveal_type(start_tag)    # Expected: str\n26 |     reveal_type(middle)       # Original target, likely list[object] for many checkers\n27 |     reveal_type(is_complete)  # Expected: bool\n   |                 ^^^^^^^^^^^ `@Todo`\n28 |\n29 |     print(f\"Start Tag: {start_tag}\")\n   |\n\ninfo[revealed-type]: Revealed type\n  --> _pytifex_temp_2402891.py:38:17\n   |\n36 |     # compared to direct tuple unpacking within the function.\n37 |     precise_middle = get_middle_items(msg)\n38 |     reveal_type(precise_middle) # EXPECTED DIVERGENCE:\n   |                 ^^^^^^^^^^^^^^ `list[@Todo(StarredExpression)]`\n39 |                                 # - Precise checkers: list[Union[...]] (e.g., list[int | float | str])\n40 |                                 # - Less precise/conservative checkers: list[Any] or list[object]\n   |\n\nFound 4 diagnostics"
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "error",
+        "zuban": "error",
+        "ty": "ok"
+      }
+    },
+    {
+      "filename": "dataclass-transform-param-spec-return.py",
+      "filepath": "generated_examples/2026-02-20_13-08-02/source_files/dataclass-transform-param-spec-return.py",
+      "seed_issue": "https://github.com/microsoft/pyright/issues/11015",
+      "outputs": {
+        "mypy": "_pytifex_temp_2402891.py:21: error: Incompatible return value type (got \"type[Never]\", expected \"T\")  [return-value]\nFound 1 error in 1 file (checked 1 source file)",
+        "pyrefly": "ERROR Returned type `type[@_]` is not assignable to declared return type `T` [bad-return]\n  --> _pytifex_temp_2402891.py:21:16\n   |\n21 |         return dataclass(frozen=frozen)(cls)\n   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n   |\n INFO 1 error",
+        "zuban": "_pytifex_temp_2402891.py:21: error: Incompatible return value type (got \"type[Any]\", expected \"T\")  [return-value]\n_pytifex_temp_2402891.py:24: error: Argument 1 has incompatible type \"type[ImmutableData]\"; expected \"Never\"  [arg-type]\n_pytifex_temp_2402891.py:29: error: Argument 1 has incompatible type \"type[CustomInitData]\"; expected \"Never\"  [arg-type]\nFound 3 errors in 1 file (checked 1 source file)",
+        "ty": "All checks passed!"
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "error",
+        "zuban": "error",
+        "ty": "ok"
+      }
+    },
+    {
+      "filename": "dataclass-transform-protocol-default-methods.py",
+      "filepath": "generated_examples/2026-02-20_13-08-02/source_files/dataclass-transform-protocol-default-methods.py",
+      "seed_issue": "https://github.com/microsoft/pyright/issues/11015",
+      "outputs": {
+        "mypy": "_pytifex_temp_2402891.py:29: error: Incompatible return value type (got \"type[Never]\", expected \"T\")  [return-value]\nFound 1 error in 1 file (checked 1 source file)",
+        "pyrefly": "ERROR Returned type `type[@_]` is not assignable to declared return type `T` [bad-return]\n  --> _pytifex_temp_2402891.py:29:16\n   |\n29 |         return dataclass(frozen=False)(cls)\n   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n   |\n INFO 1 error (2 suppressed)",
+        "zuban": "_pytifex_temp_2402891.py:29: error: Incompatible return value type (got \"type[Any]\", expected \"T\")  [return-value]\n_pytifex_temp_2402891.py:32: error: Argument 1 has incompatible type \"type[AppConfig]\"; expected \"Never\"  [arg-type]\nFound 2 errors in 1 file (checked 1 source file)",
+        "ty": "All checks passed!"
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "error",
+        "zuban": "error",
+        "ty": "ok"
+      }
+    },
+    {
+      "filename": "dataclass-transform-classmethod-super.py",
+      "filepath": "generated_examples/2026-02-20_13-08-02/source_files/dataclass-transform-classmethod-super.py",
+      "seed_issue": "astral-sh/ty#2646",
+      "outputs": {
+        "mypy": "_pytifex_temp_2402891.py:18: error: ParamSpec \"_P\" is unbound  [valid-type]\n_pytifex_temp_2402891.py:32: error: Value of type variable \"T\" of function cannot be \"Callable[[type[DerivedService]], str]\"  [type-var]\nFound 2 errors in 1 file (checked 1 source file)",
+        "pyrefly": "ERROR `(cls: type[Self@DerivedService]) -> str` is not assignable to upper bound `type` of type variable `T` [bad-specialization]\n  --> _pytifex_temp_2402891.py:32:5\n   |\n32 |     @method_config(log_calls=True)\n   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n   |\n INFO 1 error",
+        "zuban": "_pytifex_temp_2402891.py:18: error: ParamSpec \"_P\" is unbound  [misc]\nFound 1 error in 1 file (checked 1 source file)",
+        "ty": "All checks passed!"
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "error",
+        "zuban": "error",
+        "ty": "ok"
+      }
+    },
+    {
+      "filename": "protocol-default-mixed-dataclass-transform.py",
+      "filepath": "generated_examples/2026-02-20_13-08-02/source_files/protocol-default-mixed-dataclass-transform.py",
+      "seed_issue": "astral-sh/ty#2000",
+      "outputs": {
+        "mypy": "_pytifex_temp_2402891.py:29: error: Incompatible return value type (got \"type[Never]\", expected \"T\")  [return-value]\nFound 1 error in 1 file (checked 1 source file)",
+        "pyrefly": "ERROR Returned type `type[@_]` is not assignable to declared return type `T` [bad-return]\n  --> _pytifex_temp_2402891.py:29:16\n   |\n29 |         return dataclass(frozen=False)(cls)\n   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n   |\n INFO 1 error (2 suppressed)",
+        "zuban": "_pytifex_temp_2402891.py:29: error: Incompatible return value type (got \"type[Any]\", expected \"T\")  [return-value]\n_pytifex_temp_2402891.py:32: error: Argument 1 has incompatible type \"type[MyDataProcessor]\"; expected \"Never\"  [arg-type]\nFound 2 errors in 1 file (checked 1 source file)",
+        "ty": "All checks passed!"
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "error",
+        "zuban": "error",
+        "ty": "ok"
+      }
+    },
+    {
+      "filename": "isinstance-protocol-divergence.py",
+      "filepath": "generated_examples/2026-02-20_13-08-02/source_files/isinstance-protocol-divergence.py",
+      "seed_issue": null,
+      "outputs": {
+        "mypy": "_pytifex_temp_2402891.py:35: note: Revealed type is \"_pytifex_temp_2402891.Dog\"\n_pytifex_temp_2402891.py:39: note: Revealed type is \"_pytifex_temp_2402891.Cat\"\n_pytifex_temp_2402891.py:42: error: Only concrete class can be given where \"type[Barkable]\" is expected  [type-abstract]\n_pytifex_temp_2402891.py:47: note: Revealed type is \"_pytifex_temp_2402891.Barkable\"\n_pytifex_temp_2402891.py:51: note: Revealed type is \"_pytifex_temp_2402891.Animal | builtins.str | _pytifex_temp_2402891.Barkable\"\nFound 1 error in 1 file (checked 1 source file)",
+        "pyrefly": "INFO revealed type: Dog [reveal-type]\n  --> _pytifex_temp_2402891.py:35:24\n   |\n35 |             reveal_type(dog) # Expected: Dog. (Most checkers will agree here)\n   |                        -----\n   |\n INFO revealed type: Cat [reveal-type]\n  --> _pytifex_temp_2402891.py:39:24\n   |\n39 |             reveal_type(cat) # Expected: Cat.\n   |                        -----\n   |\n INFO revealed type: Barkable [reveal-type]\n  --> _pytifex_temp_2402891.py:47:24\n   |\n47 |             reveal_type(barker) # Expected: Barkable (if no static error)\n   |                        --------\n   |\n INFO revealed type: Animal | Barkable | str [reveal-type]\n  --> _pytifex_temp_2402891.py:51:24\n   |\n51 |             reveal_type(item) # Expected: Union[Animal, str, Barkable] (minus types already handled).\n   |                        ------\n   |\n INFO 0 errors",
+        "zuban": "_pytifex_temp_2402891.py:35: note: Revealed type is \"_pytifex_temp_2402891.Dog\"\n_pytifex_temp_2402891.py:39: note: Revealed type is \"_pytifex_temp_2402891.Cat\"\n_pytifex_temp_2402891.py:47: note: Revealed type is \"_pytifex_temp_2402891.Barkable\"\n_pytifex_temp_2402891.py:51: note: Revealed type is \"_pytifex_temp_2402891.Animal | builtins.str | _pytifex_temp_2402891.Barkable\"\nSuccess: no issues found in 1 source file",
+        "ty": "info[revealed-type]: Revealed type\n  --> _pytifex_temp_2402891.py:35:25\n   |\n33 |     if all_instances_of(animals, Dog):\n34 |         for dog in animals:\n35 |             reveal_type(dog) # Expected: Dog. (Most checkers will agree here)\n   |                         ^^^ `Animal | str | Barkable`\n36 |             print(f\"Woof! This is a dog: {dog}\")\n37 |     elif all_instances_of(animals, Cat):\n   |\n\ninfo[revealed-type]: Revealed type\n  --> _pytifex_temp_2402891.py:39:25\n   |\n37 |     elif all_instances_of(animals, Cat):\n38 |         for cat in animals:\n39 |             reveal_type(cat) # Expected: Cat.\n   |                         ^^^ `Animal | str | Barkable`\n40 |             print(f\"Meow! This is a cat: {cat}\")\n41 |     # --- NEW: This is the divergence point ---\n   |\n\ninfo[revealed-type]: Revealed type\n  --> _pytifex_temp_2402891.py:47:25\n   |\n45 |         # Other checkers might not, leading to a static divergence or runtime TypeError.\n46 |         for barker in animals:\n47 |             reveal_type(barker) # Expected: Barkable (if no static error)\n   |                         ^^^^^^ `Animal | str | Barkable`\n48 |             print(f\"I am a barker: {barker.bark()}\")\n49 |     else:\n   |\n\nwarning[possibly-missing-attribute]: Attribute `bark` may be missing on object of type `Animal | str | Barkable`\n  --> _pytifex_temp_2402891.py:48:37\n   |\n46 |         for barker in animals:\n47 |             reveal_type(barker) # Expected: Barkable (if no static error)\n48 |             print(f\"I am a barker: {barker.bark()}\")\n   |                                     ^^^^^^^^^^^\n49 |     else:\n50 |         for item in animals:\n   |\ninfo: rule `possibly-missing-attribute` is enabled by default\n\ninfo[revealed-type]: Revealed type\n  --> _pytifex_temp_2402891.py:51:25\n   |\n49 |     else:\n50 |         for item in animals:\n51 |             reveal_type(item) # Expected: Union[Animal, str, Barkable] (minus types already handled).\n   |                         ^^^^ `Animal | str | Barkable`\n52 |             print(f\"Just an animal, string, or unknown item: {item}\")\n   |\n\nFound 5 diagnostics"
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "ok",
+        "zuban": "ok",
+        "ty": "ok"
+      }
+    },
+    {
+      "filename": "typeguard-list-narrowing-refined.py",
+      "filepath": "generated_examples/2026-02-20_13-08-02/source_files/typeguard-list-narrowing-refined.py",
+      "seed_issue": null,
+      "outputs": {
+        "mypy": "_pytifex_temp_2402891.py:23: note: Revealed type is \"builtins.int\"\n_pytifex_temp_2402891.py:26: error: Incompatible types in assignment (expression has type \"int | str | bool | float\", variable has type \"int | bool\")  [assignment]\n_pytifex_temp_2402891.py:27: note: Revealed type is \"builtins.int\"\nFound 1 error in 1 file (checked 1 source file)",
+        "pyrefly": "INFO revealed type: bool | int [reveal-type]\n  --> _pytifex_temp_2402891.py:23:24\n   |\n23 |             reveal_type(item)\n   |                        ------\n   |\n INFO revealed type: bool | float | int | str [reveal-type]\n  --> _pytifex_temp_2402891.py:27:24\n   |\n27 |             reveal_type(item) # Expected: int | str | bool | float.\n   |                        ------\n   |\n INFO 0 errors",
+        "zuban": "_pytifex_temp_2402891.py:23: note: Revealed type is \"builtins.int | builtins.bool\"\n_pytifex_temp_2402891.py:27: note: Revealed type is \"builtins.int | builtins.str | builtins.bool | builtins.float\"\nSuccess: no issues found in 1 source file",
+        "ty": "info[revealed-type]: Revealed type\n  --> _pytifex_temp_2402891.py:23:25\n   |\n21 |             # Some checkers might correctly narrow, while others might retain 'str' or 'float'\n22 |             # types, or be overly conservative, leading to divergence.\n23 |             reveal_type(item)\n   |                         ^^^^ `int | str | float`\n24 |             print(f\"Number or Bool: {item}\")\n25 |     else:\n   |\n\ninfo[revealed-type]: Revealed type\n  --> _pytifex_temp_2402891.py:27:25\n   |\n25 |     else:\n26 |         for item in data:\n27 |             reveal_type(item) # Expected: int | str | bool | float.\n   |                         ^^^^ `int | str | float`\n28 |             print(f\"Mixed item: {item}\")\n   |\n\nFound 2 diagnostics"
+      },
+      "statuses": {
+        "mypy": "error",
+        "pyrefly": "ok",
+        "zuban": "ok",
+        "ty": "ok"
+      }
+    }
+  ]
+}

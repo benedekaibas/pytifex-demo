@@ -1,0 +1,18 @@
+File,LOC (NCSS),# Functions,# Type Imports,Type Density,# Internal Calls
+decorator-super-modified-signature.py,20,4,5,0.3,0
+typevartuple-unpacking-precision-refined.py,26,2,8,-0.0385,1
+dataclass-transform-param-spec-return.py,31,3,6,-0.0323,0
+inherited-unsound-helper-refined.py,35,7,4,0.2571,0
+isinstance-protocol-divergence.py,57,5,6,0.1579,1
+typeddict-unpack-total-false-extra.py,20,1,3,0.3,0
+typeddict-unpack-notrequired-extra.py,39,1,4,0.1538,0
+typeddict-unpack-nested-extra.py,33,1,3,0.1818,0
+typevartuple-generic-class-nested-func.py,23,5,5,0.4783,0
+walrus_comprehension.py,5,0,0,0.0,0
+typeddict_single_field.py,5,1,1,0.0,0
+literal-inference-divergence-refined.py,9,1,1,0.0,0
+list-concat-generic-self.py,15,2,4,0.2667,0
+match-typeguard-generic-tuple.py,33,3,5,0.1212,2
+match-protocol-generic-type.py,47,13,5,0.2553,0
+unsound-self-cast-divergence.py,50,6,7,0.02,0
+typeddict-total-inheritance-divergence.py,62,2,8,0.1129,1

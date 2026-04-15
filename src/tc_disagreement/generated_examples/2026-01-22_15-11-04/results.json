@@ -56,7 +56,7 @@
         "mypy": "ok",
         "pyrefly": "ok",
         "zuban": "ok",
-        "ty": "error"
+        "ty": "ok"
       }
     },
     {
@@ -136,7 +136,7 @@
         "mypy": "ok",
         "pyrefly": "ok",
         "zuban": "ok",
-        "ty": "error"
+        "ty": "ok"
       }
     },
     {
